@@ -4,7 +4,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/33si48fa3f2tbt1y?svg=true)](https://ci.appveyor.com/project/SmallLuma/snowing)
 
-
+[快速入门](https://www.bilibili.com/video/av43701922/)
 
 - Core - 引擎核心代码
 - WindowsImpl - Windows下的实现
