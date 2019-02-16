@@ -1,0 +1,4 @@
+MakeDir		[]	[Dir/Sound]
+PackSound	[ExBoss_Head.wav,ExBoss_Loop.wav]	[Dir/Sound/ExBoss.snd]
+PackSound	[SoundEffect.wav,]			[Dir/Sound/HeadOnly.snd]
+PackSound	[,SoundEffect.wav]			[Dir/Sound/LoopOnly.snd]

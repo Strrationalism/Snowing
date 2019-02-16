@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{917aa553-454b-4ff9-a680-da5d7feb59a8}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AES.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlobWriter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BlobReader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BKDRHash.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Blob.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Box2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Controller.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Library.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuPositionController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PropParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Reinit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextMenuItem.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)VibratePlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Coordinate2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CSVParser.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Effect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Engine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GraphicBuffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GraphicContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Graphics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Group.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)KeyKeepTranslator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)KeyWatcher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Log.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MacroException.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Input.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InputParam.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Object.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MemPool.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Platforms.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RenderTarget.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SingleInstance.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SMath.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Snowing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SoundPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SpriteRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Task.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FontRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Texture2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ThumbToKey.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TriggerWatcher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Tween.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TweenSetter.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec3.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Vec4.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Window.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Convert.h" />
+  </ItemGroup>
+</Project>

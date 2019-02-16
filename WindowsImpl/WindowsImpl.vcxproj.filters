@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\D3D">
+      <UniqueIdentifier>{68a529a5-b137-4f26-b0e7-9f4db35721c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\D3D">
+      <UniqueIdentifier>{cbf8ad2a-6200-47d9-bd98-b71abe56c8e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\XAudio2">
+      <UniqueIdentifier>{aae5d030-1628-42d1-bb6d-7d2e39ce716c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\XAudio2">
+      <UniqueIdentifier>{f2861630-4bb4-4da1-ad1a-dca43b509260}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HLSL头文件">
+      <UniqueIdentifier>{a3ca59f4-eb3a-4385-bf8d-14a3d41d8c33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="InputImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Handler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="PlatformImpls.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="COMHelper.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DDevice.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DContext.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DTexture2D.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DRenderTarget.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DEffect.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DBuffer.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DHelper.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="XADevice.h">
+      <Filter>头文件\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="XASoundPlayer.h">
+      <Filter>头文件\XAudio2</Filter>
+    </ClInclude>
+    <ClInclude Include="DDSTextureLoader.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="D3DImpls.h">
+      <Filter>头文件\D3D</Filter>
+    </ClInclude>
+    <ClInclude Include="LibraryImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowImpl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InputImpl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="COMHelper.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DDevice.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DContext.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DTexture2D.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DRenderTarget.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DEffect.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DBuffer.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="XADevice.cpp">
+      <Filter>源文件\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="XASoundPlayer.cpp">
+      <Filter>源文件\XAudio2</Filter>
+    </ClCompile>
+    <ClCompile Include="D3DTextRenderer.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="DDSTextureLoader.cpp">
+      <Filter>源文件\D3D</Filter>
+    </ClCompile>
+    <ClCompile Include="LibraryImpl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SpriteRenderer.hlsli">
+      <Filter>HLSL头文件</Filter>
+    </None>
+    <None Include="Blender.hlsli">
+      <Filter>HLSL头文件</Filter>
+    </None>
+    <None Include="FontRenderer.hlsli">
+      <Filter>HLSL头文件</Filter>
+    </None>
+    <None Include="PostEffect.hlsli">
+      <Filter>HLSL头文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
