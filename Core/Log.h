@@ -14,4 +14,14 @@ namespace Snowing
 		PlatformImpls::Log(stream.str().c_str());
 #endif // _DEBUG
 	}
+
+	template <typename CharType = char,typename ... TArgs>
+	void Abort(const TArgs&... args)
+	{
+		static std::basic_stringstream<CharType> stream;
+		constexpr CharType ch[] = { '\0' };
+		stream.str(ch);
+		((stream << args << ' '), ...);
+		PlatformImpls::Abort(stream.str().c_str());
+	}
 }
