@@ -1,16 +1,35 @@
 #include "stdafx.h"
 #include "Steam.h"
 #include <fstream>
+#include <Snowing.h>
+#include <PlatformImpls.h>
 
 using namespace Snowing::PlatformImpls::WindowsSteam;
 
-static void (*SteamAPI_WriteMiniDump)(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) = nullptr;
-static void (*SteamAPI_SetMiniDumpComment)(const char *pchMsg) = nullptr;
-
-void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS *pException)
+static void WriteMiniDumpX64(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID)
 {
-	SteamAPI_SetMiniDumpComment("BUILD TIME:" __DATE__);
-	SteamAPI_WriteMiniDump(nExceptionCode, pException, 0);
+}
+
+static void SetMiniDumpCommentX64(const char* pchMsg)
+{
+	Snowing::Abort("Unhandled Exception:", pchMsg);
+}
+
+static void (*WriteMiniDump)(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) = &WriteMiniDumpX64;
+static void (*SetMiniDumpComment)(const char *pchMsg) = &SetMiniDumpCommentX64;
+
+static LONG WINAPI UnhandledException(EXCEPTION_POINTERS *pExp)
+{
+	SetMiniDumpComment("BUILD TIME:" __DATE__ "\tUnhandledExceptionFilter");
+	WriteMiniDump(0, pExp, 0);
+	return EXCEPTION_EXECUTE_HANDLER;
+}
+
+
+static void MiniDumpFunction(unsigned int nExceptionCode, EXCEPTION_POINTERS *pException)
+{
+	SetMiniDumpComment("BUILD TIME:" __DATE__ "\tSEH");
+	WriteMiniDump(nExceptionCode, pException, 0);
 }
 
 #ifdef X64
@@ -38,11 +57,16 @@ Snowing::PlatformImpls::WindowsSteam::Steam::Steam():
 			return appID;
 	})}
 {
-	SteamAPI_WriteMiniDump = lib_.Get<void, uint32_t, void*, uint32_t>("SteamAPI_WriteMiniDump");
-	SteamAPI_SetMiniDumpComment = lib_.Get<void,const char *>("SteamAPI_SetMiniDumpComment");
+#ifdef WIN32
+		WriteMiniDump = lib_.Get<void, uint32_t, void*, uint32_t>("SteamAPI_WriteMiniDump");
+		SetMiniDumpComment = lib_.Get<void, const char *>("SteamAPI_SetMiniDumpComment");
+#endif
 
 	if (!IsDebuggerPresent())
+	{
 		_set_se_translator(MiniDumpFunction);
+		SetUnhandledExceptionFilter(UnhandledException);
+	}
 
 	if (lib_.Get<bool, std::uint32_t>("SteamAPI_RestartAppIfNecessary")(appid_))
 		std::exit(0);
@@ -54,7 +78,7 @@ Snowing::PlatformImpls::WindowsSteam::Steam::~Steam()
 {
 	lib_.Get<void>("SteamAPI_Shutdown")();
 
-	SteamAPI_WriteMiniDump = nullptr;
-	SteamAPI_SetMiniDumpComment = nullptr;
+	WriteMiniDump = &WriteMiniDumpX64;
+	SetMiniDumpComment = &SetMiniDumpCommentX64;
 }
 
