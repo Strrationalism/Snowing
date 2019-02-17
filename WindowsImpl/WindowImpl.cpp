@@ -21,8 +21,31 @@ void Snowing::PlatformImpls::Log(const char * log)
 	OutputDebugStringA(log);
 	OutputDebugStringA("\n");
 }
+
 #endif // _DEBUG
 
+constexpr auto MsgBoxType =
+MB_OK | MB_ICONSTOP | MB_DEFBUTTON1 | MB_APPLMODAL | MB_TOPMOST;
+
+void Snowing::PlatformImpls::Abort(const char * log)
+{
+	MessageBoxA(
+		WindowsImpl::WindowImpl::Get().GetHWND().Get<HWND>(),
+		log,
+		"Error",
+		MsgBoxType);
+	std::terminate();
+}
+
+void Snowing::PlatformImpls::Abort(const wchar_t * log)
+{
+	MessageBoxW(
+		WindowsImpl::WindowImpl::Get().GetHWND().Get<HWND>(),
+		log,
+		L"Error",
+		MsgBoxType);
+	std::terminate();
+}
 
 static void hwndDeleter(void* hwnd)
 {

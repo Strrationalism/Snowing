@@ -42,6 +42,10 @@ namespace Snowing::PlatformImpls
 
 	void Log(const char *log);
 
+	void Abort(const char *log);
+
+	void Abort(const wchar_t *log);
+
 	namespace WindowsImpl
 	{
 		[[nodiscard]]
