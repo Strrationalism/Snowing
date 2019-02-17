@@ -3,6 +3,10 @@
 #include <SingleInstance.h>
 #include <LibraryImpl.h>
 
+#ifdef X64
+#pragma comment(lib,"DbgHelp.lib")
+#endif
+
 namespace Snowing::PlatformImpls::WindowsSteam
 {
 	class Steam final : public SingleInstance<Steam>
