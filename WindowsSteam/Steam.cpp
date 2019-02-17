@@ -1,22 +1,42 @@
 #include "stdafx.h"
 #include "Steam.h"
+#pragma warning(disable:4091)
+#include <DbgHelp.h>
 #include <fstream>
 #include <Snowing.h>
 #include <PlatformImpls.h>
 
 using namespace Snowing::PlatformImpls::WindowsSteam;
 
+#ifdef X64
+static const char* errorMsg = nullptr;
 static void WriteMiniDumpX64(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID)
 {
+	HANDLE	hDumpFile = CreateFile(L"MiniDump.dmp", GENERIC_READ | GENERIC_WRITE,
+		FILE_SHARE_WRITE, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if ((hDumpFile != NULL) && (hDumpFile != INVALID_HANDLE_VALUE))
+	{
+		MINIDUMP_EXCEPTION_INFORMATION dumpInfo;
+		dumpInfo.ThreadId = GetCurrentThreadId();
+		dumpInfo.ExceptionPointers = (EXCEPTION_POINTERS*)pvExceptionInfo;
+		dumpInfo.ClientPointers = TRUE;
+		::MiniDumpWriteDump(::GetCurrentProcess(), ::GetCurrentProcessId(), hDumpFile, MiniDumpNormal,
+			&dumpInfo, NULL, NULL);
+	}
+
+	CloseHandle(hDumpFile);
+
+	Snowing::Abort("Unhandled Exception:", errorMsg);
 }
 
 static void SetMiniDumpCommentX64(const char* pchMsg)
 {
-	Snowing::Abort("Unhandled Exception:", pchMsg);
+	errorMsg = pchMsg;
 }
+#endif
 
-static void (*WriteMiniDump)(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) = &WriteMiniDumpX64;
-static void (*SetMiniDumpComment)(const char *pchMsg) = &SetMiniDumpCommentX64;
+static void (*WriteMiniDump)(uint32_t uStructuredExceptionCode, void* pvExceptionInfo, uint32_t uBuildID) = nullptr;
+static void (*SetMiniDumpComment)(const char *pchMsg) = nullptr;
 
 static LONG WINAPI UnhandledException(EXCEPTION_POINTERS *pExp)
 {
@@ -62,6 +82,11 @@ Snowing::PlatformImpls::WindowsSteam::Steam::Steam():
 		SetMiniDumpComment = lib_.Get<void, const char *>("SteamAPI_SetMiniDumpComment");
 #endif
 
+#ifdef X64
+		WriteMiniDump = &WriteMiniDumpX64;
+		SetMiniDumpComment = &SetMiniDumpCommentX64;
+#endif
+
 	if (!IsDebuggerPresent())
 	{
 		_set_se_translator(MiniDumpFunction);
@@ -78,7 +103,7 @@ Snowing::PlatformImpls::WindowsSteam::Steam::~Steam()
 {
 	lib_.Get<void>("SteamAPI_Shutdown")();
 
-	WriteMiniDump = &WriteMiniDumpX64;
-	SetMiniDumpComment = &SetMiniDumpCommentX64;
+	WriteMiniDump = nullptr;
+	SetMiniDumpComment = nullptr;
 }
 
