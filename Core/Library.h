@@ -14,14 +14,19 @@ namespace Snowing
 			impl_{ libName }
 		{}
 
+		template <typename TFuncPtrType>
+		auto GetCast(const char* funcName)
+		{
+			auto p = static_cast<TFuncPtrType>(impl_.Get(funcName));
+			assert(p);
+			return p;
+		}
 
 		template <typename TResult,typename... TArgs>
 		auto Get(const char *funcName) const
 		{
 			using FuncPtr = TResult(*)(TArgs...);
-			auto p = static_cast<FuncPtr>(impl_.Get(funcName));
-			assert(p);
-			return p;
+			return GetCast<FuncPtr>(funcName);
 		}
 	};
 }

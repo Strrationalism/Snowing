@@ -40,6 +40,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 
 		void SetWindowed(bool windowed);
 		void Resize(Math::Vec2<int> size);
+		void SetTransparent();
 
 		void ShowCursor(bool cursor);
 

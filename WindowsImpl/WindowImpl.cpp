@@ -250,6 +250,42 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 	D3D::Device::Get().Resize(size);
 }
 
+#include <dwmapi.h>
+#include "LibraryImpl.h"
+#include "COMHelper.h"
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
+{
+	SetWindowLong(
+		hwnd_.Get<HWND>(),
+		GWL_STYLE,
+		GetWindowLong(hwnd_.Get<HWND>(),GWL_STYLE) 
+			&~WS_CAPTION 
+			&~WS_SYSMENU 
+			&~WS_SIZEBOX
+			&~WS_MINIMIZEBOX 
+			&~WS_SYSMENU
+			&~WS_BORDER
+			&~WS_POPUP);
+
+	Library lib("dwmapi.dll");
+
+	MARGINS m = { -1,-1,-1,-1 };
+	typedef HRESULT(__stdcall *Func)(HWND, const MARGINS *);
+	COMHelper::AssertHResult("Can not set transparent.",
+		lib.GetCast<Func>("DwmExtendFrameIntoClientArea")(
+			hwnd_.Get<HWND>(), &m));
+
+	RECT rcClient;
+	GetWindowRect(hwnd_.Get<HWND>(), &rcClient);
+
+	SetWindowPos(
+		hwnd_.Get<HWND>(),
+		nullptr,
+		rcClient.left, rcClient.top,
+		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
+		SWP_FRAMECHANGED);
+}
+
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)
 {
 	::ShowCursor(cursor);
