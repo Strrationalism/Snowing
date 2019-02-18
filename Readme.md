@@ -46,9 +46,6 @@ AssetsBuilder 目标路径
 需要安装[Erget TextureMerger](https://www.egret.com/products/others.html#egret-texture)到X:\Program Files\Egret\TextureMerger\下。
 X可以为任意盘符，该工具用于打包纹理。
 
-## 如何配置Steam扩展的编译环境
-下载SteamworksSDK，并将其解压到WindowsSteamSDK\SteamSDK，使得WindowsSteamSDK\SteamSDK\public目录可用。
-
 ## 关于Effects11
 使用子模块克隆后，如果提示找不到WinSDK，右击重定向到8.1 SDK。
 
