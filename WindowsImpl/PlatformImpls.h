@@ -11,7 +11,7 @@
 #include "AssetLoader.h"
 #include "XADevice.h"
 #include "XASoundPlayer.h"
-#include "D3DImpls.h"
+#include "Impls.h"
 #include <string>
 #include "Engine.h"
 #include "LibraryImpl.h"
@@ -19,10 +19,6 @@
 
 namespace Snowing
 {
-	using Engine = EngineInterface<
-		PlatformImpls::WindowsImpl::WindowImpl,
-		PlatformImpls::WindowsImpl::D3D::Device,
-		PlatformImpls::WindowsImpl::InputImpl>;
 
 #ifndef PUBLISH_MODE
 	template <typename TChar>

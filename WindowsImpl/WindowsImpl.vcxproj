@@ -179,7 +179,7 @@
     <ClInclude Include="D3DEffect.h" />
     <ClInclude Include="D3DHelper.h" />
     <ClInclude Include="D3DRenderTarget.h" />
-    <ClInclude Include="D3DImpls.h" />
+    <ClInclude Include="Impls.h" />
     <ClInclude Include="D3DTexture2D.h" />
     <ClInclude Include="DataBox.h" />
     <ClInclude Include="D3DDevice.h" />

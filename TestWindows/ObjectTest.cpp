@@ -401,3 +401,30 @@ TEST(SceneTest, TestMenuPositionController)
 
 	Snowing::Engine::Get().RunObject(MyScene{});
 }
+
+static void TestFPSDisplay(Math::Vec2<int> size)
+{
+	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
+		L"FPSDisplay",
+		size,
+		true);
+	Font font = LoadFont(LoadAsset(L"Font-zh-CN.fnt"));
+	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
+	Scene::Group<> g;
+	g.Emplace<Scene::RenderTargetCleaner>(
+		&Graphics::Device::MainContext(),
+		&Graphics::Device::MainRenderTarget());
+	g.Emplace<Scene::FPSDisplay>(&eff, &tech1, &font);
+	g.Emplace<Scene::VirtualTask>(0.5f, [] {Engine::Get().Exit(); });
+
+	Engine::Get().RunObject(g);
+}
+
+TEST(SceneTest, FPSDisplay)
+{
+	TestFPSDisplay({ 800,600 });
+	TestFPSDisplay({ 400,300 });
+	TestFPSDisplay({ 1280,720 });
+	TestFPSDisplay({ 960,300 });
+}

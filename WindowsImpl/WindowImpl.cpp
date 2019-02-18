@@ -250,6 +250,13 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 	D3D::Device::Get().Resize(size);
 }
 
+Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
+{
+	RECT r;
+	GetClientRect(hwnd_.Get<HWND>(), &r);
+	return { r.right - r.left,r.bottom - r.top };
+}
+
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)
 {
 	::ShowCursor(cursor);

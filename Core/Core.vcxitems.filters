@@ -171,5 +171,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Library.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FPSDisplay.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)RenderTargetCleaner.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

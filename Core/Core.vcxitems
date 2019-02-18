@@ -21,6 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Blob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Box2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Controller.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FPSDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Library.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h" />
@@ -28,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PropParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Reinit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RenderTargetCleaner.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextMenuItem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VibratePlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Coordinate2D.h" />

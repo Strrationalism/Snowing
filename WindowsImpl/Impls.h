@@ -6,6 +6,18 @@
 #include "D3DBuffer.h"
 #include "D3DEffect.h"
 #include <TextMenuItem.h>
+#include "FPSDisplay.h"
+#include "WindowImpl.h"
+#include "InputImpl.h"
+#include "RenderTargetCleaner.h"
+
+namespace Snowing
+{
+	using Engine = EngineInterface<
+		PlatformImpls::WindowsImpl::WindowImpl,
+		PlatformImpls::WindowsImpl::D3D::Device,
+		PlatformImpls::WindowsImpl::InputImpl>;
+}
 
 namespace Snowing::Graphics
 {
@@ -52,4 +64,19 @@ namespace Snowing::Scene
 {
 	using TextMenuItem = TextMenuItemInterface<
 		Graphics::FontRenderer<>>;
+
+	using FPSDisplay = FPSDisplayInterface<
+		Graphics::FontRenderer<Graphics::Sprite,Graphics::SpriteSheet,64>,
+		Graphics::Font,
+		Graphics::Effect,
+		Graphics::EffectTech,
+		Graphics::Device,
+		Graphics::Buffer,
+		Engine,
+		Graphics::Window>;
+
+	using RenderTargetCleaner = RenderTargetCleanerInterface<
+		Graphics::RenderTarget,
+		Graphics::Context,
+		Engine>;
 }
