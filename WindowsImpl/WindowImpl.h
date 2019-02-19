@@ -54,6 +54,8 @@ namespace Snowing::PlatformImpls::WindowsImpl
 			return wmCloseHandler_;
 		}
 	};
+
+	Math::Vec2<int> GetDesktopSize();
 }
 
 namespace Snowing::Graphics

@@ -135,15 +135,7 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 {
 	auto instance = GetModuleHandle(NULL);//得到程序实例句柄
 
-	RECT desktopRect;
-	const auto desktop = GetDesktopWindow();
-	if (!GetClientRect(desktop, &desktopRect))
-		throw std::runtime_error("Get desktop client failed.");
-	Math::Vec2<int> desktopSize{
-		desktopRect.right - desktopRect.left,
-		desktopRect.bottom - desktopRect.top };
-
-	const auto winpos = desktopSize / 2 - size / 2;
+	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
 		winpos.x,winpos.y,
@@ -228,14 +220,7 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetWindowed(bool windowed)
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> size)
 {
-	RECT desktopRect;
-	const auto desktop = GetDesktopWindow();
-	GetClientRect(desktop, &desktopRect);
-	Math::Vec2<int> desktopSize{
-		desktopRect.right - desktopRect.left,
-		desktopRect.bottom - desktopRect.top };
-
-	const auto winpos = desktopSize / 2 - size / 2;
+	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
 		winpos.x,winpos.y,
@@ -284,6 +269,17 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 		rcClient.left, rcClient.top,
 		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
 		SWP_FRAMECHANGED);
+}
+
+Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
+{
+	RECT desktopRect;
+	const auto desktop = GetDesktopWindow();
+	if (!GetClientRect(desktop, &desktopRect))
+		throw std::runtime_error("Get desktop size failed.");
+	return {
+		desktopRect.right - desktopRect.left,
+		desktopRect.bottom - desktopRect.top };
 }
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)
