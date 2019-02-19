@@ -42,6 +42,8 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		void Resize(Math::Vec2<int> size);
 		void SetTransparent();
 
+		Math::Vec2<int> GetSize() const;
+
 		void ShowCursor(bool cursor);
 
 		inline void SetWMCloseHandler(WMCloseHandler handler)

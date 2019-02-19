@@ -235,6 +235,7 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 	D3D::Device::Get().Resize(size);
 }
 
+
 #include <dwmapi.h>
 #include "LibraryImpl.h"
 #include "COMHelper.h"
@@ -277,6 +278,13 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 		SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
 }
 
+Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
+{
+	RECT r;
+	GetClientRect(hwnd_.Get<HWND>(), &r);
+	return { r.right - r.left,r.bottom - r.top };
+}
+
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 {
 	RECT desktopRect;
@@ -286,6 +294,7 @@ Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 	return {
 		desktopRect.right - desktopRect.left,
 		desktopRect.bottom - desktopRect.top };
+
 }
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)

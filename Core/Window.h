@@ -21,6 +21,11 @@ namespace Snowing::Graphics
 			TImpl::Get().SetWindowed(b);
 		}
 
+		static Math::Vec2<int> GetSize()
+		{
+			return TImpl::Get().GetSize();
+		}
+
 		static void Resize(Math::Vec2<int> size)
 		{
 			TImpl::Get().Resize(size);

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "D3DImpls.h"
+#include "Impls.h"
 
 using namespace Snowing;
 using namespace Snowing::Graphics;
