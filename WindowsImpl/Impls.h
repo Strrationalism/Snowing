@@ -6,7 +6,7 @@
 #include "D3DBuffer.h"
 #include "D3DEffect.h"
 #include <TextMenuItem.h>
-#include "FPSDisplay.h"
+#include "DebugDisplay.h"
 #include "WindowImpl.h"
 #include "InputImpl.h"
 #include "RenderTargetCleaner.h"
@@ -65,7 +65,8 @@ namespace Snowing::Scene
 	using TextMenuItem = TextMenuItemInterface<
 		Graphics::FontRenderer<>>;
 
-	using FPSDisplay = FPSDisplayInterface<
+	template <typename TDataGetter>
+	using DebugDisplay = DebugDisplayInterface <
 		Graphics::FontRenderer<Graphics::Sprite,Graphics::SpriteSheet,64>,
 		Graphics::Font,
 		Graphics::Effect,
@@ -73,7 +74,8 @@ namespace Snowing::Scene
 		Graphics::Device,
 		Graphics::Buffer,
 		Engine,
-		Graphics::Window>;
+		Graphics::Window,
+		TDataGetter>;
 
 	using RenderTargetCleaner = RenderTargetCleanerInterface<
 		Graphics::RenderTarget,

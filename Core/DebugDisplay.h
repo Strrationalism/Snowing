@@ -13,8 +13,9 @@ namespace Snowing::Scene
 		typename TGraphics,
 		typename TBuffer,
 		typename TEngine,
-		typename TWindow>
-		class FPSDisplayInterface final : public Object
+		typename TWindow,
+		typename TDataGetter>
+		class DebugDisplayInterface final : public Object
 	{
 	private:
 		const Math::Coordinate2DRect screenCoord_ =
@@ -23,10 +24,10 @@ namespace Snowing::Scene
 			{ float(TWindow::GetSize().x),float(TWindow::GetSize().y) }
 		};
 
-		const Math::Vec4f box_ =
+		Math::Vec4f box_ =
 		{
 			screenCoord_.LeftTop.x,
-			screenCoord_.RightBottom.y - 12.0f,
+			screenCoord_.RightBottom.y,
 			screenCoord_.RightBottom.x,
 			screenCoord_.RightBottom.y
 		};
@@ -36,14 +37,20 @@ namespace Snowing::Scene
 		std::vector<Graphics::FontSprite> text_;
 		const TFont &font_;
 
-		const std::map<wchar_t, Math::Vec2f> fix_{};
+		const std::map<wchar_t, Math::Vec2f> &fix_;
+		const std::wstring title_;
+		typename std::decay<TDataGetter>::type getter_;
 
 	public:
-
-		FPSDisplayInterface(
+		template <typename WString,typename TDataGetter>
+		DebugDisplayInterface(
 			TEffect *effect,
 			TTech *tech,
-			const TFont *font) :
+			const TFont *font,
+			const std::map<wchar_t, Math::Vec2f> *fix,
+			WString &&title,
+			TDataGetter&& dataGetter,
+			size_t lineNum) :
 			fr_{
 				&TGraphics::Get().MainContext(),
 				effect,
@@ -52,17 +59,24 @@ namespace Snowing::Scene
 				font,
 				&vb_
 			},
-			font_ { *font }
-		{}
+			font_ { *font },
+			fix_ { *fix },
+			title_ { std::forward<WString>(title) },
+			getter_{ std::forward<TDataGetter>(dataGetter) }
+		{
+			box_.y -= 12.0f * lineNum;
+		}
+
+		DebugDisplayInterface(DebugDisplayInterface&&) = delete;
+		DebugDisplayInterface(const DebugDisplayInterface&) = delete;
+		DebugDisplayInterface& operator=(DebugDisplayInterface&&) = delete;
+		DebugDisplayInterface& operator=(const DebugDisplayInterface&) = delete;
 
 		bool Update() override
 		{
-			const float dt = TEngine::Get().DeltaTime();
 			const std::wstring s =
-				L"FPS:" +
-				std::to_wstring(1.0f / dt) +
-				L"\nTime:" +
-				std::to_wstring(dt * 1000.0f);
+				title_ + L":" +
+				To<std::wstring>(getter_());
 
 			Graphics::FontSprite::SetString(
 				s,

@@ -21,7 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Blob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Box2D.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Controller.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)FPSDisplay.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Library.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h" />

@@ -402,7 +402,7 @@ TEST(SceneTest, TestMenuPositionController)
 	Snowing::Engine::Get().RunObject(MyScene{});
 }
 
-static void TestFPSDisplay(Math::Vec2<int> size)
+static void TestDebugDisplay(Math::Vec2<int> size)
 {
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
 		L"FPSDisplay",
@@ -415,16 +415,28 @@ static void TestFPSDisplay(Math::Vec2<int> size)
 	g.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
-	g.Emplace<Scene::FPSDisplay>(&eff, &tech1, &font);
+
+	auto timeShow = [] {
+		return Engine::Get().DeltaTime() * 1000;
+	};
+
+	auto fpsShow = [] {
+		return 1 / Engine::Get().DeltaTime();
+	};
+
+	std::map<wchar_t, Math::Vec2f> fix{};
+
+	g.Emplace<Scene::DebugDisplay<decltype(timeShow)>>(&eff, &tech1, &font, &fix, L"Time", timeShow, 0);
+	g.Emplace<Scene::DebugDisplay<decltype(fpsShow)>>(&eff, &tech1, &font, &fix, L"FPS", fpsShow, 1);
 	g.Emplace<Scene::VirtualTask>(0.5f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }
 
-TEST(SceneTest, FPSDisplay)
+TEST(SceneTest, TestDebugDisplay)
 {
-	TestFPSDisplay({ 800,600 });
-	TestFPSDisplay({ 400,300 });
-	TestFPSDisplay({ 1280,720 });
-	TestFPSDisplay({ 960,300 });
+	TestDebugDisplay({ 800,600 });
+	TestDebugDisplay({ 400,300 });
+	TestDebugDisplay({ 1280,720 });
+	TestDebugDisplay({ 960,300 });
 }
