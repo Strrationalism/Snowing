@@ -252,6 +252,15 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 			&~WS_BORDER
 			&~WS_POPUP);
 
+	SetWindowLong(
+		hwnd_.Get<HWND>(),
+		GWL_EXSTYLE,
+		(GetWindowLong(hwnd_.Get<HWND>(), GWL_EXSTYLE)
+			&~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+
+	SetWindowPos(
+		hwnd_.Get<HWND>(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+
 	Library lib("dwmapi.dll");
 
 	MARGINS m = { -1,-1,-1,-1 };
