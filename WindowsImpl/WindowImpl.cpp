@@ -236,6 +236,48 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 }
 
 
+#include <dwmapi.h>
+#include "LibraryImpl.h"
+#include "COMHelper.h"
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
+{
+	SetWindowLong(
+		hwnd_.Get<HWND>(),
+		GWL_STYLE,
+		GetWindowLong(hwnd_.Get<HWND>(),GWL_STYLE) 
+			&~WS_CAPTION 
+			&~WS_SYSMENU 
+			&~WS_SIZEBOX
+			&~WS_MINIMIZEBOX 
+			&~WS_SYSMENU
+			&~WS_BORDER
+			&~WS_POPUP);
+
+	SetWindowLong(
+		hwnd_.Get<HWND>(),
+		GWL_EXSTYLE,
+		(GetWindowLong(hwnd_.Get<HWND>(), GWL_EXSTYLE)
+			&~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_LAYERED);
+
+	Library lib("dwmapi.dll");
+
+	MARGINS m = { -1,-1,-1,-1 };
+	typedef HRESULT(__stdcall *Func)(HWND, const MARGINS *);
+	COMHelper::AssertHResult("Can not set transparent.",
+		lib.GetCast<Func>("DwmExtendFrameIntoClientArea")(
+			hwnd_.Get<HWND>(), &m));
+
+	RECT rcClient;
+	GetWindowRect(hwnd_.Get<HWND>(), &rcClient);
+
+	SetWindowPos(
+		hwnd_.Get<HWND>(),
+		HWND_TOPMOST,
+		rcClient.left, rcClient.top,
+		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
+		SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
+}
+
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
 {
 	RECT r;
