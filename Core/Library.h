@@ -15,7 +15,7 @@ namespace Snowing
 		{}
 
 		template <typename TFuncPtrType>
-		auto GetCast(const char* funcName)
+		auto GetCast(const char* funcName) const
 		{
 			auto p = static_cast<TFuncPtrType>(impl_.Get(funcName));
 			assert(p);
