@@ -258,9 +258,6 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 		(GetWindowLong(hwnd_.Get<HWND>(), GWL_EXSTYLE)
 			&~WS_EX_APPWINDOW) | WS_EX_TOOLWINDOW | WS_EX_TRANSPARENT | WS_EX_LAYERED);
 
-	SetWindowPos(
-		hwnd_.Get<HWND>(), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-
 	Library lib("dwmapi.dll");
 
 	MARGINS m = { -1,-1,-1,-1 };
@@ -274,10 +271,10 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 
 	SetWindowPos(
 		hwnd_.Get<HWND>(),
-		nullptr,
+		HWND_TOPMOST,
 		rcClient.left, rcClient.top,
 		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
-		SWP_FRAMECHANGED);
+		SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
 }
 
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
