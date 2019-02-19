@@ -416,18 +416,14 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
 
-	auto timeShow = [] {
-		return Engine::Get().DeltaTime() * 1000;
-	};
-
-	auto fpsShow = [] {
-		return 1 / Engine::Get().DeltaTime();
-	};
+	
 
 	std::map<wchar_t, Math::Vec2f> fix{};
 
-	g.Emplace<Scene::DebugDisplay<decltype(timeShow)>>(&eff, &tech1, &font, &fix, L"Time", timeShow, 0);
-	g.Emplace<Scene::DebugDisplay<decltype(fpsShow)>>(&eff, &tech1, &font, &fix, L"FPS", fpsShow, 1);
+	g.Emplace<Scene::DebugDisplay>(
+		&eff, &tech1, &font, &fix, L"Time", Scene::DebugDisplay::FrameTimeGetter);
+	g.Emplace<Scene::DebugDisplay>(
+		&eff, &tech1, &font, &fix, L"FPS", Scene::DebugDisplay::FPSGetter);
 	g.Emplace<Scene::VirtualTask>(0.5f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
