@@ -87,10 +87,10 @@
     <ClInclude Include="DDSTextureLoader.h">
       <Filter>头文件\D3D</Filter>
     </ClInclude>
-    <ClInclude Include="D3DImpls.h">
-      <Filter>头文件\D3D</Filter>
-    </ClInclude>
     <ClInclude Include="LibraryImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Impls.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

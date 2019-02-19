@@ -16,7 +16,7 @@ namespace Snowing::Math
 	};
 
 	[[nodiscard]]
-	constexpr inline Coordinate2DCenter ConvertCoordnate2DToCenter(const Coordinate2DRect& r)
+	constexpr Coordinate2DCenter ConvertCoordnate2DToCenter(const Coordinate2DRect& r)
 	{
 		return
 		{
@@ -26,7 +26,13 @@ namespace Snowing::Math
 	}
 
 	[[nodiscard]]
-	constexpr inline Coordinate2DCenter ConvertCoordnate2DToCenter(const Coordinate2DCenter& r)
+	constexpr Coordinate2DCenter ConvertCoordnate2DToCenter(const Coordinate2DCenter& r)
+	{
+		return r;
+	}
+
+	[[nodiscard]]
+	constexpr Coordinate2DRect ConvertCoordnate2DToRect(const Coordinate2DRect& r)
 	{
 		return r;
 	}
