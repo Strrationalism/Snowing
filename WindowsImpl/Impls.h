@@ -65,17 +65,15 @@ namespace Snowing::Scene
 	using TextMenuItem = TextMenuItemInterface<
 		Graphics::FontRenderer<>>;
 
-	template <typename TDataGetter>
 	using DebugDisplay = DebugDisplayInterface <
-		Graphics::FontRenderer<Graphics::Sprite,Graphics::SpriteSheet,64>,
+		Graphics::FontRenderer<Graphics::Sprite, Graphics::SpriteSheet, 64>,
 		Graphics::Font,
 		Graphics::Effect,
 		Graphics::EffectTech,
 		Graphics::Device,
 		Graphics::Buffer,
 		Engine,
-		Graphics::Window,
-		TDataGetter>;
+		Graphics::Window>;
 
 	using RenderTargetCleaner = RenderTargetCleanerInterface<
 		Graphics::RenderTarget,

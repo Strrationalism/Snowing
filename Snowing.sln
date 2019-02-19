@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{21DD2D80-0749-4059-8515-34EFEF24DEBD}"
 	ProjectSection(SolutionItems) = preProject
 		License.md = License.md
-		README.md = README.md
+		Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsInput", "TestWindowsInput\TestWindowsInput.vcxproj", "{AABB5086-262E-4DBE-AAD6-EFF23211272C}"

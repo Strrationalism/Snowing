@@ -1,10 +1,12 @@
 #pragma once
+#include <functional>
 #include "SMath.h"
 #include "Object.h"
 #include "FontRenderer.h"
 
 namespace Snowing::Scene
 {
+	
 	template <
 		typename TFontRenderer,
 		typename TFont,
@@ -13,9 +15,8 @@ namespace Snowing::Scene
 		typename TGraphics,
 		typename TBuffer,
 		typename TEngine,
-		typename TWindow,
-		typename TDataGetter>
-		class DebugDisplayInterface final : public Object
+		typename TWindow>
+	class DebugDisplayInterface final : public Object
 	{
 	private:
 		const Math::Coordinate2DRect screenCoord_ =
@@ -39,18 +40,22 @@ namespace Snowing::Scene
 
 		const std::map<wchar_t, Math::Vec2f> &fix_;
 		const std::wstring title_;
-		typename std::decay<TDataGetter>::type getter_;
+		std::function<std::wstring()> getter_;
+
+		constexpr static size_t MaxLines = 100;
+
+		static inline bool lineNums_[MaxLines];
+		size_t lineNum_;
 
 	public:
-		template <typename WString,typename TDataGetter>
+		template <typename WString>
 		DebugDisplayInterface(
 			TEffect *effect,
 			TTech *tech,
 			const TFont *font,
 			const std::map<wchar_t, Math::Vec2f> *fix,
 			WString &&title,
-			TDataGetter&& dataGetter,
-			size_t lineNum) :
+			const std::function<std::wstring()>& dataGetter) :
 			fr_{
 				&TGraphics::Get().MainContext(),
 				effect,
@@ -62,9 +67,22 @@ namespace Snowing::Scene
 			font_ { *font },
 			fix_ { *fix },
 			title_ { std::forward<WString>(title) },
-			getter_{ std::forward<TDataGetter>(dataGetter) }
+			getter_{ dataGetter }
 		{
-			box_.y -= 12.0f * lineNum;
+			for (lineNum_ = 0; lineNum_ < 100; ++lineNum_)
+			{
+				if (!lineNums_[lineNum_])
+				{
+					lineNums_[lineNum_] = true;
+					break;
+				}
+			}
+			box_.y -= 12.0f * lineNum_;
+		}
+
+		~DebugDisplayInterface()
+		{
+			lineNums_[lineNum_] = false;
 		}
 
 		DebugDisplayInterface(DebugDisplayInterface&&) = delete;
@@ -76,7 +94,7 @@ namespace Snowing::Scene
 		{
 			const std::wstring s =
 				title_ + L":" +
-				To<std::wstring>(getter_());
+				getter_();
 
 			Graphics::FontSprite::SetString(
 				s,
@@ -98,5 +116,13 @@ namespace Snowing::Scene
 
 			return true;
 		}
+
+		static const inline std::function<std::wstring()> FrameTimeGetter = [] {
+			return To<std::wstring>(TEngine::Get().DeltaTime() * 1000);
+		};
+
+		static const inline std::function<std::wstring()> FPSGetter = [] {
+			return To<std::wstring>(1 / TEngine::Get().DeltaTime());
+		};
 	};
 }
