@@ -22,6 +22,12 @@ namespace Snowing
 		{}
 
 	public:
+		inline Blob():
+			bytes_{ nullptr },
+			size_{ 0 },
+			owner_{ false }
+		{}
+
 		explicit inline Blob(size_t size) :
 			bytes_{ new std::uint8_t[size] },
 			size_{ size },
