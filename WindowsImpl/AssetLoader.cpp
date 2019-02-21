@@ -3,7 +3,7 @@
 
 using namespace Snowing;
 
-Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
+Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName,size_t alignment)
 {
 	std::ifstream in{ fileName,std::ios::binary };
 
@@ -21,7 +21,12 @@ Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
 	in.seekg(0, std::ios::end);
 	const auto size = static_cast<size_t>(in.tellg());
 
-	Blob b{ size };
+	Blob b;
+
+	if (alignment)
+		b = Blob{ size,alignment };
+	else
+		b = Blob{ size };
 
 	in.seekg(0, std::ios::beg);
 	in.read(b.Get<char*>(), size);
@@ -30,12 +35,12 @@ Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
 	return b;
 }
 
-Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const wchar_t * fileName)
+Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const wchar_t * fileName, size_t alignment)
 {
 	char fileNameA[64];
 	char *pFileNameA = fileNameA;
 	while (*fileName)
 		*pFileNameA++ = static_cast<char>(*fileName++);
 	*pFileNameA = 0;
-	return Snowing::PlatformImpls::WindowsImpl::ReadFile(fileNameA);
+	return Snowing::PlatformImpls::WindowsImpl::ReadFile(fileNameA, alignment);
 }
