@@ -1,0 +1,14 @@
+{
+	"version": "1.0",
+	"components": [
+		"Microsoft.VisualStudio.Workload.ManagedDesktop",
+		"Microsoft.VisualStudio.Workload.NativeGame",
+		"microsoft.visualstudio.component.debugger.justintime",
+		"microsoft.visualstudio.component.fsharp.desktop",
+		"microsoft.visualstudio.component.vc.diagnostictools",
+		"microsoft.visualstudio.component.vc.testadapterforgoogletest",
+		"microsoft.visualstudio.componentgroup.nativedesktop.win81",
+		"microsoft.visualstudio.component.vc.cli.support",
+		"microsoft.visualstudio.component.testtools.core"
+	]
+}
