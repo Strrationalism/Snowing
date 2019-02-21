@@ -23,14 +23,7 @@ namespace Snowing
 #ifndef PUBLISH_MODE
 	template <typename TChar>
 	[[nodiscard]]
-	inline Blob LoadAsset(const TChar* name)
-	{
-		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name);
-	}
-
-	template <typename TChar>
-	[[nodiscard]]
-	inline Blob LoadAsset(const TChar* name,size_t alignment)
+	inline Blob LoadAsset(const TChar* name, size_t alignment = 0)
 	{
 		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name, alignment);
 	}
