@@ -14,32 +14,65 @@ namespace Snowing
 		size_t size_;
 
 		bool owner_;
+		bool aligned_;
 
 		inline Blob(std::uint8_t* bytes, size_t size, bool owner) noexcept :
 			bytes_{ bytes },
 			size_{ size },
-			owner_{ owner }
+			owner_{ owner },
+			aligned_{ false }
 		{}
 
 	public:
 		inline Blob():
 			bytes_{ nullptr },
 			size_{ 0 },
-			owner_{ false }
+			owner_{ false },
+			aligned_{ false }
 		{}
 
 		explicit inline Blob(size_t size) :
 			bytes_{ new std::uint8_t[size] },
 			size_{ size },
-			owner_{ true }
+			owner_{ true },
+			aligned_{ false }
 		{
 			assert(size);
+		}
+
+		inline Blob(size_t size, size_t alignment):
+			size_{ size },
+			owner_{ true },
+			aligned_{ true }
+		{
+			size_t offset, shift, alignedAddress;
+			void* allocation;
+			void** preamble;
+
+			offset = alignment - 1 + sizeof(void*);
+
+			allocation = static_cast<void*>(new uint8_t[size + static_cast<uint32_t>(offset)]);
+
+			alignedAddress = reinterpret_cast<size_t>(allocation) + sizeof(void*);
+
+			shift = alignedAddress % alignment;
+
+			if (shift)
+			{
+				alignedAddress += (alignment - shift);
+			}
+
+			preamble = reinterpret_cast<void**>(alignedAddress);
+			preamble[-1] = allocation;
+
+			bytes_ = reinterpret_cast<uint8_t*>(alignedAddress);
 		}
 
 		inline Blob(std::vector<uint8_t>* blob,bool copyAndOwner = true):
 			bytes_{ blob->data() },
 			size_{ blob->size() },
-			owner_{ copyAndOwner }
+			owner_{ copyAndOwner },
+			aligned_{ false }
 		{
 			if (owner_)
 			{
@@ -50,8 +83,17 @@ namespace Snowing
 
 		inline ~Blob() noexcept
 		{
-			if(owner_)
-				delete[] bytes_;
+			if (owner_)
+			{
+				if (!aligned_)
+					delete[] bytes_;
+				else
+				{
+					void** preamble = reinterpret_cast<void**>(bytes_);
+					delete [] reinterpret_cast<uint8_t*>(preamble[-1]);
+				}
+			}
+				
 		}
 
 		[[nodiscard]]
@@ -66,11 +108,13 @@ namespace Snowing
 		inline Blob(Blob&& b) noexcept :
 			bytes_{ b.bytes_ },
 			size_{ b.size_ },
-			owner_{ b.owner_ }
+			owner_{ b.owner_ },
+			aligned_{ b.aligned_ }
 		{
 			b.size_ = 0;
 			b.bytes_ = nullptr;
 			b.owner_ = false;
+			b.aligned_ = false;
 		}
 
 		Blob& operator= (const Blob&) = delete;
@@ -84,10 +128,14 @@ namespace Snowing
 			bytes_ = b.bytes_;
 			size_ = b.size_;
 			owner_ = b.owner_;
+			aligned_ = b.aligned_;
 
 			b.bytes_ = nullptr;
 			b.size_ = 0;
 			b.owner_ = false;
+			b.aligned_ = false;
+
+			return *this;
 		}
 
 		template <typename TPointer>

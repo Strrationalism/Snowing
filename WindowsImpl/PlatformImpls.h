@@ -27,6 +27,13 @@ namespace Snowing
 	{
 		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name);
 	}
+
+	template <typename TChar>
+	[[nodiscard]]
+	inline Blob LoadAsset(const TChar* name,size_t alignment)
+	{
+		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name, alignment);
+	}
 #endif
 }
 
