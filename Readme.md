@@ -32,6 +32,9 @@
 - TextRendering - 2D文本范例
 - XInputControllerVibration - XInput控制器震动特效范例
 
+## 我使用Visual Studio 2017来编译该项目时，需要安装哪些组件
+可以使用Visual Studio 2017安装程序的“导入配置”，导入[Snowing_VS2017_Install_Config.vsconfig](Snowing_VS2017_Install_Config.vsconfig)，来安装所有需要的组件。
+
 ## 关于git-lfs
 Clone此项目需要确保安装[git-lfs](https://git-lfs.github.com/)，并已经执行以下命令：
 ```shell
