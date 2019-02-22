@@ -69,12 +69,33 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 	auto beg = clk.now();
 	std::uint32_t breakPoint = 0;
 
+	Font font = LoadFont(LoadAsset(L"Font-zh-CN.fnt"));
+	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
+
+	std::map<wchar_t, Math::Vec2f> fix{};
+	Scene::DebugDisplay playing(
+		&eff, &tech1, &font, &fix, L"Player2 is playing", [&player2] {
+		return std::to_wstring(reinterpret_cast<uintptr_t>(player2.GetPlaying()));
+	});
+
+	Scene::DebugDisplay playpos(
+		&eff, &tech1, &font, &fix, L"Player1 position", [&player] {
+		return std::to_wstring(player.GetPosition());
+	});
+
 	bool b1 = true, b2 = true, b3 = true;
 	engine.Run([&] {
 		if (clk.now() - beg > 10s)
 			Engine::Get().Exit();
 
-		std::cout << "Playing:" << player2.GetPlaying() << std::endl;
+		auto& g = Device::Get();
+		auto& rt = g.MainRenderTarget();
+		g.MainContext().ClearRenderTarget(rt, { 0.0f,0.0f,1.0f,1.0f });
+		g.MainContext().SetRenderTarget(&rt);
+
+		playing.Update();
+		playpos.Update();
 
 		if (clk.now() - beg > 3s && b1)
 		{

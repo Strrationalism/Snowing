@@ -90,6 +90,16 @@ TEST(D3DTest, BasicllyRendering) {
 
 	Graphics::RenderTarget rt2{ {800,600} };
 
+	Font font = LoadFont(LoadAsset(L"Font-zh-CN.fnt"));
+	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
+
+	std::map<wchar_t, Math::Vec2f> fix{};
+	Scene::DebugDisplay frameTime(
+		&eff, &tech1, &font, &fix, L"Time", Scene::DebugDisplay::FrameTimeGetter);
+	Scene::DebugDisplay fps(
+		&eff, &tech1, &font, &fix, L"FPS", Scene::DebugDisplay::FPSGetter);
+
 	engine.Run([&] {
 		engine.Draw(
 			[&] {
@@ -117,9 +127,10 @@ TEST(D3DTest, BasicllyRendering) {
 
 			g.MainContext().SetRenderTarget(rts2);
 			g.MainContext().Draw(3);
-		});
 
-		std::cout << 1 / engine.DeltaTime() << std::endl;
+			frameTime.Update();
+			fps.Update();
+		});
 
 		const auto time = clk.now() - beg;
 
