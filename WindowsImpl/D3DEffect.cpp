@@ -17,19 +17,19 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::D3DEffect(const Blob& effBl
 	effect_ = { static_cast<IUnknown*>(effect),COMHelper::COMIUnknownDeleter };
 }
 
-D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::RootGroup() const
+D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::RootGroup(const Graphics::EffectInterface<D3DEffect> * effectInterface) const
 {
 	const auto h = static_cast<ID3DX11Effect*>(effect_.Get<IUnknown*>());
-	return Group{ {Handler{h,Handler::DoNothingDeleter},true} };
+	return Group{ {Handler{h,Handler::DoNothingDeleter},true},effectInterface };
 }
 
-D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::GetGroupByName(const char * groupName) const
+D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::GetGroupByName(const char * groupName, const Graphics::EffectInterface<D3DEffect> * effectInterface) const
 {
 	const auto h = static_cast<ID3DX11Effect*>(effect_.Get<IUnknown*>());
 	const auto g = static_cast<IUnknown*>(h->GetGroupByName(groupName));
 	if (g == nullptr)
 		throw std::invalid_argument{ "Can not find fx group." };
-	return Group{ {Handler{g,COMHelper::COMIUnknownDeleter},false} };
+	return Group{ {Handler{g,COMHelper::COMIUnknownDeleter},false},effectInterface };
 }
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::SetConstantBuffer(const char* name,const Graphics::Buffer & b)
@@ -88,7 +88,7 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::D3DEffectGroup(Handler
 {
 }
 
-Snowing::Graphics::EffectTech Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::LoadTechnique(const char * techName, const Graphics::EffectDataElement * eles, int elesize) const
+Snowing::Graphics::EffectTech Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::LoadTechnique(const char * techName, const Graphics::EffectDataElement * eles, int elesize, const Graphics::EffectInterface<D3DEffect> * effect) const
 {
 	IUnknown* t = nullptr;;
 	if (isRoot_)
@@ -97,7 +97,7 @@ Snowing::Graphics::EffectTech Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffec
 		t = static_cast<ID3DX11EffectGroup*>(group_.Get<IUnknown*>())->GetTechniqueByName(techName);
 	if (t == nullptr)
 		throw std::invalid_argument{ "Can not find fx tech." };
-	return { D3D::D3DEffectTech{Handler{t,COMHelper::COMIUnknownDeleter},eles,elesize} };
+	return { D3D::D3DEffectTech{Handler{t,COMHelper::COMIUnknownDeleter},eles,elesize},effect };
 }
 
 Snowing::PlatformImpls::WindowsImpl::Handler Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectTech::createInputLayout(const Graphics::EffectDataElement * eles, int elesize,const void* btc,size_t btcSize) const

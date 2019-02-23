@@ -11,12 +11,13 @@ namespace Snowing::Graphics
 	template <
 		typename TBufferImpl,
 		typename TEffectTechImpl,
+		typename TEffectImpl,
 		typename TContextImpl>
 	class[[nodiscard]] PostEffectInterface final
 	{
 	private:
 		using GPUBuffer = Graphics::BufferInterface<TBufferImpl>;
-		using EffectTech = Graphics::EffectTechInterface<TEffectTechImpl>;
+		using EffectTech = Graphics::EffectTechInterface<TEffectTechImpl,TEffectImpl>;
 		using Context = Graphics::GraphicContextInterface<TContextImpl>;
 
 	public:
@@ -60,7 +61,7 @@ namespace Snowing::Graphics
 				BufferUsage::Immutable
 			};
 
-			template <typename, typename, typename>
+			template <typename, typename, typename, typename>
 			friend class PostEffectInterface;
 		};
 

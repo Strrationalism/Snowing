@@ -50,7 +50,7 @@ namespace Snowing::Graphics
 	private:
 		using Context = GraphicContextInterface<TContextImpl>;
 		using Effect = EffectInterface<TEffectImpl>;
-		using Technique = EffectTechInterface<TEffectTechImpl>;
+		using Technique = EffectTechInterface<TEffectTechImpl,TEffectImpl>;
 		using Pass = EffectPassInterface<TEffectPassImpl>;
 		using GPUBuffer = BufferInterface<TBufferImpl>;
 		using Texture = Texture2DInterface<TTexture2DImpl>;
