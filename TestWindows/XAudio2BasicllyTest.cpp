@@ -27,24 +27,19 @@ static void PlayXAudio(const wchar_t* testName,const char* name,std::chrono::sec
 	});
 }
 
-TEST(XAudio2Test, PlayBGM)
-{
-	PlayXAudio(L"TestPlayBGM","Dir/Sound/ExBoss.snd",25s,0,60);
-}
-
 TEST(XAudio2Test, PlayBGMBegin)
 {
-	PlayXAudio(L"TestPlayBGM", "Dir/Sound/ExBoss.snd", 10s,3000000);
+	PlayXAudio(L"TestPlayBGM", "Dir/Sound/ExBoss.snd", 1s,3000000,100);
 }
 
 TEST(XAudio2Test, PlayHeadOnly)
 {
-	PlayXAudio(L"TestPlayHeadOnly","Dir/Sound/HeadOnly.snd",5s);
+	PlayXAudio(L"TestPlayHeadOnly","Dir/Sound/HeadOnly.snd",1s,100);
 }
 
 TEST(XAudio2Test, PlayLoopOnly)
 {
-	PlayXAudio(L"TestPlayLoopOnly","Dir/Sound/LoopOnly.snd",5s);
+	PlayXAudio(L"TestPlayLoopOnly","Dir/Sound/LoopOnly.snd",1s,100);
 }
 
 TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
@@ -86,7 +81,7 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 
 	bool b1 = true, b2 = true, b3 = true;
 	engine.Run([&] {
-		if (clk.now() - beg > 10s)
+		if (clk.now() - beg > 4s)
 			Engine::Get().Exit();
 
 		auto& g = Device::Get();
@@ -97,20 +92,20 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 		playing.Update();
 		playpos.Update();
 
-		if (clk.now() - beg > 3s && b1)
+		if (clk.now() - beg > 1s && b1)
 		{
 			b1 = false;
 			breakPoint = player.Stop();
 		}
 
-		if (clk.now() - beg > 4s && b2)
+		if (clk.now() - beg > 2s && b2)
 		{
 			b2 = false;
 			player.SetPan(-1);
 			player.Play(&bo1,breakPoint);
 		}
 
-		if (clk.now() - beg > 6s && b3)
+		if (clk.now() - beg > 3s && b3)
 		{
 			b3 = false;
 			player.SetPan(0);

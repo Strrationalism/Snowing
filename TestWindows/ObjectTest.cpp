@@ -16,7 +16,7 @@ TEST(SceneTest, TestEmptyObject)
 	class EmptyObject : public Snowing::Scene::Object
 	{
 	private:
-		float t = 1;
+		float t = 0.25f;
 	public:
 		bool Update() override
 		{
@@ -30,13 +30,13 @@ TEST(SceneTest, TestEmptyObject)
 
 TEST(SceneTest, TestTaskObject)
 {
-	Scene::Task t{ 1.0f, []() {Engine::Get().Exit(); } };
+	Scene::Task t{ 0.2f, []() {Engine::Get().Exit(); } };
 	RunGameObject(t,L"TestTaskObject");
 }
 
 TEST(SceneTest, TestVirtualTaskObject)
 {
-	Scene::VirtualTask t{ 1,[]() {Engine::Get().Exit(); } };
+	Scene::VirtualTask t{ 0.1f,[]() {Engine::Get().Exit(); } };
 	RunGameObject(t, L"TestVirtualTaskObject");
 }
 
@@ -47,7 +47,7 @@ private:
 public:
 	TestTween()
 	{
-		col_.Start({ 1.0f,0.0f }, 1, Scene::TweenFX::Once);
+		col_.Start({ 1.0f,0.0f }, 0.25f, Scene::TweenFX::Once);
 	}
 
 	bool Update() override
@@ -71,7 +71,7 @@ TEST(SceneTest, TestTween)
 TEST(SceneTest, TestGroup)
 {
 	Scene::Group p;
-	p.Emplace<Scene::VirtualTask>(2.0f, []() {Engine::Get().Exit(); });
+	p.Emplace<Scene::VirtualTask>(0.25f, []() {Engine::Get().Exit(); });
 	p.Emplace<TestTween>();
 	RunGameObject(p, L"TestGroup");
 }
@@ -93,9 +93,9 @@ TEST(SceneTest, TestTweenSetter)
 			};
 
 			auto& p = Emplace<>(0.0f, setter);
-			p.Start(1.0f, 1);
+			p.Start(1.0f, 0.25f);
 			p = 0.5f;
-			p.Start(0.0f, 1,Scene::TweenFX::Sin);
+			p.Start(0.0f, 0.25f,Scene::TweenFX::Sin);
 		}
 
 		bool Update() override
@@ -220,13 +220,13 @@ TEST(SceneTest, TestTextMenuItem)
 			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize, f);
 			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
 
-			Emplace<Scene::VirtualTask>(0.25f, [&] {menu_.Select(0); });
-			Emplace<Scene::VirtualTask>(0.5f, [&] {menu_.Select(1); });
-			Emplace<Scene::VirtualTask>(0.75f, [&] {menu_.Select(2); });
-			Emplace<Scene::VirtualTask>(1.0f, [&] {menu_.Select(3); });
-			Emplace<Scene::VirtualTask>(1.25f, [&] {menu_.Unselect(); });
-			Emplace<Scene::VirtualTask>(1.5f, [&] {menu_.Select(1); });
-			Emplace<Scene::VirtualTask>(1.75f, [&] {Engine::Get().Exit(); });
+			Emplace<Scene::VirtualTask>(0.1f, [&] {menu_.Select(0); });
+			Emplace<Scene::VirtualTask>(0.2f, [&] {menu_.Select(1); });
+			Emplace<Scene::VirtualTask>(0.3f, [&] {menu_.Select(2); });
+			Emplace<Scene::VirtualTask>(0.4f, [&] {menu_.Select(3); });
+			Emplace<Scene::VirtualTask>(0.5f, [&] {menu_.Unselect(); });
+			Emplace<Scene::VirtualTask>(0.6f, [&] {menu_.Select(1); });
+			Emplace<Scene::VirtualTask>(0.7f, [&] {Engine::Get().Exit(); });
 		}
 
 		bool Update() override
@@ -299,12 +299,12 @@ TEST(SceneTest, TestMenuKeyController)
 			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
 
 			for(int i = 0;i < 7;++ i)
-				Emplace<Scene::VirtualTask>(0.25f + 0.25f * i, [this] {menuCtrl_.Next(); });
+				Emplace<Scene::VirtualTask>(0.1f + 0.1f * i, [this] {menuCtrl_.Next(); });
 
 			for (int i = 0; i < 7; ++i)
-				Emplace<Scene::VirtualTask>(0.25f + 0.25f * (i + 8), [this] {menuCtrl_.Prev(); });
+				Emplace<Scene::VirtualTask>(0.1f + 0.1f * (i + 8), [this] {menuCtrl_.Prev(); });
 
-			Emplace<Scene::VirtualTask>(0.25f * 16, [&] {Engine::Get().Exit(); });
+			Emplace<Scene::VirtualTask>(0.1f * 16, [&] {Engine::Get().Exit(); });
 		}
 
 		bool Update() override
@@ -381,7 +381,7 @@ TEST(SceneTest, TestMenuPositionController)
 			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize, f);
 			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
 
-			Emplace<Scene::VirtualTask>(5.0f, [&] {Engine::Get().Exit(); });
+			Emplace<Scene::VirtualTask>(1.0f, [&] {Engine::Get().Exit(); });
 		}
 
 		bool Update() override
@@ -424,7 +424,7 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		&eff, &tech1, &font, &fix, L"Time", Scene::DebugDisplay::FrameTimeGetter);
 	g.Emplace<Scene::DebugDisplay>(
 		&eff, &tech1, &font, &fix, L"FPS", Scene::DebugDisplay::FPSGetter);
-	g.Emplace<Scene::VirtualTask>(0.5f, [] {Engine::Get().Exit(); });
+	g.Emplace<Scene::VirtualTask>(0.25f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }

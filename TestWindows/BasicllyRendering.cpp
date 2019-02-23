@@ -134,31 +134,31 @@ TEST(D3DTest, BasicllyRendering) {
 
 		const auto time = clk.now() - beg;
 
-		if (time > 2s && time < 4s && b1)
+		if (time > 1s && time < 2s && b1)
 		{
 			b1 = false;
 			Window::Get().SetWindowed(false);
 		}
 
-		else if (time > 4s && time < 6s && b2)
+		else if (time > 2s && time < 3s && b2)
 		{
 			b2 = false;
 			Window::Get().SetWindowed(true);
 		}
 
-		else if (time > 6s && time < 8s && b3)
+		else if (time > 3s && time < 4s && b3)
 		{
 			b3 = false;
 			Window::Get().Resize({ 1024,768 });
 		}
 
-		else if (time > 8s && time < 10s && b4)
+		else if (time > 4s && time < 5s && b4)
 		{
 			b4 = false;
 			Window::Get().SetWindowed(false);
 		}
 
-		if (time > 9s)
+		if (time > 5s)
 			Engine::Get().Exit();
 	});
 }
