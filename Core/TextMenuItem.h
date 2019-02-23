@@ -41,7 +41,6 @@ namespace Snowing::Scene
 			Math::Vec4f box,
 			Math::Vec2f space,
 			Math::Vec2f fontSize,
-			const std::map<wchar_t, Math::Vec2f> &charaterFix,
 			Graphics::FontSprite::AlignMode alignMode = Graphics::FontSprite::AlignMode::Left):
 			fontRenderer_{ fontRenderer },
 			box_{ box - Math::Vec4f{0.0f,fontSize.y * space.y * MagicFontSize,0.0f,0.0f } }
@@ -52,7 +51,6 @@ namespace Snowing::Scene
 				box,
 				space,
 				fontSize,
-				charaterFix,
 				str_,
 				alignMode);
 			OnUnselected();

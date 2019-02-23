@@ -59,7 +59,7 @@ static std::tuple<
 	return std::make_tuple(std::move(sheets), std::move(tex), std::move(chars));
 }
 
-Font Snowing::Graphics::LoadFont(const Blob & b)
+Font Snowing::Graphics::LoadFont(const Blob & b, std::map<wchar_t, Math::Vec2f>&& fix)
 {
 	auto[sheet, tex, ch] = loadFont(b);
 	std::vector<Buffer> buffers;
@@ -70,6 +70,7 @@ Font Snowing::Graphics::LoadFont(const Blob & b)
 		std::move(tex),
 		std::move(buffers),
 		std::move(sheet),
-		std::move(ch)
+		std::move(ch),
+		std::move(fix)
 	};
 }

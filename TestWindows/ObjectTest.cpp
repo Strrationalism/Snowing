@@ -213,12 +213,11 @@ TEST(SceneTest, TestTextMenuItem)
 			constexpr Math::Vec4f box4{ -400.0f,-50.0f,800.0f,64.0f };
 			constexpr Math::Vec2f space{ 1.0f,1.0f };
 			constexpr Math::Vec2f fontSize{ 0.5f,0.5f };
-			std::map<wchar_t, Math::Vec2f> f{};
 
-			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
+			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize);
 
 			Emplace<Scene::VirtualTask>(0.1f, [&] {menu_.Select(0); });
 			Emplace<Scene::VirtualTask>(0.2f, [&] {menu_.Select(1); });
@@ -293,10 +292,10 @@ TEST(SceneTest, TestMenuKeyController)
 			constexpr Math::Vec2f fontSize{ 0.5f,0.5f };
 			std::map<wchar_t, Math::Vec2f> f{};
 
-			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
+			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize);
 
 			for(int i = 0;i < 7;++ i)
 				Emplace<Scene::VirtualTask>(0.05f + 0.05f * i, [this] {menuCtrl_.Next(); });
@@ -374,12 +373,11 @@ TEST(SceneTest, TestMenuPositionController)
 			constexpr Math::Vec4f box4{ -400.0f,-50.0f,800.0f,64.0f };
 			constexpr Math::Vec2f space{ 1.0f,1.0f };
 			constexpr Math::Vec2f fontSize{ 0.5f,0.5f };
-			std::map<wchar_t, Math::Vec2f> f{};
 
-			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize, f);
-			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
+			menu_.Emplace(&fontRenderer, L"Strrationalism"sv, box1, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"test"sv, box2, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"text"sv, box3, space, fontSize);
+			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize);
 
 			Emplace<Scene::VirtualTask>(1.0f, [&] {Engine::Get().Exit(); });
 		}
@@ -416,14 +414,10 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
 
-	
-
-	std::map<wchar_t, Math::Vec2f> fix{};
-
 	g.Emplace<Scene::DebugDisplay>(
-		&eff, &tech1, &font, &fix, L"Time", Scene::DebugDisplay::FrameTimeGetter);
+		&eff, &tech1, &font,L"Time", Scene::DebugDisplay::FrameTimeGetter);
 	g.Emplace<Scene::DebugDisplay>(
-		&eff, &tech1, &font, &fix, L"FPS", Scene::DebugDisplay::FPSGetter);
+		&eff, &tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
 	g.Emplace<Scene::VirtualTask>(0.25f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);

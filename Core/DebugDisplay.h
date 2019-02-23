@@ -38,7 +38,6 @@ namespace Snowing::Scene
 		std::vector<Graphics::FontSprite> text_;
 		const TFont &font_;
 
-		const std::map<wchar_t, Math::Vec2f> &fix_;
 		const std::wstring title_;
 		std::function<std::wstring()> getter_;
 
@@ -53,7 +52,6 @@ namespace Snowing::Scene
 			TEffect *effect,
 			TTech *tech,
 			const TFont *font,
-			const std::map<wchar_t, Math::Vec2f> *fix,
 			WString &&title,
 			const std::function<std::wstring()>& dataGetter) :
 			fr_{
@@ -65,7 +63,6 @@ namespace Snowing::Scene
 				&vb_
 			},
 			font_ { *font },
-			fix_ { *fix },
 			title_ { std::forward<WString>(title) },
 			getter_{ dataGetter }
 		{
@@ -102,7 +99,6 @@ namespace Snowing::Scene
 				box_,
 				{ 1.0f,75.0f },
 				{ 0.15f,0.15f },
-				fix_,
 				text_,
 				Graphics::FontSprite::AlignMode::Right
 			);
