@@ -78,14 +78,19 @@ namespace Snowing::Graphics
 		Rotating_Float32 = 6
 	};
 
-	template <typename TImpl> 
+	template <typename>
+	class EffectInterface;
+
+	template <typename TImpl,typename TEffectImpl> 
 	class[[nodiscard]] EffectTechInterface final
 	{
 	private:
 		TImpl impl_;
+		EffectInterface<TEffectImpl> *effect_;
 	public:
-		EffectTechInterface(TImpl&& impl) :
-			impl_{ std::move(impl) }
+		EffectTechInterface(TImpl&& impl, EffectInterface<TEffectImpl> *effect) :
+			impl_{ std::move(impl) },
+			effect_{ effect }
 		{}
 
 		[[nodiscard]]
@@ -102,17 +107,25 @@ namespace Snowing::Graphics
 		{
 			return impl_.PassCount();
 		}
+
+		[[nodiscard]]
+		EffectInterface<TEffectImpl> *  GetEffect()
+		{
+			return effect_;
+		}
 	};
 
-	template <typename TImpl>
+	template <typename TImpl,typename TEffectImpl>
 	class[[nodiscard]] EffectGroupInterface final
 	{
 	private:
 		TImpl impl_;
+		EffectInterface<TEffectImpl> *effect_;
 
 	public:
-		EffectGroupInterface(TImpl&& impl) :
-			impl_{ std::move(impl) }
+		EffectGroupInterface(TImpl&& impl, EffectInterface<TEffectImpl> *effect) :
+			impl_{ std::move(impl) },
+			effect_{ effect }
 		{}
 
 		template <size_t N>
@@ -120,7 +133,7 @@ namespace Snowing::Graphics
 		auto LoadTechnique(const char* techName, const EffectDataElement(&dataLayout)[N]) const
 		{
 			assert(techName);
-			auto tech = impl_.LoadTechnique(techName, dataLayout,N);
+			auto tech = impl_.LoadTechnique(techName, dataLayout,N, effect_);
 			Platforms::AssertInterface<EffectTechInterface>(tech);
 			return tech;
 		}
@@ -175,19 +188,19 @@ namespace Snowing::Graphics
 		}
 
 		[[nodiscard]]
-		auto operator * () const
+		auto operator * ()
 		{
-			auto p = impl_.RootGroup();
+			auto p = impl_.RootGroup(this);
 			Platforms::AssertInterface<EffectGroupInterface>(p);
 			return p;
 		}
 
 		template <size_t N>
 		[[nodiscard]]
-		auto LoadTechnique(const char* techName, const EffectDataElement(&dataLayout)[N]) const
+		auto LoadTechnique(const char* techName, const EffectDataElement(&dataLayout)[N])
 		{
 			assert(techName);
-			auto p = impl_.RootGroup().LoadTechnique(techName, dataLayout);
+			auto p = impl_.RootGroup(this).LoadTechnique(techName, dataLayout);
 			Platforms::AssertInterface<EffectTechInterface>(p);
 			return p;
 		}

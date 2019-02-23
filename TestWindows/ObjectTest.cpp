@@ -196,7 +196,6 @@ TEST(SceneTest, TestTextMenuItem)
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
-			&eff,
 			&tech1,
 			coord,
 			&font,
@@ -271,7 +270,6 @@ TEST(SceneTest, TestMenuKeyController)
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
-			&eff,
 			&tech1,
 			coord,
 			&font,
@@ -348,7 +346,6 @@ TEST(SceneTest, TestMenuPositionController)
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
-			&eff,
 			&tech1,
 			coord,
 			&font,
@@ -415,9 +412,9 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		&Graphics::Device::MainRenderTarget());
 
 	g.Emplace<Scene::DebugDisplay>(
-		&eff, &tech1, &font,L"Time", Scene::DebugDisplay::FrameTimeGetter);
+		&tech1, &font,L"Time", Scene::DebugDisplay::FrameTimeGetter);
 	g.Emplace<Scene::DebugDisplay>(
-		&eff, &tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
+		&tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
 	g.Emplace<Scene::VirtualTask>(0.25f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);

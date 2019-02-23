@@ -30,6 +30,8 @@ namespace Snowing::Graphics
 
 namespace Snowing::PlatformImpls::WindowsImpl::D3D
 {
+	class D3DEffect;
+
 	class D3DEffectPass final
 	{
 	private:
@@ -68,7 +70,9 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 
 namespace Snowing::Graphics
 {
-	using EffectTech = EffectTechInterface<Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectTech>;
+	using EffectTech = EffectTechInterface<
+		Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectTech,
+		Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect>;
 }
 
 
@@ -83,13 +87,19 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 	public:
 		D3DEffectGroup(Handler&& handle, bool isRoot);
 
-		EffectTech LoadTechnique(const char* techName, const Graphics::EffectDataElement* eles, int elesize) const;
+		EffectTech LoadTechnique(
+			const char* techName,
+			const Graphics::EffectDataElement* eles,
+			int elesize,
+			Graphics::EffectInterface<D3DEffect> * effect) const;
 	};
 }
 
 namespace Snowing::Graphics
 {
-	using EffectGroup = EffectGroupInterface<Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup>;
+	using EffectGroup = EffectGroupInterface<
+		Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup,
+		Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect>;
 }
 
 namespace Snowing::PlatformImpls::WindowsImpl::D3D
@@ -102,8 +112,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 	public:
 		D3DEffect(const Blob& fx);
 
-		Group RootGroup() const;
-		Group GetGroupByName(const char* groupName) const;
+		Group RootGroup(Graphics::EffectInterface<D3DEffect> *) const;
+		Group GetGroupByName(const char* groupName, Graphics::EffectInterface<D3DEffect> *) const;
 
 		void SetConstantBuffer(const char* name, const Graphics::Buffer& b);
 		void SetConstantBuffer(int id, const Graphics::Buffer& b);

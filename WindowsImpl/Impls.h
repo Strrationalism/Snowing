@@ -57,6 +57,7 @@ namespace Snowing::Graphics
 	using PostEffect = PostEffectInterface <
 		PlatformImpls::WindowsImpl::D3D::Buffer,
 		PlatformImpls::WindowsImpl::D3D::D3DEffectTech,
+		PlatformImpls::WindowsImpl::D3D::D3DEffect,
 		PlatformImpls::WindowsImpl::D3D::Context> ;
 }
 

@@ -50,7 +50,7 @@ namespace Snowing::Graphics
 	private:
 		using Context = GraphicContextInterface<TContextImpl>;
 		using Effect = EffectInterface<TEffectImpl>;
-		using Technique = EffectTechInterface<TEffectTechImpl>;
+		using Technique = EffectTechInterface<TEffectTechImpl,TEffectImpl>;
 		using Pass = EffectPassInterface<TEffectPassImpl>;
 		using GPUBuffer = BufferInterface<TBufferImpl>;
 		using Texture = Texture2DInterface<TTexture2DImpl>;
@@ -124,14 +124,13 @@ namespace Snowing::Graphics
 		template <typename TCoord>
 		SpriteRendererInterface(
 			Context *context,
-			Effect *effect,
 			Technique *tech,
 			const TCoord& coordSystem,
 			const Texture* tex,
 			const GPUBuffer* spriteSheet,
 			GPUBuffer* vertexBuffer) :
 			tech_{ *tech },
-			fx_{ *effect },
+			fx_{ *(tech->GetEffect()) },
 			tex_{tex},
 			ctx_{ *context },
 			spriteSheet_{ spriteSheet },
@@ -142,7 +141,6 @@ namespace Snowing::Graphics
 			texSizeRef_{fx_.Reflection("TextureSize")}
 		{
 			assert(context);
-			assert(effect);
 			assert(tech);
 			assert(spriteSheet);
 
