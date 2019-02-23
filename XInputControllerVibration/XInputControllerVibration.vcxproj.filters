@@ -4,6 +4,6 @@
     <ClCompile Include="XInputControllerVibration.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="..\Snowing\TestWindows\VibratorEffect.csv" />
+    <CopyFileToFolders Include="..\TestWindows\VibratorEffect.csv" />
   </ItemGroup>
 </Project>
