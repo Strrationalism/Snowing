@@ -86,9 +86,9 @@ namespace Snowing::Graphics
 	{
 	private:
 		TImpl impl_;
-		const EffectInterface<TEffectImpl> *effect_;
+		EffectInterface<TEffectImpl> *effect_;
 	public:
-		EffectTechInterface(TImpl&& impl, const EffectInterface<TEffectImpl> *effect) :
+		EffectTechInterface(TImpl&& impl, EffectInterface<TEffectImpl> *effect) :
 			impl_{ std::move(impl) },
 			effect_{ effect }
 		{}
@@ -109,7 +109,7 @@ namespace Snowing::Graphics
 		}
 
 		[[nodiscard]]
-		const EffectInterface<TEffectImpl> *  GetEffect() const
+		EffectInterface<TEffectImpl> *  GetEffect()
 		{
 			return effect_;
 		}
@@ -120,10 +120,10 @@ namespace Snowing::Graphics
 	{
 	private:
 		TImpl impl_;
-		const EffectInterface<TEffectImpl> *effect_;
+		EffectInterface<TEffectImpl> *effect_;
 
 	public:
-		EffectGroupInterface(TImpl&& impl, const EffectInterface<TEffectImpl> *effect) :
+		EffectGroupInterface(TImpl&& impl, EffectInterface<TEffectImpl> *effect) :
 			impl_{ std::move(impl) },
 			effect_{ effect }
 		{}
@@ -188,7 +188,7 @@ namespace Snowing::Graphics
 		}
 
 		[[nodiscard]]
-		auto operator * () const
+		auto operator * ()
 		{
 			auto p = impl_.RootGroup(this);
 			Platforms::AssertInterface<EffectGroupInterface>(p);
@@ -197,7 +197,7 @@ namespace Snowing::Graphics
 
 		template <size_t N>
 		[[nodiscard]]
-		auto LoadTechnique(const char* techName, const EffectDataElement(&dataLayout)[N]) const
+		auto LoadTechnique(const char* techName, const EffectDataElement(&dataLayout)[N])
 		{
 			assert(techName);
 			auto p = impl_.RootGroup(this).LoadTechnique(techName, dataLayout);

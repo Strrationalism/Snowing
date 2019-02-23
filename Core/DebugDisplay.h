@@ -49,14 +49,12 @@ namespace Snowing::Scene
 	public:
 		template <typename WString>
 		DebugDisplayInterface(
-			TEffect *effect,
 			TTech *tech,
 			const TFont *font,
 			WString &&title,
 			const std::function<std::wstring()>& dataGetter) :
 			fr_{
 				&TGraphics::Get().MainContext(),
-				effect,
 				tech,
 				screenCoord_,
 				font,

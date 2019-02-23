@@ -91,7 +91,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 			const char* techName,
 			const Graphics::EffectDataElement* eles,
 			int elesize,
-			const Graphics::EffectInterface<D3DEffect> * effect) const;
+			Graphics::EffectInterface<D3DEffect> * effect) const;
 	};
 }
 
@@ -112,8 +112,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 	public:
 		D3DEffect(const Blob& fx);
 
-		Group RootGroup(const Graphics::EffectInterface<D3DEffect> *) const;
-		Group GetGroupByName(const char* groupName, const Graphics::EffectInterface<D3DEffect> *) const;
+		Group RootGroup(Graphics::EffectInterface<D3DEffect> *) const;
+		Group GetGroupByName(const char* groupName, Graphics::EffectInterface<D3DEffect> *) const;
 
 		void SetConstantBuffer(const char* name, const Graphics::Buffer& b);
 		void SetConstantBuffer(int id, const Graphics::Buffer& b);

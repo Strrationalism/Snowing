@@ -17,13 +17,13 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::D3DEffect(const Blob& effBl
 	effect_ = { static_cast<IUnknown*>(effect),COMHelper::COMIUnknownDeleter };
 }
 
-D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::RootGroup(const Graphics::EffectInterface<D3DEffect> * effectInterface) const
+D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::RootGroup(Graphics::EffectInterface<D3DEffect> * effectInterface) const
 {
 	const auto h = static_cast<ID3DX11Effect*>(effect_.Get<IUnknown*>());
 	return Group{ {Handler{h,Handler::DoNothingDeleter},true},effectInterface };
 }
 
-D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::GetGroupByName(const char * groupName, const Graphics::EffectInterface<D3DEffect> * effectInterface) const
+D3DEffect::Group Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffect::GetGroupByName(const char * groupName, Graphics::EffectInterface<D3DEffect> * effectInterface) const
 {
 	const auto h = static_cast<ID3DX11Effect*>(effect_.Get<IUnknown*>());
 	const auto g = static_cast<IUnknown*>(h->GetGroupByName(groupName));
@@ -88,7 +88,7 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::D3DEffectGroup(Handler
 {
 }
 
-Snowing::Graphics::EffectTech Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::LoadTechnique(const char * techName, const Graphics::EffectDataElement * eles, int elesize, const Graphics::EffectInterface<D3DEffect> * effect) const
+Snowing::Graphics::EffectTech Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectGroup::LoadTechnique(const char * techName, const Graphics::EffectDataElement * eles, int elesize, Graphics::EffectInterface<D3DEffect> * effect) const
 {
 	IUnknown* t = nullptr;;
 	if (isRoot_)

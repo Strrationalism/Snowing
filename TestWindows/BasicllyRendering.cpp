@@ -95,9 +95,9 @@ TEST(D3DTest, BasicllyRendering) {
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 
 	Scene::DebugDisplay frameTime(
-		&eff, &tech1, &font, L"Time", Scene::DebugDisplay::FrameTimeGetter);
+		&tech1, &font, L"Time", Scene::DebugDisplay::FrameTimeGetter);
 	Scene::DebugDisplay fps(
-		&eff, &tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
+		&tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
 
 	engine.Run([&] {
 		engine.Draw(

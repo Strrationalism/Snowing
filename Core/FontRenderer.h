@@ -184,7 +184,6 @@ namespace Snowing::Graphics
 		template <typename TCoord>
 		FontRendererInterface(
 			Context *context,
-			Effect *effect,
 			Technique *tech,
 			const TCoord& coordSystem,
 			const TFont *font,
@@ -192,7 +191,6 @@ namespace Snowing::Graphics
 			font_{ *font }
 		{
 			assert(context);
-			assert(effect);
 			assert(tech);
 			assert(font);
 			assert(vertexBuffer);
@@ -202,7 +200,6 @@ namespace Snowing::Graphics
 			for (size_t i = 0; i < font_.Faces.size(); ++i)
 				renderer_.emplace_back(
 					context,
-					effect,
 					tech,
 					coordSystem,
 					&font_.Faces[i],
