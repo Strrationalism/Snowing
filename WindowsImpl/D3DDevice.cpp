@@ -177,15 +177,14 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::SetFullscreen(bool b)
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> size)
 {
-	ReinitAfter(
-		[this,size] {
-		swapChain_.Cast<IUnknown*, IDXGISwapChain*>()->ResizeBuffers(
-			0,
-			static_cast<UINT>(size.x),
-			static_cast<UINT>(size.y),
-			DXGI_FORMAT_UNKNOWN,
-			0);
-	}, mainRenderTarget_, D3DRenderTarget(getBackBuffer(), device_));
+	mainRenderTarget_.Graphics::RenderTarget::~RenderTarget();
+	swapChain_.Cast<IUnknown*, IDXGISwapChain*>()->ResizeBuffers(
+		0,
+		static_cast<UINT>(size.x),
+		static_cast<UINT>(size.y),
+		DXGI_FORMAT_UNKNOWN,
+		0);
+	new (&mainRenderTarget_) Graphics::RenderTarget{ D3DRenderTarget(getBackBuffer(),device_) };
 }
 
 
