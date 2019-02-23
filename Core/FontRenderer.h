@@ -16,6 +16,7 @@ namespace Snowing::Graphics
 		std::vector<TBuffer> SpriteSheets;
 		std::vector<TSpriteSheet> SpriteSheetsCPU;
 		std::map<wchar_t, std::pair<uint16_t, uint16_t>> Charaters;
+		std::map<wchar_t, Math::Vec2f> PositionFix;
 	};
 
 	struct[[nodiscard]] FontSprite final
@@ -43,11 +44,12 @@ namespace Snowing::Graphics
 			Math::Vec4f box,		//所在的框
 			Math::Vec2f space,		//字的间距
 			Math::Vec2f fontSize,	//字体大小
-			const std::map<wchar_t, Math::Vec2f> &charaterFix,	//对每个的字符进行右边宽度的修正
 			std::vector<FontSprite>& out,				//输出的精灵列表
 			AlignMode alignMode = AlignMode::Left)		//对齐方式
 		{
 			out.clear();
+
+			auto& charaterFix = font.PositionFix;
 
 			float xPos = 0;
 			int lineNum = 0;
