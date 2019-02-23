@@ -59,7 +59,7 @@ TEST(D3DTest, StreamOut)
 			d.MainContext().CloseStreamOut();
 		});
 
-		if (clk.now() - beg > 1s)
+		if (clk.now() - beg > 200ms)
 			engine.Exit();
 	});
 }

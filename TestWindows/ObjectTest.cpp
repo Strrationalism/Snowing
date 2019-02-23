@@ -71,7 +71,7 @@ TEST(SceneTest, TestTween)
 TEST(SceneTest, TestGroup)
 {
 	Scene::Group p;
-	p.Emplace<Scene::VirtualTask>(0.25f, []() {Engine::Get().Exit(); });
+	p.Emplace<Scene::VirtualTask>(0.5f, []() {Engine::Get().Exit(); });
 	p.Emplace<TestTween>();
 	RunGameObject(p, L"TestGroup");
 }
@@ -95,7 +95,7 @@ TEST(SceneTest, TestTweenSetter)
 			auto& p = Emplace<>(0.0f, setter);
 			p.Start(1.0f, 0.25f);
 			p = 0.5f;
-			p.Start(0.0f, 0.25f,Scene::TweenFX::Sin);
+			p.Start(0.0f, 0.5f,Scene::TweenFX::Sin);
 		}
 
 		bool Update() override
@@ -299,12 +299,12 @@ TEST(SceneTest, TestMenuKeyController)
 			menu_.Emplace(&fontRenderer, L"menu"sv, box4, space, fontSize, f);
 
 			for(int i = 0;i < 7;++ i)
-				Emplace<Scene::VirtualTask>(0.1f + 0.1f * i, [this] {menuCtrl_.Next(); });
+				Emplace<Scene::VirtualTask>(0.05f + 0.05f * i, [this] {menuCtrl_.Next(); });
 
 			for (int i = 0; i < 7; ++i)
-				Emplace<Scene::VirtualTask>(0.1f + 0.1f * (i + 8), [this] {menuCtrl_.Prev(); });
+				Emplace<Scene::VirtualTask>(0.05f + 0.05f * (i + 8), [this] {menuCtrl_.Prev(); });
 
-			Emplace<Scene::VirtualTask>(0.1f * 16, [&] {Engine::Get().Exit(); });
+			Emplace<Scene::VirtualTask>(0.05f * 16, [&] {Engine::Get().Exit(); });
 		}
 
 		bool Update() override
