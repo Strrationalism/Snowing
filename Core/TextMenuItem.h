@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "FontRenderer.h"
 
-namespace Snowing::Scene
+namespace Snowing::Scene::UI
 {
 	template <typename TFontRenderer>
 	class[[nodiscard]] TextMenuItemInterface : public Object

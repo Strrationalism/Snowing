@@ -22,6 +22,12 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{b7f21b47-5dba-4cf6-b87d-c42f8a2db117}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene\Debug">
+      <UniqueIdentifier>{9479b8de-4150-4609-b390-6df6646a597e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene\UI">
+      <UniqueIdentifier>{cd4f0fc5-5858-4620-85f3-652559cb589c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Snowing.h" />
@@ -150,18 +156,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BlobWriter.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TextMenuItem.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MenuPositionController.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Box2D.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -174,8 +168,20 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RenderTargetCleaner.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MenuPositionController.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextMenuItem.h">
+      <Filter>Scene\UI</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h">
-      <Filter>Scene</Filter>
+      <Filter>Scene\Debug</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
