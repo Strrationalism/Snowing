@@ -1,7 +1,7 @@
 #pragma once
 #include "Menu.h"
 
-namespace Snowing::Scene
+namespace Snowing::Scene::UI
 {
 	template <typename TMenuItem>
 	class[[nodiscard]] MenuKeyController final : public Object

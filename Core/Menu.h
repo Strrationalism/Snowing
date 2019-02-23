@@ -3,7 +3,7 @@
 #include "Group.h"
 #include "MemPool.h"
 
-namespace Snowing::Scene
+namespace Snowing::Scene::UI
 {
 	template <typename TMenuItem>
 	class[[nodiscard]] Menu final : public Group<TMenuItem>,public MemPool<Menu<TMenuItem>>

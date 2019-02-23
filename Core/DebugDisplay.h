@@ -4,9 +4,8 @@
 #include "Object.h"
 #include "FontRenderer.h"
 
-namespace Snowing::Scene
+namespace Snowing::Scene::Debug
 {
-	
 	template <
 		typename TFontRenderer,
 		typename TFont,

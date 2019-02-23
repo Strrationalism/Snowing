@@ -148,7 +148,7 @@ TEST(SceneTest, TestMenu)
 		}
 	};
 
-	Scene::Menu<DemoMenu> menu;
+	Scene::UI::Menu<DemoMenu> menu;
 
 	for(size_t i = 0;i < 5;++i)
 		menu.Emplace(i);
@@ -202,7 +202,7 @@ TEST(SceneTest, TestTextMenuItem)
 			&gpuVBuffer
 		};
 
-		Scene::Menu<Scene::TextMenuItem> menu_;
+		Scene::UI::Menu<Scene::UI::TextMenuItem> menu_;
 	public:
 		MyScene()
 		{
@@ -276,8 +276,8 @@ TEST(SceneTest, TestMenuKeyController)
 			&gpuVBuffer
 		};
 
-		Scene::Menu<Scene::TextMenuItem> menu_;
-		Scene::MenuKeyController<Scene::TextMenuItem> menuCtrl_{ &menu_ };
+		Scene::UI::Menu<Scene::UI::TextMenuItem> menu_;
+		Scene::UI::MenuKeyController<Scene::UI::TextMenuItem> menuCtrl_{ &menu_ };
 
 	public:
 		MyScene()
@@ -352,9 +352,9 @@ TEST(SceneTest, TestMenuPositionController)
 			&gpuVBuffer
 		};
 
-		Scene::Menu<Scene::TextMenuItem> menu_;
-		Scene::MenuPositionController<
-			Scene::TextMenuItem,
+		Scene::UI::Menu<Scene::UI::TextMenuItem> menu_;
+		Scene::UI::MenuPositionController<
+			Scene::UI::TextMenuItem,
 			Input::Input,
 			Input::MousePosition>
 		menuCtrl_{
@@ -411,10 +411,10 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
 
-	g.Emplace<Scene::DebugDisplay>(
-		&tech1, &font,L"Time", Scene::DebugDisplay::FrameTimeGetter);
-	g.Emplace<Scene::DebugDisplay>(
-		&tech1, &font, L"FPS", Scene::DebugDisplay::FPSGetter);
+	g.Emplace<Scene::Debug::DebugDisplay>(
+		&tech1, &font,L"Time", Scene::Debug::DebugDisplay::FrameTimeGetter);
+	g.Emplace<Scene::Debug::DebugDisplay>(
+		&tech1, &font, L"FPS", Scene::Debug::DebugDisplay::FPSGetter);
 	g.Emplace<Scene::VirtualTask>(0.25f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);

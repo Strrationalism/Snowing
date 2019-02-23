@@ -68,12 +68,12 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 
-	Scene::DebugDisplay playing(
+	Scene::Debug::DebugDisplay playing(
 		&tech1, &font, L"Player2 is playing", [&player2] {
 		return std::to_wstring(reinterpret_cast<uintptr_t>(player2.GetPlaying()));
 	});
 
-	Scene::DebugDisplay playpos(
+	Scene::Debug::DebugDisplay playpos(
 		&tech1, &font, L"Player1 position", [&player] {
 		return std::to_wstring(player.GetPosition());
 	});

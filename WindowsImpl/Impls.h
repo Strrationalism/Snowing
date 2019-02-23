@@ -63,18 +63,24 @@ namespace Snowing::Graphics
 
 namespace Snowing::Scene
 {
-	using TextMenuItem = TextMenuItemInterface<
-		Graphics::FontRenderer<>>;
+	namespace UI
+	{
+		using TextMenuItem = TextMenuItemInterface<
+			Graphics::FontRenderer<>>;
+	}
 
-	using DebugDisplay = DebugDisplayInterface <
-		Graphics::FontRenderer<Graphics::Sprite, Graphics::SpriteSheet, 64>,
-		Graphics::Font,
-		Graphics::Effect,
-		Graphics::EffectTech,
-		Graphics::Device,
-		Graphics::Buffer,
-		Engine,
-		Graphics::Window>;
+	namespace Debug
+	{
+		using DebugDisplay = DebugDisplayInterface <
+			Graphics::FontRenderer<Graphics::Sprite, Graphics::SpriteSheet, 64>,
+			Graphics::Font,
+			Graphics::Effect,
+			Graphics::EffectTech,
+			Graphics::Device,
+			Graphics::Buffer,
+			Engine,
+			Graphics::Window>;
+	}
 
 	using RenderTargetCleaner = RenderTargetCleanerInterface<
 		Graphics::RenderTarget,

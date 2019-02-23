@@ -3,7 +3,7 @@
 #include "Box2D.h"
 #include "Coordinate2D.h"
 
-namespace Snowing::Scene
+namespace Snowing::Scene::UI
 {
 	template <typename TMenuItem,typename TPositionDevice,typename... TPositionArgs>
 	class[[nodiscard]] MenuPositionController final : public Object
