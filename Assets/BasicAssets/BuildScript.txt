@@ -1,1 +1,1 @@
-ConvertFont	(R8)		[Font/zh-cn]		[Font-zh-CN.fnt]
+ConvertFont	(R8)		[Font/chs]		[Font-chs.fnt]

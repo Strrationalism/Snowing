@@ -90,7 +90,7 @@ TEST(D3DTest, BasicllyRendering) {
 
 	Graphics::RenderTarget rt2{ {800,600} };
 
-	Font font = LoadFont(LoadAsset(L"Font-zh-CN.fnt"));
+	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 
