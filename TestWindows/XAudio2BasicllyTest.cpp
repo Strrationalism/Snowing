@@ -64,7 +64,7 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 	auto beg = clk.now();
 	std::uint32_t breakPoint = 0;
 
-	Font font = LoadFont(LoadAsset(L"Font-zh-CN.fnt"));
+	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 
