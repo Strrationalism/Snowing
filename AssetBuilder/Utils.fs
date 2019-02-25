@@ -9,6 +9,7 @@ let StartWait exe arg =
     prc.StartInfo.FileName <- exe
     prc.StartInfo.WorkingDirectory <- (FileInfo exe).DirectoryName
     prc.StartInfo.Arguments <- arg
+    prc.StartInfo.WindowStyle <- ProcessWindowStyle.Hidden
     if prc.Start() |> not then
         failwith ("Can not start " + exe)
     prc.WaitForExit ()
