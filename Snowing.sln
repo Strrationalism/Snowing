@@ -47,10 +47,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsSteam", "WindowsStea
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsSteam", "TestWindowsSteam\TestWindowsSteam.vcxproj", "{FD066135-D9CC-454B-B075-8191BF0DAD31}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteRendering", "SpriteRendering\SpriteRendering.vcxproj", "{677EDD27-8B75-4181-82BC-CEC96B71D683}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Core\Core.vcxitems*{36976dba-7802-4549-8f43-f56245d4115e}*SharedItemsImports = 4
 		Core\Core.vcxitems*{3fefea2b-2598-4299-811b-78935b1e2a10}*SharedItemsImports = 4
+		Core\Core.vcxitems*{677edd27-8b75-4181-82bc-cec96b71d683}*SharedItemsImports = 4
 		Core\Core.vcxitems*{6fc916c6-4f90-4f04-8822-7fa924836c0a}*SharedItemsImports = 4
 		Core\Core.vcxitems*{7cdad54a-d204-4907-b516-25a5f2061cae}*SharedItemsImports = 4
 		Core\Core.vcxitems*{85496e07-c508-46ed-89ce-f5d4a4ab5483}*SharedItemsImports = 4
@@ -252,6 +255,16 @@ Global
 		{FD066135-D9CC-454B-B075-8191BF0DAD31}.Release|x64.Build.0 = Release|x64
 		{FD066135-D9CC-454B-B075-8191BF0DAD31}.Release|x86.ActiveCfg = Release|Win32
 		{FD066135-D9CC-454B-B075-8191BF0DAD31}.Release|x86.Build.0 = Release|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Debug|x64.ActiveCfg = Debug|x64
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Debug|x64.Build.0 = Debug|x64
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Debug|x86.ActiveCfg = Debug|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Debug|x86.Build.0 = Debug|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|Any CPU.ActiveCfg = Release|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x64.ActiveCfg = Release|x64
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x64.Build.0 = Release|x64
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x86.ActiveCfg = Release|Win32
+		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -268,6 +281,7 @@ Global
 		{3FEFEA2B-2598-4299-811B-78935B1E2A10} = {2D9ECDC6-7F73-4991-8AB3-271D36F872BB}
 		{B6EDCECB-3930-4654-A41E-A60B9DB7D153} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 		{FD066135-D9CC-454B-B075-8191BF0DAD31} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
+		{677EDD27-8B75-4181-82BC-CEC96B71D683} = {2D9ECDC6-7F73-4991-8AB3-271D36F872BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {141F636F-971C-4E6F-BAA6-C6B7054CFD86}
