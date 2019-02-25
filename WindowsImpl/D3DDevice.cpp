@@ -177,7 +177,7 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::SetFullscreen(bool b)
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> size)
 {
-	mainRenderTarget_.Graphics::RenderTarget::~RenderTarget();
+	std::destroy_at(&mainRenderTarget_);
 	swapChain_.Cast<IUnknown*, IDXGISwapChain*>()->ResizeBuffers(
 		0,
 		static_cast<UINT>(size.x),
