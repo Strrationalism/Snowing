@@ -41,7 +41,8 @@ let private ConvertFont (job:Job) =
     let fontIndex = ParseFontIndex (job.ScriptDir.FullName + "\\" + job.Input.Head + "\\font.txt")
     let biggestFaceID = fontIndex.Keys |> Seq.max
 
-    for faceID in 0us..biggestFaceID do
+    [|0us..biggestFaceID|]
+    |> Array.Parallel.iteri (fun _ faceID ->
         let chars = fontIndex.[faceID]
         let ctxJob = {
             Processor = JobProcs.ConvertTexture.Proc
@@ -51,7 +52,7 @@ let private ConvertFont (job:Job) =
             ScriptDir = job.ScriptDir
         }
 
-        ConvertTexture (chars |> Array.map (fun x -> x.Sprite)) true ctxJob
+        ConvertTexture (chars |> Array.map (fun x -> x.Sprite)) true ctxJob)
 
     let charCount = fontIndex.Values |> Seq.map Array.length |> Seq.sum 
     let faceCount = fontIndex.Keys.Count
