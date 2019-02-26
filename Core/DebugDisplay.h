@@ -3,6 +3,7 @@
 #include "SMath.h"
 #include "Object.h"
 #include "FontRenderer.h"
+#include "NoCopyMove.h"
 
 namespace Snowing::Scene::Debug
 {
@@ -15,7 +16,7 @@ namespace Snowing::Scene::Debug
 		typename TBuffer,
 		typename TEngine,
 		typename TWindow>
-	class DebugDisplayInterface final : public Object
+	class DebugDisplayInterface final : public Object, private NoCopyMove
 	{
 	private:
 		const Math::Coordinate2DRect screenCoord_ =
@@ -78,11 +79,6 @@ namespace Snowing::Scene::Debug
 		{
 			lineNums_[lineNum_] = false;
 		}
-
-		DebugDisplayInterface(DebugDisplayInterface&&) = delete;
-		DebugDisplayInterface(const DebugDisplayInterface&) = delete;
-		DebugDisplayInterface& operator=(DebugDisplayInterface&&) = delete;
-		DebugDisplayInterface& operator=(const DebugDisplayInterface&) = delete;
 
 		bool Update() override
 		{
