@@ -183,5 +183,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h">
       <Filter>Scene\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)NoCopyMove.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)DebugMenu.h">
+      <Filter>Scene\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
