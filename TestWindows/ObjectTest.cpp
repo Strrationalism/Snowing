@@ -431,7 +431,7 @@ TEST(SceneTest, TestDebugDisplay)
 static void TestDebugMenu()
 {
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-		L"TestMenu",
+		L"TestDebugMenu",
 		{ 800,600 },
 		true);
 	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
@@ -452,7 +452,7 @@ static void TestDebugMenu()
 		Snowing::Log("debugMenu write log2");
 	});
 	
-	g.Emplace<Scene::VirtualTask>(30.0f, [] {Engine::Get().Exit(); });
+	g.Emplace<Scene::VirtualTask>(5.0f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }

@@ -23,11 +23,9 @@ namespace Snowing::Scene::Debug
 		typename TInput>
 	class DebugMenuInterface: public Object, private NoCopyMove
 	{
-		template <typename TFontRenderer>
 		class[[nodiscard]] TestMenuItemInterface : public UI::TextMenuItemInterface<TFontRenderer>
 		{
 		public:
-
 			TestMenuItemInterface(
 				TFontRenderer *fontRenderer,
 				std::wstring_view text,
@@ -43,9 +41,7 @@ namespace Snowing::Scene::Debug
 				space,
 				fontSize},
 				func_{func}
-			{
-
-			}
+			{}
 
 			void OK()
 			{
@@ -55,7 +51,7 @@ namespace Snowing::Scene::Debug
 			const std::function<void()> func_;
 		};
 
-		using TestMenuItem = TestMenuItemInterface< TFontRenderer>;
+		using TestMenuItem = TestMenuItemInterface;
 
 	private:
 		const Math::Coordinate2DRect screenCoord_ =
@@ -99,23 +95,12 @@ namespace Snowing::Scene::Debug
 				&vb_
 			},
 			font_{ *font }
-		{
-
-		}
-		~DebugMenuInterface()
-		{
-			
-		}
-
-		
+		{ }
+		~DebugMenuInterface() = default;
 
 		bool Update() override
 		{
-			Object::Update();
-
 			TEngine::Get().Draw([this] {
-				TGraphics::MainContext().ClearRenderTarget(
-					TGraphics::MainRenderTarget());
 				TGraphics::MainContext().SetRenderTarget(
 					&TGraphics::MainRenderTarget());
 				fr_.DrawToSpriteBuffer(text_);
@@ -148,8 +133,6 @@ namespace Snowing::Scene::Debug
 		Math::Vec2f space{ 1.0f,1.0f };
 		Math::Vec2f fontSize{ 0.5f,0.5f };
 
-		std::map< std::wstring_view, const std::function<void()>&> menuBindEvent;
-
 		void AddMenuItem(std::wstring_view title, const std::function<void()>& func)
 		{
 			auto menuBox = Math::Vec4f{
@@ -159,11 +142,7 @@ namespace Snowing::Scene::Debug
 				64.0f
 			};
 			
-
 			menu_.Emplace(&fr_, title, menuBox, space, fontSize, func);
 		}
-	
-	private:
-
 	};
 }
