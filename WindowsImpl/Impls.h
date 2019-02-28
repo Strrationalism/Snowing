@@ -7,9 +7,11 @@
 #include "D3DEffect.h"
 #include <TextMenuItem.h>
 #include "DebugDisplay.h"
+#include "DebugMenu.h"
 #include "WindowImpl.h"
 #include "InputImpl.h"
 #include "RenderTargetCleaner.h"
+
 
 namespace Snowing
 {
@@ -67,6 +69,7 @@ namespace Snowing::Scene
 	{
 		using TextMenuItem = TextMenuItemInterface<
 			Graphics::FontRenderer<>>;
+		using TestMenuItem = Debug::TestMenuItemInterface< Graphics::FontRenderer<>>;
 	}
 
 	namespace Debug
@@ -80,6 +83,18 @@ namespace Snowing::Scene
 			Graphics::Buffer,
 			Engine,
 			Graphics::Window>;
+
+		using DebugMenu = DebugMenuInterface <
+			Graphics::FontRenderer<Graphics::Sprite, Graphics::SpriteSheet, 64>,
+			Graphics::Font,
+			Graphics::Effect,
+			Graphics::EffectTech,
+			Graphics::Device,
+			Graphics::Buffer,
+			Engine,
+			Graphics::Window,
+			Input::Input,
+			UI::TestMenuItem>;
 	}
 
 	using RenderTargetCleaner = RenderTargetCleanerInterface<

@@ -7,9 +7,45 @@
 #include "NoCopyMove.h"
 #include "Input.h"
 #include "Menu.h"
+#include "TextMenuItem.h"
+#include "MenuKeyController.h"
 
 namespace Snowing::Scene::Debug
 {
+	template <typename TFontRenderer>
+	class[[nodiscard]] TestMenuItemInterface : public UI::TextMenuItemInterface<TFontRenderer>
+	{
+	public:
+
+		TestMenuItemInterface(
+			TFontRenderer *fontRenderer,
+			std::wstring_view text,
+			Math::Vec4f box,
+			Math::Vec2f space,
+			Math::Vec2f fontSize,
+			const std::function<void()>& func
+		) : UI::TextMenuItemInterface<TFontRenderer>
+		{
+			fontRenderer,
+			text,
+			box,
+			space,
+			fontSize},
+			func_{func}
+		{
+
+		}
+
+		void OK()
+		{
+			func_();
+		}
+	private:
+		const std::function<void()>& func_;
+	};
+
+	
+
 	template<typename TFontRenderer,
 		typename TFont,
 		typename TEffect,
@@ -18,7 +54,8 @@ namespace Snowing::Scene::Debug
 		typename TBuffer,
 		typename TEngine,
 		typename TWindow,
-		typename TInput>
+		typename TInput,
+		typename TMenuItem>
 	class DebugMenuInterface: public Object, private NoCopyMove
 	{
 	private:
@@ -57,26 +94,8 @@ namespace Snowing::Scene::Debug
 		KEYKEEPER(Down);
 #undef KEYKEEPER
 
-		class TestMenu : public Scene::Object
-		{
-		private:
-			size_t i_;
-		public:
-			TestMenu(size_t i) :i_{ i }{}
-
-			void OnSelected()
-			{
-				Snowing::Log("Menu Selected:", i_);
-			}
-
-			void OnUnselected()
-			{
-				Snowing::Log("Menu Unselected:", i_);
-			}
-		};
-
-		Scene::UI::Menu<TestMenu> menu_;
-
+		Scene::UI::Menu<TMenuItem> menu_;
+		Scene::UI::MenuKeyController<TMenuItem> menuKeyController{ &menu_ };
 
 	public:
 		DebugMenuInterface(
@@ -106,17 +125,17 @@ namespace Snowing::Scene::Debug
 			Up.Update();
 			if (Up.JustPress())
 			{
-				menuSelectHelper(Snowing::Input::KeyboardKey::Up);
+				menuKeyController.Prev();
 			}
 			Down.Update();
 			if (Down.JustPress())
 			{
-				menuSelectHelper(Snowing::Input::KeyboardKey::Down);
+				menuKeyController.Next();
 			}
 			Enter.Update();
 			if (Enter.JustPress())
 			{
-				
+				menu_.GetSelectedObject().value()->OK();
 			}
 
 
@@ -124,26 +143,8 @@ namespace Snowing::Scene::Debug
 
 		}
 
-		void menuSelectHelper(Snowing::Input::KeyboardKey key)
-		{
-			auto menuIndex = menu_.GetSelectedIndex();
-			switch(key)
-			{
-			case Snowing::Input::KeyboardKey::Up:
-				
-				menu_.Select(menuIndex? menuIndex -1 :menu_.Count() - 1);
-				break;
-			case Snowing::Input::KeyboardKey::Down:
-				menu_.Select(menuIndex == menu_.Count() - 1 ? 0: menuIndex + 1);
-				break;
-			default:
-				Snowing::Log("Menu Operator Unkonwn");
-			}
-		}
-
-
-		constexpr Math::Vec2f space{ 1.0f,1.0f };
-		constexpr Math::Vec2f fontSize{ 0.5f,0.5f };
+		Math::Vec2f space{ 1.0f,1.0f };
+		Math::Vec2f fontSize{ 0.5f,0.5f };
 
 		std::map< std::wstring_view, const std::function<void()>&> menuBindEvent;
 		
@@ -155,8 +156,7 @@ namespace Snowing::Scene::Debug
 				800.0f,
 				64.0f
 			};
-			menu_.Emplace(&fr_, title, menuBox, space, fontSize);
-			menuBindEvent.emplace(title, func);
+			menu_.Emplace(&fr_, title, menuBox, space, fontSize, func);
 		}
 	
 	private:

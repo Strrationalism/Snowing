@@ -441,6 +441,9 @@ static void TestDebugMenu()
 	g.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
+	auto debugMenu = Scene::Debug::DebugMenu(&tech1, &font);
+	g.Emplace(debugMenu);
+
 
 	//TODO: TestExample for DebugMenu
 	
