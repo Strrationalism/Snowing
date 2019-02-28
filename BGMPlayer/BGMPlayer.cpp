@@ -1,6 +1,5 @@
 #define USE_XAUDIO2			//当需要在Windows下使用XAudio2作为音频后端时，在PlatformImpls.h头文件之前定义此宏
 #include <Snowing.h>
-#include <PlatformImpls.h>
 
 using namespace Snowing;
 

@@ -4,7 +4,6 @@
 #include <DbgHelp.h>
 #include <fstream>
 #include <Snowing.h>
-#include <PlatformImpls.h>
 
 using namespace Snowing::PlatformImpls::WindowsSteam;
 
