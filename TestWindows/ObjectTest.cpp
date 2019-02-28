@@ -92,10 +92,10 @@ TEST(SceneTest, TestTweenSetter)
 				t_ = a;
 			};
 
-			auto& p = Emplace<>(0.0f, setter);
-			p.Start(1.0f, 0.25f);
-			p = 0.5f;
-			p.Start(0.0f, 0.5f,Scene::TweenFX::Sin);
+			auto p = Emplace<>(0.0f, setter);
+			p->Start(1.0f, 0.25f);
+			*p = 0.5f;
+			p->Start(0.0f, 0.5f,Scene::TweenFX::Sin);
 		}
 
 		bool Update() override
