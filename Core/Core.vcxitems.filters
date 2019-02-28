@@ -30,7 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Snowing.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Vec2.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -183,5 +182,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h">
       <Filter>Scene\Debug</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Core.h" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,4 @@
 #include <Snowing.h>
-#include <WindowImpl.h>
 #include <iostream>
 #include "PlatformImpls.h"
 #include "KeyKeepTranslator.h"

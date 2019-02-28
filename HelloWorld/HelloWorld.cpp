@@ -1,5 +1,4 @@
 #include <Snowing.h>
-#include <PlatformImpls.h>
 #include <Task.h>
 
 int main()
