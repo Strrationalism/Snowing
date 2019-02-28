@@ -34,10 +34,9 @@ namespace Snowing::Scene
 		template <typename TObj = TBaseObject,typename ... TArgs>
 		TObj* Emplace(TArgs&&... args)
 		{
-			newObjs_.emplace(
-				std::make_unique<TObj>(
-					std::forward<TArgs>(args)...));
-			return reinterpret_cast<TObj*>(newObjs_.back().get());
+			auto p = new TObj{ std::forward<TArgs>(args)... };
+			newObjs_.emplace(std::unique_ptr<TObj>(p));
+			return p;
 		}
 
 		template <typename TFunc>
