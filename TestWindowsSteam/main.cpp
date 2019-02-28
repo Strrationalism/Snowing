@@ -1,6 +1,5 @@
 #include <Snowing.h>
 #include <Steam.h>
-#include <PlatformImpls.h>
 #include <fstream>
 
 

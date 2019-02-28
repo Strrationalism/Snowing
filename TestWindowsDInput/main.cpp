@@ -1,5 +1,4 @@
 #include <Snowing.h>
-#include <PlatformImpls.h>
 #include <DInputController.h>
 #include <iostream>
 using namespace Snowing;

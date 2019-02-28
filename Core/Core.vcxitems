@@ -54,7 +54,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RenderTarget.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SingleInstance.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SMath.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Snowing.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Core.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SpriteRenderer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Task.h" />

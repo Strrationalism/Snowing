@@ -54,4 +54,4 @@ X可以为任意盘符，该工具用于打包纹理。
 
 ## 关于Windows下的XAudio2
 对于Snowing引擎来说，音频是可选模块。
-如果需要使用Windows下的XAudio2，需要在包含PlatformImpls.h之前，定义宏USE_XAUDIO2。
+如果需要使用Windows下的XAudio2，需要在包含Snowing.h之前，定义宏USE_XAUDIO2。
