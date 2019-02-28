@@ -69,7 +69,6 @@ namespace Snowing::Scene
 	{
 		using TextMenuItem = TextMenuItemInterface<
 			Graphics::FontRenderer<>>;
-		using TestMenuItem = Debug::TestMenuItemInterface< Graphics::FontRenderer<>>;
 	}
 
 	namespace Debug
@@ -93,8 +92,7 @@ namespace Snowing::Scene
 			Graphics::Buffer,
 			Engine,
 			Graphics::Window,
-			Input::Input,
-			UI::TestMenuItem>;
+			Input::Input>;
 	}
 
 	using RenderTargetCleaner = RenderTargetCleanerInterface<

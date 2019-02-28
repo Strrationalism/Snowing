@@ -436,18 +436,23 @@ static void TestDebugMenu()
 		true);
 	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
-	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestLighting", Sprite::DataLayout);
 	Scene::Group<> g;
 	g.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
-	auto debugMenu = Scene::Debug::DebugMenu(&tech1, &font);
-	g.Emplace(debugMenu);
-
-
-	//TODO: TestExample for DebugMenu
 	
-	g.Emplace<Scene::VirtualTask>(0.25f, [] {Engine::Get().Exit(); });
+	auto debugMenu = g.Emplace<Scene::Debug::DebugMenu>(&tech1, &font);
+	debugMenu->AddMenuItem(L"Write Logger", []
+	{
+		Snowing::Log("debugMenu write log");
+	});
+	debugMenu->AddMenuItem(L"Write Logger2", []
+	{
+		Snowing::Log("debugMenu write log2");
+	});
+	
+	g.Emplace<Scene::VirtualTask>(30.0f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }

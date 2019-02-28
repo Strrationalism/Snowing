@@ -1,8 +1,10 @@
 #pragma once
 #include <algorithm>
 #include <vector>
+#include <queue>
 #include <memory>
 #include "Object.h"
+#include "MemPool.h"
 
 namespace Snowing::Scene
 {
@@ -53,7 +55,7 @@ namespace Snowing::Scene
 
 		size_t Count() const
 		{
-			return objs_.size();
+			return objs_.size() + newObjs_.size();
 		}
 
 		TBaseObject* operator [] (size_t i) const
