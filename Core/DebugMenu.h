@@ -104,7 +104,8 @@ namespace Snowing::Scene::Debug
 				fr_.DrawToSpriteBuffer(text_);
 				fr_.FlushSpriteBuffer();
 			});
-			if (!menu_.IsEmpty() && menu_.GetSelectedIndex() == std::nullopt)
+
+			if (menu_.Count() && menu_.GetSelectedIndex() == std::nullopt)
 			{
 				menuCtrl_.Next();
 			}
@@ -138,7 +139,7 @@ namespace Snowing::Scene::Debug
 		{
 			auto menuBox = Math::Vec4f{
 				screenCoord_.LeftTop.x + 20.0f,
-				screenCoord_.LeftTop.y + 20.0f * (menu_.Count() + 1),
+				screenCoord_.LeftTop.y + 20.0f * (menu_.CountWithNewObjects() + 1),
 				800.0f,
 				64.0f
 			};

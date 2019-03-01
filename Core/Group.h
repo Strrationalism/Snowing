@@ -55,12 +55,12 @@ namespace Snowing::Scene
 
 		size_t Count() const
 		{
-			return objs_.size() + newObjs_.size();
+			return objs_.size();
 		}
 
-		bool IsEmpty() const
+		size_t CountWithNewObjects() const
 		{
-			return objs_.empty();
+			return objs_.size() + newObjs_.size();
 		}
 
 		TBaseObject* operator [] (size_t i) const
