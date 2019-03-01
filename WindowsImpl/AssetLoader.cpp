@@ -34,13 +34,3 @@ Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName,size_t 
 
 	return b;
 }
-
-Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const wchar_t * fileName, size_t alignment)
-{
-	char fileNameA[64];
-	char *pFileNameA = fileNameA;
-	while (*fileName)
-		*pFileNameA++ = static_cast<char>(*fileName++);
-	*pFileNameA = 0;
-	return Snowing::PlatformImpls::WindowsImpl::ReadFile(fileNameA, alignment);
-}
