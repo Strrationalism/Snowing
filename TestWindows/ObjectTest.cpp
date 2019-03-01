@@ -427,3 +427,37 @@ TEST(SceneTest, TestDebugDisplay)
 	TestDebugDisplay({ 1280,720 });
 	TestDebugDisplay({ 960,300 });
 }
+
+static void TestDebugMenu()
+{
+	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
+		L"TestDebugMenu",
+		{ 800,600 },
+		true);
+	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestLighting", Sprite::DataLayout);
+	Scene::Group<> g;
+	g.Emplace<Scene::RenderTargetCleaner>(
+		&Graphics::Device::MainContext(),
+		&Graphics::Device::MainRenderTarget());
+	
+	auto debugMenu = g.Emplace<Scene::Debug::DebugMenu>(&tech1, &font);
+	debugMenu->AddMenuItem(L"Write Logger", []
+	{
+		Snowing::Log("debugMenu write log");
+	});
+	debugMenu->AddMenuItem(L"Write Logger2", []
+	{
+		Snowing::Log("debugMenu write log2");
+	});
+	
+	g.Emplace<Scene::VirtualTask>(1.0f, [] {Engine::Get().Exit(); });
+
+	Engine::Get().RunObject(g);
+}
+
+TEST(SceneTest, TestDebugMenu)
+{
+	TestDebugMenu();
+}
