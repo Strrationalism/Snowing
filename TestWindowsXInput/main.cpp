@@ -1,5 +1,4 @@
 #include <Snowing.h>
-#include <PlatformImpls.h>
 #include <XInputController.h>
 #include <iostream>
 
