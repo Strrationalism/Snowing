@@ -193,7 +193,7 @@ TEST(SceneTest, TestTextMenuItem)
 		Snowing::Graphics::EffectTech tech2 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 		Snowing::Graphics::Buffer gpuVBuffer = FontRenderer<>::MakeGPUVertexBuffer();
 
-		Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+		Font font = LoadFont(LoadAsset("Font-chs.fnt"));
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
@@ -267,7 +267,7 @@ TEST(SceneTest, TestMenuKeyController)
 		Snowing::Graphics::EffectTech tech2 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 		Snowing::Graphics::Buffer gpuVBuffer = FontRenderer<>::MakeGPUVertexBuffer();
 
-		Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+		Font font = LoadFont(LoadAsset("Font-chs.fnt"));
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
@@ -343,7 +343,7 @@ TEST(SceneTest, TestMenuPositionController)
 		Snowing::Graphics::EffectTech tech2 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 		Snowing::Graphics::Buffer gpuVBuffer = FontRenderer<>::MakeGPUVertexBuffer();
 
-		Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+		Font font = LoadFont(LoadAsset("Font-chs.fnt"));
 		FontRenderer<> fontRenderer
 		{
 			&Graphics::Device::Get().MainContext(),
@@ -404,7 +404,7 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 		L"FPSDisplay",
 		size,
 		true);
-	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+	Font font = LoadFont(LoadAsset("Font-chs.fnt"));
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
 	Scene::Group<> g;
@@ -435,7 +435,7 @@ static void TestDebugMenu()
 		L"TestDebugMenu",
 		{ 800,600 },
 		true);
-	Font font = LoadFont(LoadAsset(L"Font-chs.fnt"));
+	Font font = LoadFont(LoadAsset("Font-chs.fnt"));
 	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
 	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestLighting", Sprite::DataLayout);
 	Scene::Group<> g;
