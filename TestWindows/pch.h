@@ -21,7 +21,6 @@ const static inline auto ignore = _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_
 #include <PlatformImpls.h>
 #include <D3DDevice.h>
 #include <Windows.h>
-#include <XInputController.h>
 #include <thread>
 #include <fstream>
 
