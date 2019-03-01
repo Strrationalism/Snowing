@@ -125,7 +125,8 @@ namespace Snowing::Scene::Debug
 			Enter_.Update();
 			if (Enter_.JustPress())
 			{
-				menu_.GetSelectedObject().value()->OK();
+				if (menu_.GetSelectedIndex().has_value())
+					menu_.GetSelectedObject().value()->OK();
 			}
 
 			return true;
@@ -142,8 +143,8 @@ namespace Snowing::Scene::Debug
 				64.0f
 			};
 
-			static Math::Vec2f space{ 1.0f, 75.0f };
-			static Math::Vec2f fontSize{ 0.30f,0.30f };
+			constexpr Math::Vec2f space{ 1.0f, 75.0f };
+			constexpr Math::Vec2f fontSize{ 0.30f,0.30f };
 			
 			menu_.Emplace(&fr_, title, menuBox, space, fontSize, func);
 		}
