@@ -2,6 +2,7 @@
 #include "Task.h"
 #include "Tween.h"
 #include "Group.h"
+#include <XInputController.h>
 
 void RunGameObject(Snowing::Scene::Object& obj,const wchar_t* testName)
 {
