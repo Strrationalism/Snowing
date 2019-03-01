@@ -21,12 +21,12 @@ namespace Snowing::Scene::Debug
 		typename TEngine,
 		typename TWindow,
 		typename TInput>
-	class DebugMenuInterface: public Object, private NoCopyMove
+	class [[nodiscard]] DebugMenuInterface final: public Object, private NoCopyMove
 	{
-		class[[nodiscard]] TestMenuItemInterface : public UI::TextMenuItemInterface<TFontRenderer>
+		class[[nodiscard]] DebugMenuItem final: public UI::TextMenuItemInterface<TFontRenderer>
 		{
 		public:
-			TestMenuItemInterface(
+			DebugMenuItem(
 				TFontRenderer *fontRenderer,
 				std::wstring_view text,
 				Math::Vec4f box,
@@ -51,8 +51,6 @@ namespace Snowing::Scene::Debug
 			const std::function<void()> func_;
 		};
 
-		using TestMenuItem = TestMenuItemInterface;
-
 	private:
 		const Math::Coordinate2DRect screenCoord_ =
 		{
@@ -74,14 +72,14 @@ namespace Snowing::Scene::Debug
 		const TFont &font_;
 
 #define KEYWATCHER(KeyValue,KeyName) \
-	Snowing::Input::KeyWatcher<TInput,decltype(KeyValue)> KeyName{ &TInput::Get(),KeyValue }
+	Snowing::Input::KeyWatcher<TInput,decltype(KeyValue)> KeyName##_{ &TInput::Get(),KeyValue }
 		KEYWATCHER(Snowing::Input::KeyboardKey::Enter, Enter);
 		KEYWATCHER(Snowing::Input::KeyboardKey::Up, Up);
 		KEYWATCHER(Snowing::Input::KeyboardKey::Down, Down);
 #undef KEYWATCHER
 
-		Scene::UI::Menu<TestMenuItem> menu_;
-		Scene::UI::MenuKeyController<TestMenuItem> menuKeyController{ &menu_ };
+		Scene::UI::Menu<DebugMenuItem> menu_;
+		Scene::UI::MenuKeyController<DebugMenuItem> menuCtrl_{ &menu_ };
 
 	public:
 		DebugMenuInterface(
@@ -106,23 +104,26 @@ namespace Snowing::Scene::Debug
 				fr_.DrawToSpriteBuffer(text_);
 				fr_.FlushSpriteBuffer();
 			});
-
+			if (!menu_.IsEmpty() && menu_.GetSelectedIndex() == std::nullopt)
+			{
+				menuCtrl_.Next();
+			}
 
 			menu_.Update();
-			menuKeyController.Update();
+			menuCtrl_.Update();
 
-			Up.Update();
-			if (Up.JustPress())
+			Up_.Update();
+			if (Up_.JustPress())
 			{
-				menuKeyController.Prev();
+				menuCtrl_.Prev();
 			}
-			Down.Update();
-			if (Down.JustPress())
+			Down_.Update();
+			if (Down_.JustPress())
 			{
-				menuKeyController.Next();
+				menuCtrl_.Next();
 			}
-			Enter.Update();
-			if (Enter.JustPress())
+			Enter_.Update();
+			if (Enter_.JustPress())
 			{
 				menu_.GetSelectedObject().value()->OK();
 			}
@@ -130,17 +131,19 @@ namespace Snowing::Scene::Debug
 			return true;
 		}
 
-		Math::Vec2f space{ 1.0f,1.0f };
-		Math::Vec2f fontSize{ 0.5f,0.5f };
+
 
 		void AddMenuItem(std::wstring_view title, const std::function<void()>& func)
 		{
 			auto menuBox = Math::Vec4f{
-				screenCoord_.LeftTop.x + 50.0f,
-				screenCoord_.LeftTop.y + 50.0f * (menu_.Count() + 1),
+				screenCoord_.LeftTop.x + 20.0f,
+				screenCoord_.LeftTop.y + 20.0f * (menu_.Count() + 1),
 				800.0f,
 				64.0f
 			};
+
+			static Math::Vec2f space{ 1.0f, 75.0f };
+			static Math::Vec2f fontSize{ 0.30f,0.30f };
 			
 			menu_.Emplace(&fr_, title, menuBox, space, fontSize, func);
 		}

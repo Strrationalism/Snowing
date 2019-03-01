@@ -58,6 +58,11 @@ namespace Snowing::Scene
 			return objs_.size() + newObjs_.size();
 		}
 
+		bool IsEmpty() const
+		{
+			return objs_.empty();
+		}
+
 		TBaseObject* operator [] (size_t i) const
 		{
 			return objs_[i].get();

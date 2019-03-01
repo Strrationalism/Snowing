@@ -452,7 +452,7 @@ static void TestDebugMenu()
 		Snowing::Log("debugMenu write log2");
 	});
 	
-	g.Emplace<Scene::VirtualTask>(5.0f, [] {Engine::Get().Exit(); });
+	g.Emplace<Scene::VirtualTask>(1.0f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }
