@@ -1,39 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="HelloEffect.fx">
-      <Filter>D3DTest</Filter>
-    </FxCompile>
-    <FxCompile Include="StreamOutEffect.fx">
-      <Filter>D3DTest</Filter>
-    </FxCompile>
-    <FxCompile Include="HiLevelRendering.fx">
-      <Filter>D3DTest</Filter>
-    </FxCompile>
-    <FxCompile Include="PostEffectDemo.fx">
-      <Filter>D3DTest</Filter>
-    </FxCompile>
+    <FxCompile Include="HelloEffect.fx" />
+    <FxCompile Include="HiLevelRendering.fx" />
+    <FxCompile Include="PostEffectDemo.fx" />
+    <FxCompile Include="StreamOutEffect.fx" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="BasicllyRendering.cpp">
-      <Filter>D3DTest</Filter>
-    </ClCompile>
-    <ClCompile Include="StreamOut.cpp">
-      <Filter>D3DTest</Filter>
-    </ClCompile>
-    <ClCompile Include="XAudio2BasicllyTest.cpp">
-      <Filter>XAudio2Test</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectTest.cpp">
-      <Filter>SceneTest</Filter>
-    </ClCompile>
-    <ClCompile Include="HiLevelRendering.cpp">
-      <Filter>D3DTest</Filter>
-    </ClCompile>
-    <ClCompile Include="UtilsTest.cpp">
-      <Filter>UtilsTest</Filter>
-    </ClCompile>
+    <ClCompile Include="D3DTest.cpp" />
+    <ClCompile Include="HiLevelRendering.cpp" />
+    <ClCompile Include="SceneTest.cpp" />
+    <ClCompile Include="UtilsTest.cpp" />
+    <ClCompile Include="XAudio2Test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -42,30 +21,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="D3DTest">
-      <UniqueIdentifier>{f9813e3c-c475-4b77-9b76-d0e460f56d21}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="XAudio2Test">
-      <UniqueIdentifier>{41e99526-fa59-42b1-869d-f3c68e508f22}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SceneTest">
-      <UniqueIdentifier>{f037a1e1-8f39-49b3-aa5b-974f48c1e885}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="UtilsTest">
-      <UniqueIdentifier>{190d4834-1ba7-4d19-acb7-6ee68fff2da1}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="CSVTest.csv">
-      <Filter>UtilsTest</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="VibratorEffect.csv">
-      <Filter>SceneTest</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="PropTest.txt">
-      <Filter>UtilsTest</Filter>
-    </CopyFileToFolders>
     <CopyFileToFolders Include="FontFix.csv" />
     <CopyFileToFolders Include="Sprite.ctx" />
+    <CopyFileToFolders Include="VibratorEffect.csv" />
+    <CopyFileToFolders Include="CSVTest.csv" />
+    <CopyFileToFolders Include="PropTest.txt" />
   </ItemGroup>
 </Project>
