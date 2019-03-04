@@ -45,6 +45,9 @@ namespace Snowing
 			owner_{ true },
 			aligned_{ true }
 		{
+			if (alignment == 0)
+				std::terminate();
+
 			size_t offset, shift, alignedAddress;
 			void* allocation;
 			void** preamble;
