@@ -462,3 +462,37 @@ TEST(SceneTest, TestDebugMenu)
 {
 	TestDebugMenu();
 }
+
+TEST(SceneTest, TestConditionTask)
+{
+	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
+		L"ConditionTask",
+		{ 800,600 },
+		true);
+
+	int i = 0;
+
+	Font font = LoadFont(LoadAsset("Font-chs.fnt"));
+	Graphics::Effect eff{ LoadAsset("HiLevelRendering") };
+	Graphics::EffectTech tech1 = eff.LoadTechnique("FontTestBasic", Sprite::DataLayout);
+	Scene::Group<> g;
+	g.Emplace<Scene::RenderTargetCleaner>(
+		&Graphics::Device::MainContext(),
+		&Graphics::Device::MainRenderTarget());
+
+	Scene::ConditionTask task
+	{
+		[&i] { return i >= 60; },
+		[] {Engine::Get().Exit(); }
+	};
+
+	g.Emplace<decltype(task)>(std::move(task));
+	g.Emplace<Scene::Debug::DebugDisplay>(
+		&tech1, &font, L"i", [&i] { return std::to_wstring(i); });
+
+	Engine::Get().Run(
+		[&] {
+		i++;
+		g.Update();
+	});
+}

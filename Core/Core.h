@@ -41,6 +41,7 @@
 #include "TextMenuItem.h"
 #include "MenuKeyController.h"
 #include "MenuPositionController.h"
+#include "ConditionTask.h"
 
 // Utils
 #include "BKDRHash.h"
@@ -55,8 +56,8 @@
 #include "Convert.h"
 #include "BlobReader.h"
 #include "BlobWriter.h"
+#include "Library.h"
 
 // Root
 #include "Engine.h"
 #include "Platforms.h"
-#include "Library.h"

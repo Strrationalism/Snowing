@@ -20,6 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BKDRHash.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Blob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Box2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ConditionTask.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Controller.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugMenu.h" />
