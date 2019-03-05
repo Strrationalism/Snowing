@@ -35,4 +35,6 @@ namespace Snowing::Scene
 				return false;
 		}
 	};
+
+	using VirtualConditionTask = ConditionTask<std::function<bool()>, std::function<void()>>;
 }
