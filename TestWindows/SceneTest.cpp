@@ -462,3 +462,21 @@ TEST(SceneTest, TestDebugMenu)
 {
 	TestDebugMenu();
 }
+
+TEST(SceneTest, TestConditionTask)
+{
+	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
+		L"TestDebugMenu",
+		{ 800,600 },
+		true);
+
+	int i = 0;
+
+	Scene::ConditionTask task
+	{
+		[&i] { return i > 60; },
+		[] {Engine::Get().Exit(); }
+	};
+
+	Engine::Get().RunObject(task);
+}
