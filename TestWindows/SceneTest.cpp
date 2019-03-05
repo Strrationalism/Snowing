@@ -80,7 +80,7 @@ TEST(SceneTest, TestGroup)
 TEST(SceneTest, TestTweenSetter)
 {
 	
-	class MyObject final : public Scene::Group<Scene::VirtualTweenSetter<float>>
+	class MyObject final : public Scene::Group<>
 	{
 	private:
 		float t_ = 0;
@@ -93,10 +93,12 @@ TEST(SceneTest, TestTweenSetter)
 				t_ = a;
 			};
 
-			auto p = Emplace<>(0.0f, setter);
-			p->Start(1.0f, 0.25f);
-			*p = 0.5f;
-			p->Start(0.0f, 0.5f,Scene::TweenFX::Sin);
+			Emplace<Scene::VirtualTask>(0.0F,[this,setter] {
+				auto p = Emplace<Scene::VirtualTweenSetter<float>>(0.0f, setter);
+				p->Start(1.0f, 0.25f);
+				*p = 0.5f;
+				p->Start(0.0f, 0.5f, Scene::TweenFX::Sin);
+			});
 		}
 
 		bool Update() override
@@ -105,7 +107,7 @@ TEST(SceneTest, TestTweenSetter)
 				auto& d = Device::Get();
 				d.MainContext().ClearRenderTarget(d.MainRenderTarget(), { t_,t_,t_,1.0f });
 			});
-			return Scene::Group<Scene::VirtualTweenSetter<float>>::Update();
+			return Scene::Group<>::Update();
 		}
 	};
 
