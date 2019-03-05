@@ -51,7 +51,7 @@ namespace Snowing::Scene
 		template <typename TObjectType, typename TFunc>
 		void IterType(TFunc& f)
 		{
-			Iter([this](TBaseObject& obj) {
+			Iter([this,&f](TBaseObject& obj) {
 				try
 				{
 					f(dynamic_cast<TObjectType&>(obj));
