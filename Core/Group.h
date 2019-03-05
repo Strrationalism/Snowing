@@ -48,6 +48,19 @@ namespace Snowing::Scene
 				f(*p);
 		}
 
+		template <typename TObjectType, typename TFunc>
+		void IterType(TFunc& f)
+		{
+			Iter([this](TBaseObject& obj) {
+				try
+				{
+					f(dynamic_cast<TObjectType&>(obj));
+				}
+				catch(std::bad_cast)
+				{ }
+			});
+		}
+
 		void Clear()
 		{
 			objs_.clear();
