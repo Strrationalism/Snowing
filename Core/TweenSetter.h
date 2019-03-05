@@ -23,6 +23,7 @@ namespace Snowing::Scene
 		void Start(const TVariable& target, float time, TweenFX::FX fx = TweenFX::Once)
 		{
 			tween_.Start(target, time, fx);
+			Update();
 		}
 
 		auto& operator = (const TVariable& v)
