@@ -6,7 +6,7 @@
 namespace Snowing::Scene::UI
 {
 	template <typename TMenuItem>
-	class[[nodiscard]] Menu final : public Group<TMenuItem>,public MemPool<Menu<TMenuItem>>
+	class[[nodiscard]] Menu final : public Group<TMenuItem>
 	{
 	private:
 		std::optional<size_t> selected_;
