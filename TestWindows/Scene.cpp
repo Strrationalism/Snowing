@@ -12,7 +12,7 @@ void RunGameObject(Snowing::Scene::Object& obj,const wchar_t* testName)
 	engine.RunObject(obj);
 }
 
-TEST(SceneTest, TestEmptyObject)
+TEST(Scene, EmptyObject)
 {
 	class EmptyObject : public Snowing::Scene::Object
 	{
@@ -26,19 +26,19 @@ TEST(SceneTest, TestEmptyObject)
 		}
 	};
 
-	RunGameObject(EmptyObject{}, L"TestEmptyObject");
+	RunGameObject(EmptyObject{}, L"EmptyObject");
 }
 
-TEST(SceneTest, TestTaskObject)
+TEST(Scene, TaskObject)
 {
 	Scene::Task t{ 0.2f, []() {Engine::Get().Exit(); } };
-	RunGameObject(t,L"TestTaskObject");
+	RunGameObject(t,L"TaskObject");
 }
 
-TEST(SceneTest, TestVirtualTaskObject)
+TEST(Scene, VirtualTaskObject)
 {
 	Scene::VirtualTask t{ 0.1f,[]() {Engine::Get().Exit(); } };
-	RunGameObject(t, L"TestVirtualTaskObject");
+	RunGameObject(t, L"VirtualTaskObject");
 }
 
 class TestTween final : public Scene::Object
@@ -63,21 +63,21 @@ public:
 	}
 };
 
-TEST(SceneTest, TestTween)
+TEST(Scene, Tween)
 {
 	TestTween t;
-	RunGameObject(t, L"TestTween");
+	RunGameObject(t, L"Tween");
 }
 
-TEST(SceneTest, TestGroup)
+TEST(Scene, Group)
 {
 	Scene::Group p;
 	p.Emplace<Scene::VirtualTask>(0.5f, []() {Engine::Get().Exit(); });
 	p.Emplace<TestTween>();
-	RunGameObject(p, L"TestGroup");
+	RunGameObject(p, L"Group");
 }
 
-TEST(SceneTest, TestTweenSetter)
+TEST(Scene, TweenSetter)
 {
 	
 	class MyObject final : public Scene::Group<Scene::VirtualTweenSetter<float>>
@@ -109,11 +109,11 @@ TEST(SceneTest, TestTweenSetter)
 		}
 	};
 
-	RunGameObject(MyObject{},L"TestTweenSetter");
+	RunGameObject(MyObject{},L"TweenSetter");
 }
 
 
-TEST(SceneTest, TestVibratePlayer)
+TEST(Scene, VibratePlayer)
 {
 	Scene::VibrateEffect effect{LoadAsset("VibratorEffect.csv")};
 
@@ -124,12 +124,12 @@ TEST(SceneTest, TestVibratePlayer)
 		Scene::Group<> g;
 		g.Emplace<Scene::VibratePlayer<PlatformImpls::WindowsXInput::XInputController>>(&controller,&effect);
 		g.Emplace<Scene::VirtualTask>(5.0f, [] {Engine::Get().Exit(); });
-		RunGameObject(g, L"TestPlayVibrateEffect");
+		RunGameObject(g, L"PlayVibrateEffect");
 	}
 	
 }
 
-TEST(SceneTest, TestMenu)
+TEST(Scene, Menu)
 {
 	class DemoMenu : public Scene::Object
 	{
@@ -172,11 +172,11 @@ TEST(SceneTest, TestMenu)
 	Assert(menu.GetSelectedIndex(), std::nullopt);
 }
 
-TEST(SceneTest, TestTextMenuItem)
+TEST(Scene, TextMenuItem)
 {
 	using namespace std;
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-		L"TestTextMenuItem",
+		L"TextMenuItem",
 		{ 800,600 },
 		true);
 
@@ -246,11 +246,11 @@ TEST(SceneTest, TestTextMenuItem)
 }
 
 
-TEST(SceneTest, TestMenuKeyController)
+TEST(Scene, MenuKeyController)
 {
 	using namespace std;
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-		L"TestTextMenuItem",
+		L"TextMenuItem",
 		{ 800,600 },
 		true);
 
@@ -322,11 +322,11 @@ TEST(SceneTest, TestMenuKeyController)
 	Snowing::Engine::Get().RunObject(MyScene{});
 }
 
-TEST(SceneTest, TestMenuPositionController)
+TEST(Scene,MenuPositionController)
 {
 	using namespace std;
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-		L"TestTextMenuItem",
+		L"TextMenuItem",
 		{ 800,600 },
 		true);
 
@@ -421,7 +421,7 @@ static void TestDebugDisplay(Math::Vec2<int> size)
 	Engine::Get().RunObject(g);
 }
 
-TEST(SceneTest, TestDebugDisplay)
+TEST(Scene, DebugDisplay)
 {
 	TestDebugDisplay({ 800,600 });
 	TestDebugDisplay({ 400,300 });
@@ -429,10 +429,10 @@ TEST(SceneTest, TestDebugDisplay)
 	TestDebugDisplay({ 960,300 });
 }
 
-static void TestDebugMenu()
+TEST(Scene, DebugMenu)
 {
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-		L"TestDebugMenu",
+		L"DebugMenu",
 		{ 800,600 },
 		true);
 	Font font = LoadFont(LoadAsset("Font-chs.fnt"));
@@ -442,7 +442,7 @@ static void TestDebugMenu()
 	g.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
-	
+
 	auto debugMenu = g.Emplace<Scene::Debug::DebugMenu>(&tech1, &font);
 	debugMenu->AddMenuItem(L"Write Logger", []
 	{
@@ -452,18 +452,13 @@ static void TestDebugMenu()
 	{
 		Snowing::Log("debugMenu write log2");
 	});
-	
+
 	g.Emplace<Scene::VirtualTask>(1.0f, [] {Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(g);
 }
 
-TEST(SceneTest, TestDebugMenu)
-{
-	TestDebugMenu();
-}
-
-TEST(SceneTest, TestConditionTask)
+TEST(Scene, ConditionTask)
 {
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
 		L"ConditionTask",
