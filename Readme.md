@@ -18,12 +18,14 @@
 
 
 #### 插件
-- WindowsSteamSDK - Steam扩展
-- TestWindowsSteam - Steam扩展测试程序
+- WindowsSteamSDK - Steam插件
+- TestWindowsSteam - Steam插件的单元测试测试
 - WindowsDInput - 用于手柄输入的DInput插件
-- TestWindowsDInput - DInput插件测试
+- TestWindowsDInput - DInput插件的单元测试
 - WindowsXInput - 用于手柄输入的XInput插件
-- TestWindowsXInput - XInput插件测试
+- TestWindowsXInput - XInput插件的单元测试
+- Yukimi - AVG游戏组件库
+- TestYukimi - AVG游戏组件库的单元测试
 
 #### 范例
 - BGMPlayer - BGM播放器
