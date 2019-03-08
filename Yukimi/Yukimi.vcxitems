@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{8ecf6d8f-86cd-47e4-befd-3e80aafc3bc0}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
+  </ItemGroup>
+</Project>

@@ -3,7 +3,7 @@
 using namespace std::chrono;
 
 
-TEST(D3DTest, BasicllyRendering) {
+TEST(D3D, BasicllyRendering) {
 
 	constexpr Snowing::Graphics::EffectDataElement ias[] =
 	{
@@ -24,7 +24,7 @@ TEST(D3DTest, BasicllyRendering) {
 
 	MyVertex blank[3];
 
-	WindowImpl window{ L"TestDevice,Effect,CBuf,Tex" ,WinSize };
+	WindowImpl window{ L"BasicllyRendering" ,WinSize };
 	D3D::Device device{ window.GetHWND(),true };
 	Engine engine;
 
@@ -162,7 +162,7 @@ TEST(D3DTest, BasicllyRendering) {
 	});
 }
 
-TEST(D3DTest, StreamOut)
+TEST(D3D, StreamOut)
 {
 	constexpr Snowing::Graphics::EffectDataElement ias[] =
 	{
@@ -172,7 +172,7 @@ TEST(D3DTest, StreamOut)
 	float buf[1000];
 	std::fill(buf, buf + 1000, 0.5f);
 
-	WindowImpl window{ L"TestStreamOut" ,WinSize };
+	WindowImpl window{ L"StreamOut" ,WinSize };
 	D3D::Device device{ window.GetHWND(),true,D3D::Device::FeatureLevel::Level_10_0 };
 	Engine engine;
 
