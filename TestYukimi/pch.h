@@ -5,5 +5,5 @@
 
 #pragma once
 
-#include "..\..\Snowing\TestWindows\pch.h"
+#include "..\TestWindows\pch.h"
 #include <Snowing.h>
