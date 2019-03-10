@@ -3,7 +3,7 @@
 弦语蝶梦 第二代游戏引擎 Snowing
 
 [![Build status](https://ci.appveyor.com/api/projects/status/xsg86whgh0d00lma?svg=true)](https://ci.appveyor.com/project/SmallLuma/snowing)
-
+[![Build status](https://dev.azure.com/Strrationalism/Snowing/_apis/build/status/Snowing-CI)](https://dev.azure.com/Strrationalism/Snowing/_build/latest?definitionId=4)
 
 [快速入门](https://www.bilibili.com/video/av43701922/)
 
