@@ -9,7 +9,11 @@ namespace Yukimi
 		public Snowing::SingleInstance<CVPlayer>
 	{
 		constexpr static float speedTime = 0.25f;
+
+		const AudioChannel::AudioLoader loader_;
 	public:
+		CVPlayer(AudioChannel::AudioLoader);
+
 		void Play(Snowing::AssetName ass);
 		void FadeOutAll();
 		bool Update() override;

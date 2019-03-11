@@ -4,6 +4,10 @@
 using namespace Snowing;
 using namespace Yukimi;
 
+CVPlayer::CVPlayer(AudioChannel::AudioLoader l) :
+	loader_ { l }
+{}
+
 bool CVPlayer::Update()
 {
 	Scene::Group<AudioChannel>::Update();
@@ -20,7 +24,7 @@ void CVPlayer::FadeOutAll()
 void CVPlayer::Play(Snowing::AssetName ass)
 {
 	constexpr static float pan = 0.0f;
-	auto p = Emplace<>(ass, 0.0F, 0u, pan);
+	auto p = Emplace<>(loader_,ass, 0.0F, 0u, pan);
 	p->FadeVolume(1.0f);
 }
 
