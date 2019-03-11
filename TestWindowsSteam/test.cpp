@@ -1,11 +1,9 @@
+#include "pch.h"
 #include <Snowing.h>
 #include <Steam.h>
 #include <fstream>
 
 
-int main()
-{
+TEST(Init, InitSteamAPI) {
 	Snowing::PlatformImpls::WindowsSteam::Steam steam;
-
-	return 0;
 }
