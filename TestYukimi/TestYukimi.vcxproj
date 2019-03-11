@@ -19,18 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{e72cb55e-fc8d-46ef-96d6-7cd5921b58bf}</ProjectGuid>
+    <ProjectGuid>{d63385f3-cf24-4932-9f69-36a1f42ac98d}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <ProjectName>TestWindows</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings" />
   <ImportGroup Label="Shared">
+    <Import Project="..\Yukimi\Yukimi.vcxitems" Label="Shared" />
     <Import Project="..\Core\Core.vcxitems" Label="Shared" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" />
@@ -38,36 +38,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsXInput\;$(ProjectDir)..\WindowsImpl\;$(IncludePath)</IncludePath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsXInput\;$(ProjectDir)..\WindowsImpl\;$(IncludePath)</IncludePath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsXInput\;$(ProjectDir)..\WindowsImpl\;$(IncludePath)</IncludePath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsXInput\;$(ProjectDir)..\WindowsImpl\;$(IncludePath)</IncludePath>
-    <CodeAnalysisRuleSet>NativeRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D3D.cpp" />
-    <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="HiLevelRendering.cpp" />
-    <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="XAudio2.cpp" />
+    <ClCompile Include="Audio.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -76,44 +68,23 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="FontRendering.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FX11\Effects11_2017_Win10.vcxproj">
+      <Project>{df460eab-570d-4b50-9089-2e2fc801bf38}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsImpl\WindowsImpl.vcxproj">
       <Project>{36976dba-7802-4549-8f43-f56245d4115e}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\WindowsXInput\WindowsXInput.vcxproj">
-      <Project>{d6f422f5-94c8-49e0-9c6f-16af1e8d5eca}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="CSVTest.csv">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="FontFix.csv">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <None Include="packages.config" />
-    <CopyFileToFolders Include="VibratorEffect.csv">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Sprite.ctx">
-      <FileType>Document</FileType>
-    </CopyFileToFolders>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="HelloEffect.fx">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Effect</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
-    </FxCompile>
-    <FxCompile Include="HiLevelRendering.fx" />
-    <FxCompile Include="PostEffectDemo.fx" />
-    <FxCompile Include="StreamOutEffect.fx" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="PropTest.txt" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" />
+    <Import Project="..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets" Condition="Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" />
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -126,7 +97,6 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -134,10 +104,13 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(OutDir)%(Filename)</ObjectFileOutput>
-      <ShaderType>Effect</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -151,7 +124,6 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -159,10 +131,13 @@
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(OutDir)%(Filename)</ObjectFileOutput>
-      <ShaderType>Effect</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -174,7 +149,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -182,13 +156,15 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(OutDir)%(Filename)</ObjectFileOutput>
-      <ShaderType>Effect</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -200,7 +176,6 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -208,19 +183,21 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
-      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
-      <ObjectFileOutput>$(OutDir)%(Filename)</ObjectFileOutput>
-      <ShaderType>Effect</ShaderType>
-      <ShaderModel>5.0</ShaderModel>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </FxCompile>
+    <FxCompile>
+      <ShaderType>Effect</ShaderType>
+    </FxCompile>
+    <FxCompile>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.1.8.0\build\native\Microsoft.googletest.v140.windesktop.msvcstl.static.rt-dyn.targets'))" />
   </Target>
 </Project>

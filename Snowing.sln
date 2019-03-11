@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28621.142
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "Core\Core.vcxitems", "{917AA553-454B-4FF9-A680-DA5D7FEB59A8}"
 EndProject
@@ -49,6 +49,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsSteam", "TestWin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SpriteRendering", "SpriteRendering\SpriteRendering.vcxproj", "{677EDD27-8B75-4181-82BC-CEC96B71D683}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Yukimi", "Yukimi\Yukimi.vcxitems", "{8ECF6D8F-86CD-47E4-BEFD-3E80AAFC3BC0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestYukimi", "TestYukimi\TestYukimi.vcxproj", "{D63385F3-CF24-4932-9F69-36A1F42AC98D}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Core\Core.vcxitems*{36976dba-7802-4549-8f43-f56245d4115e}*SharedItemsImports = 4
@@ -57,12 +61,15 @@ Global
 		Core\Core.vcxitems*{6fc916c6-4f90-4f04-8822-7fa924836c0a}*SharedItemsImports = 4
 		Core\Core.vcxitems*{7cdad54a-d204-4907-b516-25a5f2061cae}*SharedItemsImports = 4
 		Core\Core.vcxitems*{85496e07-c508-46ed-89ce-f5d4a4ab5483}*SharedItemsImports = 4
+		Yukimi\Yukimi.vcxitems*{8ecf6d8f-86cd-47e4-befd-3e80aafc3bc0}*SharedItemsImports = 9
 		Core\Core.vcxitems*{917aa553-454b-4ff9-a680-da5d7feb59a8}*SharedItemsImports = 9
 		Core\Core.vcxitems*{96b98788-122f-4a37-8f0c-8472cac072de}*SharedItemsImports = 4
 		Core\Core.vcxitems*{9819e64a-728d-48e9-be7a-cc7fe678d97f}*SharedItemsImports = 4
 		Core\Core.vcxitems*{aabb5086-262e-4dbe-aad6-eff23211272c}*SharedItemsImports = 4
 		Core\Core.vcxitems*{b6edcecb-3930-4654-a41e-a60b9db7d153}*SharedItemsImports = 4
 		Core\Core.vcxitems*{d1d71e00-3887-4eee-9bd3-26d1d86490b7}*SharedItemsImports = 4
+		Core\Core.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
+		Yukimi\Yukimi.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
 		Core\Core.vcxitems*{d6f422f5-94c8-49e0-9c6f-16af1e8d5eca}*SharedItemsImports = 4
 		Core\Core.vcxitems*{e53b8b36-214e-4419-92ac-05ae39d70531}*SharedItemsImports = 4
 		Core\Core.vcxitems*{e72cb55e-fc8d-46ef-96d6-7cd5921b58bf}*SharedItemsImports = 4
@@ -265,6 +272,16 @@ Global
 		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x64.Build.0 = Release|x64
 		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x86.ActiveCfg = Release|Win32
 		{677EDD27-8B75-4181-82BC-CEC96B71D683}.Release|x86.Build.0 = Release|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Debug|x64.ActiveCfg = Debug|x64
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Debug|x64.Build.0 = Debug|x64
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Debug|x86.ActiveCfg = Debug|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Debug|x86.Build.0 = Debug|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Release|x64.ActiveCfg = Release|x64
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Release|x64.Build.0 = Release|x64
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Release|x86.ActiveCfg = Release|Win32
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,6 +299,8 @@ Global
 		{B6EDCECB-3930-4654-A41E-A60B9DB7D153} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 		{FD066135-D9CC-454B-B075-8191BF0DAD31} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 		{677EDD27-8B75-4181-82BC-CEC96B71D683} = {2D9ECDC6-7F73-4991-8AB3-271D36F872BB}
+		{8ECF6D8F-86CD-47E4-BEFD-3E80AAFC3BC0} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
+		{D63385F3-CF24-4932-9F69-36A1F42AC98D} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {141F636F-971C-4E6F-BAA6-C6B7054CFD86}

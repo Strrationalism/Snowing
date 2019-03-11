@@ -8,11 +8,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="D3DTest.cpp" />
     <ClCompile Include="HiLevelRendering.cpp" />
-    <ClCompile Include="SceneTest.cpp" />
-    <ClCompile Include="UtilsTest.cpp" />
-    <ClCompile Include="XAudio2Test.cpp" />
+    <ClCompile Include="D3D.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="XAudio2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
