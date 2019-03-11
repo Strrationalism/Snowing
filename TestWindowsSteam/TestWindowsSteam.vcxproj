@@ -35,7 +35,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsImpl;$(ProjectDir)..\WindowsSteam;$(ProjectDir)..\Core;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\Core;$(ProjectDir)..\WindowsImpl;$(ProjectDir)..\WindowsSteam;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformName)\</IntDir>
+    <IncludePath>$(ProjectDir)..\Core;$(ProjectDir)..\WindowsImpl;$(ProjectDir)..\WindowsSteam;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformName)\</IntDir>
+    <IncludePath>$(ProjectDir)..\Core;$(ProjectDir)..\WindowsImpl;$(ProjectDir)..\WindowsSteam;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformName)\</IntDir>
+    <IncludePath>$(ProjectDir)..\Core;$(ProjectDir)..\WindowsImpl;$(ProjectDir)..\WindowsSteam;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -99,6 +114,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -113,6 +129,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -129,6 +146,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

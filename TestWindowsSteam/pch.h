@@ -23,6 +23,7 @@ const static inline auto ignore = _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_
 #include <Windows.h>
 #include <thread>
 #include <fstream>
+#include <Steam.h>
 
 using namespace Snowing;
 using namespace Snowing::Graphics;
