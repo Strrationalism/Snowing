@@ -18,8 +18,11 @@ namespace Yukimi
 		std::optional<uint32_t> pausePoint_;
 
 	public:
+
+		using AudioLoader = Snowing::Blob(*)(Snowing::AssetName);
+
 		// 异步加载并播放一个声音
-		AudioChannel(Snowing::AssetName,float fadeIn = 0,uint32_t begin = 0,float pan = 0);
+		AudioChannel(AudioLoader loader,Snowing::AssetName,float fadeIn = 0,uint32_t begin = 0,float pan = 0);
 
 		// 停止播放声音
 		void Stop(float fadeOut = 0);

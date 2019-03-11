@@ -6,6 +6,8 @@
 using namespace Snowing;
 using namespace Yukimi;
 
+constexpr auto AudioLoader = [] (auto s) { return Snowing::LoadAsset(s); };
+
 TEST(Audio, AudioChannel)
 {
 	auto engine =
@@ -28,7 +30,7 @@ TEST(Audio, AudioChannel)
 		&tech1, &font, L"Scene Objs", [&scene] { return std::to_wstring(scene.Count()); });
 
 	scene.Emplace<Scene::VirtualTask>(0.5f,[&] {
-		scene.Emplace<AudioChannel>("Dir/Sound/ExBoss.snd", 0.5f, 90000u);
+		scene.Emplace<AudioChannel>(AudioLoader,"Dir/Sound/ExBoss.snd", 0.5f, 90000u);
 		scene.Emplace<Scene::VirtualTask>(0.5f, [&] {
 			scene.IterType<AudioChannel>([](auto & player) {
 				player.Pause(0.5f);
@@ -68,7 +70,7 @@ TEST(Audio, BGMPlayer)
 	Graphics::EffectTech tech1 = eff.LoadTechnique("Font", Sprite::DataLayout);
 
 	Scene::Group<> scene;
-	scene.Emplace<BGMPlayer>();
+	scene.Emplace<BGMPlayer>(AudioLoader);
 	scene.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(), &Graphics::Device::MainRenderTarget());
 	scene.Emplace<Scene::Debug::DebugDisplay>(
@@ -118,7 +120,7 @@ TEST(Audio, SEPlayer)
 	Graphics::EffectTech tech1 = eff.LoadTechnique("Font", Sprite::DataLayout);
 
 	Scene::Group<> scene;
-	scene.Emplace<SEPlayer>();
+	scene.Emplace<SEPlayer>(AudioLoader);
 	scene.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(), &Graphics::Device::MainRenderTarget());
 	scene.Emplace<Scene::Debug::DebugDisplay>(
@@ -168,7 +170,7 @@ TEST(Audio, CVPlayer)
 	Graphics::EffectTech tech1 = eff.LoadTechnique("Font", Sprite::DataLayout);
 	
 	Scene::Group<> scene;
-	scene.Emplace<CVPlayer>();
+	scene.Emplace<CVPlayer>(AudioLoader);
 	scene.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(), &Graphics::Device::MainRenderTarget());
 	scene.Emplace<Scene::Debug::DebugDisplay>(

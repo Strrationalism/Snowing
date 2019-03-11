@@ -14,8 +14,12 @@ namespace Yukimi
 		// 不应该直接通过指针访问对象，仅用于从Group里判断某个对象是否为当前的播放对象
 		AudioChannel* currentChannel_ = nullptr;
 
+		const AudioChannel::AudioLoader loader_;
+
 		void stopAllChannels(float fadeTime);
 	public:
+
+		BGMPlayer(AudioChannel::AudioLoader loader);
 
 		// 播放BGM
 		void Play(Snowing::AssetName, float fadeTime = 0, uint32_t begin = 0);

@@ -4,6 +4,10 @@
 using namespace Snowing;
 using namespace Yukimi;
 
+BGMPlayer::BGMPlayer(AudioChannel::AudioLoader l) :
+	loader_{ l }
+{}
+
 
 void BGMPlayer::stopAllChannels(float fadeTime)
 {
@@ -15,7 +19,7 @@ void BGMPlayer::stopAllChannels(float fadeTime)
 void BGMPlayer::Play(AssetName bgm, float fadeTime, uint32_t begin)
 {
 	stopAllChannels(fadeTime);
-	currentChannel_ = Emplace<AudioChannel>(bgm, fadeTime, begin);
+	currentChannel_ = Emplace<AudioChannel>(loader_,bgm, fadeTime, begin);
 }
 
 void BGMPlayer::FadeTo(AssetName a, float fadeTime)
