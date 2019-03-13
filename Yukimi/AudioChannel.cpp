@@ -53,7 +53,7 @@ void AudioChannel::Resume(float fadeIn)
 {
 	if (pausePoint_.has_value())
 	{
-		player_.Play(&sound_, pausePoint_.value());
+		player_.Play(&sound_.get(), pausePoint_.value());
 		pausePoint_.reset();
 		fadeVolume_.Start(1, fadeIn);
 	}
