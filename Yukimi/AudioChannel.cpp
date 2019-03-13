@@ -14,7 +14,7 @@ AudioChannel::AudioChannel(AudioLoader loader,Snowing::AssetName s, float fadeIn
 			fadeVolume_.Start(1, fadeIn);
 		}
 	},
-	soundLoading_{
+	sound_{
 		std::async(std::launch::async,loader, s)
 	}
 {
