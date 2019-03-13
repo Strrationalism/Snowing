@@ -5,12 +5,11 @@ using namespace Yukimi;
 
 AudioChannel::AudioChannel(AudioLoader loader,Snowing::AssetName s, float fadeIn, uint32_t begin, float pan):
 	onSoundLoaded_{
-		[this] { return soundLoading_.valid(); },
+		[this] { return sound_.valid(); },
 		[this,fadeIn,begin,pan] {
-			sound_ = soundLoading_.get();
 			fadeVolume_ = 0;
 			player_.SetPan(pan);
-			player_.Play(&sound_, begin);
+			player_.Play(&sound_.get(), begin);
 
 			fadeVolume_.Start(1, fadeIn);
 		}
