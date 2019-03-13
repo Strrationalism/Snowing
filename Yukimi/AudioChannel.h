@@ -9,7 +9,7 @@ namespace Yukimi
 		public Snowing::Scene::Object
 	{
 	private:
-		std::future<Snowing::Blob&> soundLoading_;
+		std::future<Snowing::Blob&> sound_;
 		Snowing::Audio::SoundPlayer player_;
 		Snowing::Scene::Tween<float> fadeVolume_, mainVolume_ = 1;
 		Snowing::Scene::VirtualConditionTask onSoundLoaded_;
