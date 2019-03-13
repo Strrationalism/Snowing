@@ -9,8 +9,7 @@ namespace Yukimi
 		public Snowing::Scene::Object
 	{
 	private:
-		std::future<Snowing::Blob> soundLoading_;
-		Snowing::Blob sound_;
+		std::future<Snowing::Blob&> soundLoading_;
 		Snowing::Audio::SoundPlayer player_;
 		Snowing::Scene::Tween<float> fadeVolume_, mainVolume_ = 1;
 		Snowing::Scene::VirtualConditionTask onSoundLoaded_;
@@ -21,25 +20,25 @@ namespace Yukimi
 
 		using AudioLoader = Snowing::Blob(*)(Snowing::AssetName);
 
-		// Òì²½¼ÓÔØ²¢²¥·ÅÒ»¸öÉùÒô
+		// å¼‚æ­¥åŠ è½½å¹¶æ’­æ”¾ä¸€ä¸ªå£°éŸ³
 		AudioChannel(AudioLoader loader,Snowing::AssetName,float fadeIn = 0,uint32_t begin = 0,float pan = 0);
 
-		// Í£Ö¹²¥·ÅÉùÒô
+		// åœæ­¢æ’­æ”¾å£°éŸ³
 		void Stop(float fadeOut = 0);
 
-		// »ñÈ¡²¥·ÅÎ»ÖÃ
+		// è·å–æ’­æ”¾ä½ç½®
 		uint32_t GetPosition() const;
 
-		// ÔİÍ£
+		// æš‚åœ
 		void Pause(float fadeOut = 0);
 
-		// ´ÓÔİÍ£ÖĞ»Ö¸´
+		// ä»æš‚åœä¸­æ¢å¤
 		void Resume(float fadeIn = 0);
 
-		// µ­Èëµ­³öµ÷ÕûÒôÁ¿
+		// æ·¡å…¥æ·¡å‡ºè°ƒæ•´éŸ³é‡
 		void FadeVolume(float volume,float fade = 0);
 
-		// µ±ÉùÒô²¥·Å½áÊø»ò±»ÍêÈ«Í£Ö¹ºó£¬¶ÔÏóËÀÍö
+		// å½“å£°éŸ³æ’­æ”¾ç»“æŸæˆ–è¢«å®Œå…¨åœæ­¢åï¼Œå¯¹è±¡æ­»äº¡
 		bool Update() override;
 	};
 }
