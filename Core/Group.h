@@ -80,6 +80,14 @@ namespace Snowing::Scene
 		{
 			return objs_[i].get();
 		}
+
+		bool Exist(TBaseObject* pObject) const
+		{
+			return std::any_of(objs_.begin(), objs_.end(), [pObject](const auto& pObjectInList)
+			{
+				return pObject == pObjectInList.get();
+			});
+		}
 	};
 
 	template <typename TBaseObject = Object>
