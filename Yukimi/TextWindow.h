@@ -88,8 +88,6 @@ namespace Yukimi
 	public:
 
 		TextWindow(
-			Snowing::Math::Coordinate2DRect screen,
-			Snowing::Graphics::Font* font,
 			TextWindowFontStyle defaultStyle,
 			TextWindowContent* content
 		);
