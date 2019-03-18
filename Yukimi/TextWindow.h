@@ -21,7 +21,7 @@ namespace Yukimi
 		{
 			Snowing::Graphics::FontSprite Sprite;
 			std::unique_ptr<TextAnimation> Animation;
-			TextWindowFontStyle Style;
+			FontRenderer* Renderer;
 
 			float LifeTime;			// 总生命时间
 			float SinceFadeInTime;	// 若为负数，则为“距离被正常显示还有”，若为正数，则为“距离正常显示已经过去”
@@ -52,8 +52,9 @@ namespace Yukimi
 			// 当要求被淡出时
 			virtual void FadeOut() = 0;
 
-			// 当窗口被隐藏时
-			virtual void VisableChanged(bool visible) = 0;
+			// 当窗口被显示/隐藏时
+			virtual void OnHide() = 0;
+			virtual void OnShow() = 0;
 		};
 
 		// 此类用于用户配置对话框系统，使用者需要继承于此类，子对象传递给TextWindow
@@ -69,14 +70,12 @@ namespace Yukimi
 			// 根据ID创建文字动画效果
 			virtual std::unique_ptr<TextAnimation> CreateAnimationByID(Charater* ch,size_t id) = 0;
 
-			// 根据字体名称获取字体风格对象
-			virtual TextWindowFontStyle* BorrowFontStyle(std::wstring_view) = 0;
-
 			// 更新一帧，在TextWindow更新之前会执行，可以在此渲染背景，不得返回false
 			bool Update() override = 0;
 
-			// 设置窗口是否显示
-			virtual void VisableChanged(bool visable) = 0;
+			// 当窗口被显示/隐藏时
+			virtual void OnHide() = 0;
+			virtual void OnShow() = 0;
 
 			// 获取一个对象，这个对象将会持续返回一个对象，它将在TextWindow更新后更新，可以在此渲染UI，该对象不得死亡
 			virtual Snowing::Scene::Object* GetAfterObject() = 0;
@@ -99,10 +98,16 @@ namespace Yukimi
 		void FadeClear();
 
 		// 追加文字
-		void AppendText(std::wstring_view text, std::wstring_view* styleNames, size_t styleNameCount,float wait);
+		void AppendText(
+			std::wstring_view text,
+			const TextWindowFontStyle& style,
+			float wait);
 
 		// 停止淡出效果
 		void FastFadeOut();
+
+		// 设置窗口是否显示/隐藏
+		void SetVisible(bool);
 
 		// 获取状态
 		State GetState() const;
