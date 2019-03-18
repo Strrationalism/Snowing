@@ -105,7 +105,7 @@ namespace Yukimi
 			float wait);
 
 		// 停止淡出效果
-		void FastFadeOut();
+		void FastFadeIn();
 
 		// 设置窗口是否显示/隐藏
 		void SetVisible(bool);
