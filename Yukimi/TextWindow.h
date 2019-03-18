@@ -58,7 +58,7 @@ namespace Yukimi
 		};
 
 		// 此类用于用户配置对话框系统，使用者需要继承于此类，子对象传递给TextWindow
-		class TextWindowContent : public Snowing::Scene::Object
+		class TextWindowContent
 		{
 		public:
 			// 获取对话框位置
@@ -70,15 +70,9 @@ namespace Yukimi
 			// 根据ID创建文字动画效果
 			virtual std::unique_ptr<TextAnimation> CreateAnimationByID(Charater* ch,size_t id) = 0;
 
-			// 更新一帧，在TextWindow更新之前会执行，可以在此渲染背景，不得返回false
-			bool Update() override = 0;
-
 			// 当窗口被显示/隐藏时
 			virtual void OnHide() = 0;
 			virtual void OnShow() = 0;
-
-			// 获取一个对象，这个对象将会持续返回一个对象，它将在TextWindow更新后更新，可以在此渲染UI，该对象不得死亡
-			virtual Snowing::Scene::Object* GetAfterObject() = 0;
 		};
 
 	private:
