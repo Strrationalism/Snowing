@@ -18,8 +18,7 @@ TextWindowFontStyle TextWindowFontStyle::LoadFromProp(const Snowing::PropParser<
 		p.GetOpt<float>("size"),
 		Snowing::To<Snowing::BKDRHash>(p.GetOpt("animation")),
 		Snowing::To<Snowing::BKDRHash>(p.GetOpt("shader")),
-		color,
-		p.GetOpt<float>("stroke")
+		color
 	};
 }
 
@@ -36,9 +35,6 @@ TextWindowFontStyle TextWindowFontStyle::Combine(TextWindowFontStyle ret, const 
 
 	if (deriv.Color.has_value())
 		ret.Color = deriv.Color;
-
-	if (deriv.Stroke.has_value())
-		ret.Stroke = deriv.Stroke;
 
 	return ret;
 }
@@ -65,7 +61,6 @@ TextWindowFontStyle& TextWindowFontStyle::operator = (const TextWindowFontStyle&
 	AnimationID.emplace(*a.AnimationID);
 	ShaderID.emplace(*a.ShaderID);
 	Color = a.Color;
-	Stroke = a.Stroke;
 
 	return *this;
 }

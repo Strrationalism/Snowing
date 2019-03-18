@@ -12,7 +12,6 @@ namespace Yukimi
 		std::optional<Snowing::BKDRHash> AnimationID;
 		std::optional<Snowing::BKDRHash> ShaderID;
 		std::optional<Snowing::Math::Vec3f> Color;
-		std::optional<float> Stroke;
 
 		TextWindowFontStyle& operator = (const TextWindowFontStyle&);
 

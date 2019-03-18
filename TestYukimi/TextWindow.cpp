@@ -15,7 +15,6 @@ TEST(TextWindow, FontStyleLoadingCombine)
 
 	Assert(*style3.Color, styles[1].Color);
 	Assert(*style3.Size, styles[1].Size);
-	Assert(*style3.Stroke, styles[1].Stroke);
 
 	Assert(*style3.ShaderID, styles[0].ShaderID);
 	Assert(*style3.AnimationID, styles[0].AnimationID);

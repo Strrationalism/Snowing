@@ -18,6 +18,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
   </ItemGroup>
   <ItemGroup>
