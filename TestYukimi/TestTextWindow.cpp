@@ -111,7 +111,7 @@ TEST(TextWindow, ShowText)
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
-	textWindow->AppendText(L"今儿天气真不错", DefaultFontStyle,0);
+	textWindow->AppendText(L"TodayIsWell!!", DefaultFontStyle,0);
 
 	Engine::Get().RunObject(scene);
 }
