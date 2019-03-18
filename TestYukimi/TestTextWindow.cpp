@@ -107,7 +107,7 @@ TEST(TextWindow, ShowText)
 		&Device::Get().MainContext(),&Device::Get().MainRenderTarget(),Math::Vec4f{ 0,0,0,1 });
 
 	scene.Emplace<Scene::VirtualTask>(5.0f, [] {
-		Engine::Get().Exit()
+		Engine::Get().Exit();
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
