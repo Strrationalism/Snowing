@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "TextWindow.h"
 
 using namespace Snowing::Graphics;
@@ -17,7 +17,7 @@ void Yukimi::TextWindow::appendCharater(wchar_t ch, const TextWindowFontStyle& s
 		p.Sprite.SetCharater(userAdapter_->GetFont(), ch);
 		p.LifeTime = 0;
 		p.WaitTime = wait;
-		p.SinceFadeInTime = -wait;	//TODO:´Ë¼ÆËã²»ÕıÈ·£¬Ä¿Ç°½öÓÃÓÚDebug
+		p.SinceFadeInTime = -wait;	//TODO:æ­¤è®¡ç®—ä¸æ­£ç¡®ï¼Œç›®å‰ä»…ç”¨äºDebug
 
 		assert(style.AnimationID.has_value());
 		assert(style.ShaderID.has_value());
