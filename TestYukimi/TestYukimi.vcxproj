@@ -66,13 +66,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TextWindow.cpp" />
+    <ClCompile Include="TestTextWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="FontRendering.fx" />
+    <FxCompile Include="TextWindowShaders.fx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FX11\Effects11_2017_Win10.vcxproj">

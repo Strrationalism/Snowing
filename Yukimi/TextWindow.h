@@ -4,12 +4,11 @@
 
 namespace Yukimi
 {
-	class TextWindow final : public Snowing::Scene::Object
+	class TextWindow final : 
+		public virtual Snowing::Scene::Object
 	{
 	public:
 		class TextAnimation;
-
-	private:
 
 		using FontRenderer = Snowing::Graphics::FontRenderer<
 			Snowing::Graphics::Sprite,
@@ -44,31 +43,37 @@ namespace Yukimi
 		{
 		public:
 			// 每帧更新一次
-			virtual void Update() = 0;
+			virtual void Update(Charater&) = 0;
 			
 			// 用户点击鼠标要求快速完成淡入效果时
-			virtual void FastFadeIn() = 0;
+			virtual void FastFadeIn(Charater&) = 0;
 
 			// 当要求被淡出时
-			virtual void FadeOut() = 0;
+			virtual void FadeOut(Charater&) = 0;
 
 			// 当窗口被显示/隐藏时
-			virtual void OnHide() = 0;
-			virtual void OnShow() = 0;
+			virtual void OnHide(Charater&) = 0;
+			virtual void OnShow(Charater&) = 0;
 		};
 
 		// 此类用于用户配置对话框系统，使用者需要继承于此类，子对象传递给TextWindow
-		class TextWindowContent
+		class TextWindowUserAdapter
 		{
 		public:
 			// 获取对话框位置
 			virtual Snowing::Math::Coordinate2DRect GetTextWindowRectInWindowCoord() const = 0;
 
 			// 根据ID获取着色器Tech对应的FontRenderer
-			virtual std::map<size_t, FontRenderer*>& BorrowFontRenderers() = 0;
+			virtual FontRenderer* GetFontRendererByShaderName(Snowing::BKDRHash) = 0;
 
+			// 立即完成所有绘制操作
+			virtual void FlushDrawCall() = 0;
+
+			// 获取字体
+			virtual const Snowing::Graphics::Font& GetFont() const = 0;
+			
 			// 根据ID创建文字动画效果
-			virtual std::unique_ptr<TextAnimation> CreateAnimationByID(Charater* ch,size_t id) = 0;
+			virtual std::unique_ptr<TextAnimation> CreateAnimationByName(Charater& ch,Snowing::BKDRHash) = 0;
 
 			// 当窗口被显示/隐藏时
 			virtual void OnHide() = 0;
@@ -76,13 +81,15 @@ namespace Yukimi
 		};
 
 	private:
-		
+		TextWindowUserAdapter* const userAdapter_;
+
+		std::vector<Charater> text_;
+		void appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait);
 
 	public:
 
 		TextWindow(
-			TextWindowFontStyle defaultStyle,
-			TextWindowContent* content
+			TextWindowUserAdapter* userAdapter
 		);
 
 		// 强制清除
@@ -105,5 +112,7 @@ namespace Yukimi
 
 		// 获取状态
 		State GetState() const;
+
+		bool Update() override;
 	};
 }
