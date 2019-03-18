@@ -1,6 +1,7 @@
 #include <Coordinate2D.h>
 #include <PlatformImpls.h>
-#include <TextWindowFontStyle.h>
+#include "TextWindowFontStyle.h"
+#include "TextTyper.h"
 
 namespace Yukimi
 {
@@ -61,7 +62,7 @@ namespace Yukimi
 		{
 		public:
 			// 获取对话框位置
-			virtual Snowing::Math::Coordinate2DRect GetTextWindowRectInWindowCoord() const = 0;
+			virtual Snowing::Math::Vec4f GetTextWindowBox() const = 0;
 
 			// 根据ID获取着色器Tech对应的FontRenderer
 			virtual FontRenderer* GetFontRendererByShaderName(Snowing::BKDRHash) = 0;
@@ -81,9 +82,11 @@ namespace Yukimi
 		};
 
 	private:
+		std::map<wchar_t, Snowing::Math::Vec2f> fix_;
 		TextWindowUserAdapter* const userAdapter_;
 
 		std::vector<Charater> text_;
+		TextTyper typer_;
 		void appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait);
 
 	public:

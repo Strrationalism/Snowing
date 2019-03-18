@@ -6,6 +6,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
@@ -13,10 +15,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="TextWindowAnimations">
-      <UniqueIdentifier>{f94098dd-3720-4ef6-bb9e-c00ca839350a}</UniqueIdentifier>
-    </Filter>
+    <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
   </ItemGroup>
 </Project>

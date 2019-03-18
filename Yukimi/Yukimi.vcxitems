@@ -26,7 +26,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
   </ItemGroup>
 </Project>

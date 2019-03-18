@@ -54,11 +54,11 @@ private:
 	};
 
 public:
-	Math::Coordinate2DRect GetTextWindowRectInWindowCoord() const override
+	Math::Vec4f GetTextWindowBox() const override
 	{
 		return {
-			{-300.0f,-200.0f},
-			{300.0f,200.0f}
+			-300.0f,-200.0f,
+			300.0f,200.0f
 		};
 	}
 
@@ -92,7 +92,7 @@ constexpr TextWindowFontStyle DefaultFontStyle
 	1.0f,
 	"Simple",
 	"Simple",
-	Math::Vec3f{0.5f,0.5f,1}
+	Math::Vec3f{1.0f,1.0f,1.0f}
 };
 
 TEST(TextWindow, ShowText)
@@ -111,7 +111,22 @@ TEST(TextWindow, ShowText)
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
-	textWindow->AppendText(L"TodayIsWell!!", DefaultFontStyle,0);
+	textWindow->AppendText(L"弦语蝶梦制作的空梦真的是太有趣啦弦语蝶梦制作的空梦真的是太有趣啦弦语蝶梦制作的空梦真的是太有趣啦\n弦语蝶梦制作的空梦真的是太有趣啦\n弦语蝶梦制作的空梦真的是太  有 趣  啦Strrationalism is so good.", DefaultFontStyle,0);
+
+	TextWindowFontStyle bigFont;
+	bigFont.Size = 1.5f;
+	bigFont = TextWindowFontStyle::Combine(DefaultFontStyle, bigFont);
+
+	TextWindowFontStyle smallFont;
+	smallFont.Size = 0.8f;
+	smallFont = TextWindowFontStyle::Combine(DefaultFontStyle, smallFont);
+
+	for (int i = 0; i < 1; ++i)
+	{
+		textWindow->AppendText(L"\n大字小字混排测试", DefaultFontStyle, 0);
+		textWindow->AppendText(L"大字小字混排测试", bigFont, 0);
+		textWindow->AppendText(L"大字小字混排测试", smallFont, 0);
+	}
 
 	Engine::Get().RunObject(scene);
 }

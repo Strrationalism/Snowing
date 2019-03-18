@@ -7,3 +7,5 @@
 
 #include "..\TestWindows\pch.h"
 #include <Snowing.h>
+
+#undef max
