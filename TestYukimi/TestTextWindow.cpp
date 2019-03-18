@@ -106,6 +106,10 @@ TEST(TextWindow, ShowText)
 	scene.Emplace<Scene::RenderTargetCleaner>(
 		&Device::Get().MainContext(),&Device::Get().MainRenderTarget(),Math::Vec4f{ 0,0,0,1 });
 
+	scene.Emplace<Scene::VirtualTask>(5.0f, [] {
+		Engine::Get().Exit()
+	});
+
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
 	textWindow->AppendText(L"今儿天气真不错", DefaultFontStyle,0);
 
