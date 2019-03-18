@@ -92,7 +92,7 @@ constexpr TextWindowFontStyle DefaultFontStyle
 	1.0f,
 	"Simple",
 	"Simple",
-	Math::Vec3f{1,1,1}
+	Math::Vec3f{0.5f,0.5f,1}
 };
 
 TEST(TextWindow, ShowText)

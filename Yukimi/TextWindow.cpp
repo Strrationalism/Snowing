@@ -17,6 +17,10 @@ void Yukimi::TextWindow::appendCharater(wchar_t ch, const TextWindowFontStyle& s
 	assert(style.ShaderID.has_value());
 	p.Animation = userAdapter_->CreateAnimationByName(p,*style.AnimationID);
 	p.Renderer = userAdapter_->GetFontRendererByShaderName(*style.ShaderID);
+
+	p.Sprite.Sprite.Color.x = style.Color->x;
+	p.Sprite.Sprite.Color.y = style.Color->y;
+	p.Sprite.Sprite.Color.z = style.Color->z;
 }
 
 Yukimi::TextWindow::TextWindow(TextWindowUserAdapter* userAdapter):
