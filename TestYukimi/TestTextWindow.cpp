@@ -111,7 +111,7 @@ TEST(TextWindow, ShowText)
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
-	textWindow->AppendText(L"ÏÒÓïµûÃÎÖÆ×÷µÄ¿ÕÃÎÕæµÄÊÇÌ«ÓÐÈ¤À²ÏÒÓïµûÃÎÖÆ×÷µÄ¿ÕÃÎÕæµÄÊÇÌ«ÓÐÈ¤À²ÏÒÓïµûÃÎÖÆ×÷µÄ¿ÕÃÎÕæµÄÊÇÌ«ÓÐÈ¤À²\nÏÒÓïµûÃÎÖÆ×÷µÄ¿ÕÃÎÕæµÄÊÇÌ«ÓÐÈ¤À²\nÏÒÓïµûÃÎÖÆ×÷µÄ¿ÕÃÎÕæµÄÊÇÌ«  ÓÐ È¤  À²Strrationalism is so good.", DefaultFontStyle,0);
+	textWindow->AppendText(L"StrrationalismStrrationalismStrrationalismStrrationalism\nStrrationalism\nStrrationalism  Strrationalism Strrationalism  Strrationalism is so good.", DefaultFontStyle,0);
 
 	TextWindowFontStyle bigFont;
 	bigFont.Size = 1.5f;
@@ -123,9 +123,9 @@ TEST(TextWindow, ShowText)
 
 	for (int i = 0; i < 1; ++i)
 	{
-		textWindow->AppendText(L"\n´ó×ÖÐ¡×Ö»ìÅÅ²âÊÔ", DefaultFontStyle, 0);
-		textWindow->AppendText(L"´ó×ÖÐ¡×Ö»ìÅÅ²âÊÔ", bigFont, 0);
-		textWindow->AppendText(L"´ó×ÖÐ¡×Ö»ìÅÅ²âÊÔ", smallFont, 0);
+		textWindow->AppendText(L"\nStrrationalism", DefaultFontStyle, 0);
+		textWindow->AppendText(L"Strrationalism", bigFont, 0);
+		textWindow->AppendText(L"Strrationalism", smallFont, 0);
 	}
 
 	Engine::Get().RunObject(scene);
