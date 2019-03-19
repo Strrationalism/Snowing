@@ -7,6 +7,11 @@ constexpr float MagicFontSize = 0.25f;
 
 void Yukimi::TextWindow::appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait)
 {
+	assert(
+		GetState() == State::EmptyTextWindow ||
+		GetState() == State::FadingInText ||
+		GetState() == State::Displaying);
+
 	auto pos = typer_.Type(ch, *style.Size);
 
 	currentTimeLineEnd_ += wait;
@@ -102,12 +107,8 @@ void Yukimi::TextWindow::SetVisible(bool vis)
 	{
 		visible_ = vis;
 		
-		if (vis)
-			for (auto& p : text_)
-				p.Animation->OnShow(p);
-		else
-			for (auto& p : text_)
-				p.Animation->OnHide(p);
+		for (auto& p : text_)
+			p.Animation->SetVisible(p,vis);
 	}
 }
 

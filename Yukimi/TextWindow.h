@@ -67,8 +67,7 @@ namespace Yukimi
 			virtual void FadeOut(Charater&) = 0;
 
 			// 当窗口被显示/隐藏时
-			virtual void OnHide(Charater&) = 0;
-			virtual void OnShow(Charater&) = 0;
+			virtual void SetVisible(Charater&,bool vis) = 0;
 		};
 
 		// 此类用于用户配置对话框系统，使用者需要继承于此类，子对象传递给TextWindow
@@ -91,8 +90,7 @@ namespace Yukimi
 			virtual std::unique_ptr<TextAnimation> CreateAnimationByName(Charater& ch,Snowing::BKDRHash) = 0;
 
 			// 当窗口被显示/隐藏时
-			virtual void OnHide() = 0;
-			virtual void OnShow() = 0;
+			virtual void SetVisible(bool) = 0;
 		};
 
 	private:

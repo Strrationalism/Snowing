@@ -31,27 +31,43 @@ class SimpleTextAnimation final : public TextWindow::TextAnimation
 private:
 	const float orgSize_;
 	bool visible_ = true;
+
+	bool fadingOut_ = false;
 public:
 	SimpleTextAnimation(float orgSize) : orgSize_{ orgSize } {}
 	void Update(TextWindow::Charater& c) override
 	{
-		if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
+		if (fadingOut_)
 		{
-			c.Sprite.Sprite.Color.w = visible_ ? 10 * (c.SinceFadeInTime + 0.1f) : 0;
-			
-			auto size = (1 - c.Sprite.Sprite.Color.w) * orgSize_ * 1.5f + orgSize_;
-			c.Sprite.Sprite.Size = { size,size };
+			c.Sprite.Sprite.Color.w -= 1 * Engine::Get().DeltaTime();
 		}
-		else if (c.SinceFadeInTime >= 0)
+		else
 		{
-			c.Sprite.Sprite.Color.w = visible_;
-			c.Sprite.Sprite.Size = { orgSize_,orgSize_ };
+			if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
+			{
+				c.Sprite.Sprite.Color.w = visible_ ? 10 * (c.SinceFadeInTime + 0.1f) : 0;
+
+				auto size = (1 - c.Sprite.Sprite.Color.w) * orgSize_ * 1.5f + orgSize_;
+				c.Sprite.Sprite.Size = { size,size };
+			}
+			else if (c.SinceFadeInTime >= 0)
+			{
+				c.Sprite.Sprite.Color.w = visible_;
+				c.Sprite.Sprite.Size = { orgSize_,orgSize_ };
+			}
 		}
 	}
 
 	AnimationState GetState(const TextWindow::Charater& c) const override
 	{
-		if (c.SinceFadeInTime <= -0.1f)
+		if (fadingOut_)
+		{
+			if (c.Sprite.Sprite.Color.w < 0.001f)
+				return AnimationState::Killed;
+			else
+				return AnimationState::FadingOut;
+		}
+		else if (c.SinceFadeInTime <= -0.1f)
 			return AnimationState::Ready;
 		else if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
 			return AnimationState::FadingIn;
@@ -65,16 +81,14 @@ public:
 		c.SinceFadeInTime = 1;
 	}
 
-	void FadeOut(TextWindow::Charater&) override {}
-
-	void OnHide(TextWindow::Charater&) override 
+	void FadeOut(TextWindow::Charater&) override 
 	{
-		visible_ = false;
+		fadingOut_ = true;
 	}
 
-	void OnShow(TextWindow::Charater&) override
+	void SetVisible(TextWindow::Charater&,bool v) override 
 	{
-		visible_ = true;
+		visible_ = v;
 	}
 };
 
@@ -126,12 +140,10 @@ public:
 		return std::make_unique<SimpleTextAnimation>(ch.Sprite.Sprite.Size.x);
 	}
 
-	void OnHide() override 
+	void SetVisible(bool) override 
 	{
 
 	}
-
-	void OnShow() override {}
 };
 
 constexpr TextWindowFontStyle DefaultFontStyle
@@ -228,6 +240,46 @@ TEST(TextWindow, SetVisible)
 	scene.Emplace<Scene::VirtualTask>(2.0f, [&scene] {
 		scene.IterType<TextWindow>([](TextWindow & w) {
 			w.SetVisible(true);
+		});
+	});
+
+	Engine::Get().RunObject(scene);
+}
+
+
+TEST(TextWindow, FadeOut)
+{
+	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.FadeOut", WinSize, true);
+	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
+
+	SimpleTextWindowAdapter adapter;
+	auto scene = CreateShowTextScene(adapter);
+
+	scene.Emplace<Scene::VirtualTask>(0.5f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.FastFadeIn();
+		});
+	});
+
+	scene.Emplace<Scene::VirtualTask>(1.0f, [&scene] {
+		scene.IterType<TextWindow>([&scene](TextWindow & w) {
+			w.FadeClear();
+
+			scene.Emplace<Scene::VirtualConditionTask>(
+				[&scene] {
+				TextWindow* wnd = nullptr;
+				scene.IterType<TextWindow>([&wnd](TextWindow & w) {
+					wnd = &w;
+				});
+
+				assert(wnd);
+				return wnd->GetState() == TextWindow::State::EmptyTextWindow;
+			},
+				[&scene] {
+				scene.IterType<TextWindow>([](TextWindow & w) {
+					w.AppendText(L"Vain Riser is a good game.", DefaultFontStyle, 0.03f);
+				});
+			});
 		});
 	});
 
