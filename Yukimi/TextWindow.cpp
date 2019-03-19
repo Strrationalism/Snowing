@@ -56,10 +56,25 @@ Yukimi::TextWindow::TextWindow(TextWindowUserAdapter* userAdapter) :
 
 void Yukimi::TextWindow::Clear()
 {
+	fadingOut_ = false;
 	text_.clear();
 	typer_.Reset();
 
 	currentTimeLineEnd_ = 0;
+}
+
+void Yukimi::TextWindow::FadeClear()
+{
+	fadingOut_ = true;
+	for (auto& p : text_)
+	{
+		const auto state = p.Animation->GetState(p);
+		if (
+			state == TextAnimation::AnimationState::Ready ||
+			state == TextAnimation::AnimationState::FadingIn ||
+			state == TextAnimation::AnimationState::Displaying)
+			p.Animation->FadeOut(p);
+	}
 }
 
 
@@ -81,6 +96,21 @@ void Yukimi::TextWindow::FastFadeIn()
 	}
 }
 
+void Yukimi::TextWindow::SetVisible(bool vis)
+{
+	if (visible_ != vis)
+	{
+		visible_ = vis;
+		
+		if (vis)
+			for (auto& p : text_)
+				p.Animation->OnShow(p);
+		else
+			for (auto& p : text_)
+				p.Animation->OnHide(p);
+	}
+}
+
 bool Yukimi::TextWindow::Update()
 {
 	float deltaTime = Snowing::Engine::Get().DeltaTime();
@@ -98,6 +128,37 @@ bool Yukimi::TextWindow::Update()
 
 	userAdapter_->FlushDrawCall();
 
+	if (fadingOut_)
+	{
+		if (std::all_of(text_.begin(), text_.end(), [](const Charater & c) {
+			return c.Animation->GetState(c) == TextAnimation::AnimationState::Killed;
+		}))
+			Clear();
+	}
+
 	return true;
 }
 
+Yukimi::TextWindow::State Yukimi::TextWindow::GetState() const
+{
+	if (fadingOut_)
+		return Yukimi::TextWindow::State::FadingOutText;
+	else if (text_.empty())
+		return Yukimi::TextWindow::State::EmptyTextWindow;
+	else
+	{
+		if (std::any_of(text_.begin(), text_.end(),
+			[](const Charater & ch) {
+			return ch.Animation->GetState(ch) == TextAnimation::AnimationState::FadingIn;
+		}))
+			return Yukimi::TextWindow::State::FadingInText;
+
+		else if (std::all_of(text_.begin(), text_.end(),
+			[](const Charater & ch) {
+			return ch.Animation->GetState(ch) == TextAnimation::AnimationState::Displaying;
+		}))
+			return Yukimi::TextWindow::State::Displaying;
+		else
+			throw std::runtime_error{ "TextWindow in unknown state." };
+	}
+}

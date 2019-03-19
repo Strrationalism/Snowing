@@ -30,31 +30,32 @@ class SimpleTextAnimation final : public TextWindow::TextAnimation
 {
 private:
 	const float orgSize_;
+	bool visible_ = true;
 public:
 	SimpleTextAnimation(float orgSize) : orgSize_{ orgSize } {}
 	void Update(TextWindow::Charater& c) override
 	{
 		if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
 		{
-			c.Sprite.Sprite.Color.w = 10 * (c.SinceFadeInTime + 0.1f);
+			c.Sprite.Sprite.Color.w = visible_ ? 10 * (c.SinceFadeInTime + 0.1f) : 0;
 			
 			auto size = (1 - c.Sprite.Sprite.Color.w) * orgSize_ * 1.5f + orgSize_;
 			c.Sprite.Sprite.Size = { size,size };
 		}
 		else if (c.SinceFadeInTime >= 0)
 		{
-			c.Sprite.Sprite.Color.w = 1;
+			c.Sprite.Sprite.Color.w = visible_;
 			c.Sprite.Sprite.Size = { orgSize_,orgSize_ };
 		}
 	}
 
-	AnimationState GetState(TextWindow::Charater& c) const override
+	AnimationState GetState(const TextWindow::Charater& c) const override
 	{
-		if (c.Sprite.Sprite.Color.w <= 0)
+		if (c.SinceFadeInTime <= -0.1f)
 			return AnimationState::Ready;
-		else if (c.Sprite.Sprite.Color.w > 0 && c.Sprite.Sprite.Color.w < 1)
+		else if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
 			return AnimationState::FadingIn;
-		else if (c.Sprite.Sprite.Color.w >= 1)
+		else if (c.SinceFadeInTime >= 0)
 			return AnimationState::Displaying;
 		throw std::exception{};
 	}
@@ -65,8 +66,16 @@ public:
 	}
 
 	void FadeOut(TextWindow::Charater&) override {}
-	void OnHide(TextWindow::Charater&) override {}
-	void OnShow(TextWindow::Charater&) override {}
+
+	void OnHide(TextWindow::Charater&) override 
+	{
+		visible_ = false;
+	}
+
+	void OnShow(TextWindow::Charater&) override
+	{
+		visible_ = true;
+	}
 };
 
 class SimpleTextWindowAdapter final : public TextWindow::TextWindowUserAdapter
@@ -117,7 +126,11 @@ public:
 		return std::make_unique<SimpleTextAnimation>(ch.Sprite.Sprite.Size.x);
 	}
 
-	void OnHide() override {}
+	void OnHide() override 
+	{
+
+	}
+
 	void OnShow() override {}
 };
 
@@ -171,7 +184,7 @@ TEST(TextWindow, ShowText)
 
 TEST(TextWindow, FastFadeIn)
 {
-	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.ShowText", WinSize, true);
+	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.FastFadeIn", WinSize, true);
 	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
 
 	SimpleTextWindowAdapter adapter;
@@ -180,6 +193,41 @@ TEST(TextWindow, FastFadeIn)
 	scene.Emplace<Scene::VirtualTask>(1.0f, [&scene] {
 		scene.IterType<TextWindow>([](TextWindow & w) {
 			w.FastFadeIn();
+		});
+	});
+
+	Engine::Get().RunObject(scene);
+}
+
+TEST(TextWindow, SetVisible)
+{
+	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.SetVisible", WinSize, true);
+	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
+
+	SimpleTextWindowAdapter adapter;
+	auto scene = CreateShowTextScene(adapter);
+
+	scene.Emplace<Scene::VirtualTask>(0.5f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.SetVisible(false);
+		});
+	});
+
+	scene.Emplace<Scene::VirtualTask>(1.0f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.SetVisible(true);
+		});
+	});
+
+	scene.Emplace<Scene::VirtualTask>(1.5f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.SetVisible(false);
+		});
+	});
+
+	scene.Emplace<Scene::VirtualTask>(2.0f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.SetVisible(true);
 		});
 	});
 

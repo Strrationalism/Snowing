@@ -34,9 +34,9 @@ namespace Yukimi
 		enum class State
 		{
 			EmptyTextWindow,
-			FadeInText,
+			FadingInText,
 			Displaying,
-			FadeOutText,
+			FadingOutText	// 注意在这个状态下，不能AppendText
 		};
 
 		// 此类用于创建文字的动画效果
@@ -58,7 +58,7 @@ namespace Yukimi
 			virtual void Update(Charater&) = 0;
 
 			// 获取动画状态
-			virtual AnimationState GetState(Charater&) const = 0;
+			virtual AnimationState GetState(const Charater&) const = 0;
 			
 			// 用户点击鼠标要求快速完成淡入效果时
 			virtual void FastFadeIn(Charater&) = 0;
@@ -99,6 +99,8 @@ namespace Yukimi
 		std::map<wchar_t, Snowing::Math::Vec2f> fix_;
 		TextWindowUserAdapter* const userAdapter_;
 
+		bool fadingOut_ = false;
+		bool visible_ = true;
 		std::vector<Charater> text_;
 		TextTyper typer_;
 		float currentTimeLineEnd_;
