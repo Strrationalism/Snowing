@@ -9,3 +9,4 @@
 #include <Snowing.h>
 
 #undef max
+#undef min

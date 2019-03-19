@@ -35,7 +35,7 @@ namespace Yukimi
 		{
 			EmptyTextWindow,
 			FadeInText,
-			TextShow,
+			Displaying,
 			FadeOutText,
 		};
 
@@ -43,8 +43,22 @@ namespace Yukimi
 		class TextAnimation
 		{
 		public:
-			// 每帧更新一次
+
+			// 动画状态
+			enum class AnimationState
+			{
+				Ready,			// 尚未显示
+				FadingIn,		// 正在淡入
+				Displaying,		// 目前在正常显示
+				FadingOut,		// 正在淡出
+				Killed			// 已死亡
+			};
+
+			// 每帧更新一次，当文字彻底消失后返回false
 			virtual void Update(Charater&) = 0;
+
+			// 获取动画状态
+			virtual AnimationState GetState(Charater&) const = 0;
 			
 			// 用户点击鼠标要求快速完成淡入效果时
 			virtual void FastFadeIn(Charater&) = 0;
@@ -87,6 +101,7 @@ namespace Yukimi
 
 		std::vector<Charater> text_;
 		TextTyper typer_;
+		float currentTimeLineEnd_;
 		void appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait);
 
 	public:

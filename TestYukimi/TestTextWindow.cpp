@@ -28,8 +28,37 @@ constexpr Math::Coordinate2DRect WinCoord{
 
 class SimpleTextAnimation final : public TextWindow::TextAnimation
 {
+private:
+	const float orgSize_;
 public:
-	void Update(TextWindow::Charater&) override {}
+	SimpleTextAnimation(float orgSize) : orgSize_{ orgSize } {}
+	void Update(TextWindow::Charater& c) override
+	{
+		if (c.SinceFadeInTime > -0.1f && c.SinceFadeInTime < 0)
+		{
+			c.Sprite.Sprite.Color.w = 10 * (c.SinceFadeInTime + 0.1f);
+			
+			auto size = (1 - c.Sprite.Sprite.Color.w) * orgSize_ * 1.5f + orgSize_;
+			c.Sprite.Sprite.Size = { size,size };
+		}
+		else if (c.SinceFadeInTime >= 0)
+		{
+			c.Sprite.Sprite.Color.w = 1;
+			c.Sprite.Sprite.Size = { orgSize_,orgSize_ };
+		}
+	}
+
+	AnimationState GetState(TextWindow::Charater& c) const override
+	{
+		if (c.Sprite.Sprite.Color.w <= 0)
+			return AnimationState::Ready;
+		else if (c.Sprite.Sprite.Color.w > 0 && c.Sprite.Sprite.Color.w < 1)
+			return AnimationState::FadingIn;
+		else if (c.Sprite.Sprite.Color.w >= 1)
+			return AnimationState::Displaying;
+		throw std::exception{};
+	}
+
 	void FastFadeIn(TextWindow::Charater&) override {}
 	void FadeOut(TextWindow::Charater&) override {}
 	void OnHide(TextWindow::Charater&) override {}
@@ -80,7 +109,8 @@ public:
 	std::unique_ptr<TextWindow::TextAnimation> CreateAnimationByName(
 		TextWindow::Charater& ch, Snowing::BKDRHash) override
 	{
-		return std::make_unique<SimpleTextAnimation>();
+		ch.Sprite.Sprite.Color.w = 0;
+		return std::make_unique<SimpleTextAnimation>(ch.Sprite.Sprite.Size.x);
 	}
 
 	void OnHide() override {}
@@ -111,7 +141,7 @@ TEST(TextWindow, ShowText)
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
-	textWindow->AppendText(L"StrrationalismStrrationalismStrrationalismStrrationalism\nStrrationalism\nStrrationalism  Strrationalism Strrationalism  Strrationalism is so good.", DefaultFontStyle,0);
+	textWindow->AppendText(L"StrrationalismStrrationalismStrrationalismStrrationalism\nStrrationalism\nStrrationalism  Strrationalism Strrationalism  Strrationalism is so good.", DefaultFontStyle,0.005f);
 
 	TextWindowFontStyle bigFont;
 	bigFont.Size = 1.5f;
@@ -121,11 +151,11 @@ TEST(TextWindow, ShowText)
 	smallFont.Size = 0.8f;
 	smallFont = TextWindowFontStyle::Combine(DefaultFontStyle, smallFont);
 
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
-		textWindow->AppendText(L"\nStrrationalism", DefaultFontStyle, 0);
-		textWindow->AppendText(L"Strrationalism", bigFont, 0);
-		textWindow->AppendText(L"Strrationalism", smallFont, 0);
+		textWindow->AppendText(L"\nStrrationalism", DefaultFontStyle, 0.03f);
+		textWindow->AppendText(L"Strrationalism", bigFont, 0.03f);
+		textWindow->AppendText(L"Strrationalism", smallFont, 0.03f);
 	}
 
 	Engine::Get().RunObject(scene);
