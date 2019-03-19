@@ -59,7 +59,11 @@ public:
 		throw std::exception{};
 	}
 
-	void FastFadeIn(TextWindow::Charater&) override {}
+	void FastFadeIn(TextWindow::Charater& c) override 
+	{
+		c.SinceFadeInTime = 1;
+	}
+
 	void FadeOut(TextWindow::Charater&) override {}
 	void OnHide(TextWindow::Charater&) override {}
 	void OnShow(TextWindow::Charater&) override {}
@@ -125,23 +129,18 @@ constexpr TextWindowFontStyle DefaultFontStyle
 	Math::Vec3f{1.0f,1.0f,1.0f}
 };
 
-TEST(TextWindow, ShowText)
+auto CreateShowTextScene(TextWindow::TextWindowUserAdapter& adapter)
 {
-	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.ShowText", WinSize, true);
-	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
-
-	SimpleTextWindowAdapter adapter;
-
 	Scene::Group<> scene;
 	scene.Emplace<Scene::RenderTargetCleaner>(
-		&Device::Get().MainContext(),&Device::Get().MainRenderTarget(),Math::Vec4f{ 0,0,0,1 });
+		&Device::Get().MainContext(), &Device::Get().MainRenderTarget(), Math::Vec4f{ 0,0,0,1 });
 
 	scene.Emplace<Scene::VirtualTask>(5.0f, [] {
 		Engine::Get().Exit();
 	});
 
 	auto textWindow = scene.Emplace<TextWindow>(&adapter);
-	textWindow->AppendText(L"StrrationalismStrrationalismStrrationalismStrrationalism\nStrrationalism\nStrrationalism  Strrationalism Strrationalism  Strrationalism is so good.", DefaultFontStyle,0.005f);
+	textWindow->AppendText(L"StrrationalismStrrationalismStrrationalismStrrationalism\nStrrationalism\nStrrationalism  Strrationalism Strrationalism  Strrationalism is so good.", DefaultFontStyle, 0.005f);
 
 	TextWindowFontStyle bigFont;
 	bigFont.Size = 1.5f;
@@ -157,6 +156,32 @@ TEST(TextWindow, ShowText)
 		textWindow->AppendText(L"Strrationalism", bigFont, 0.03f);
 		textWindow->AppendText(L"Strrationalism", smallFont, 0.03f);
 	}
+
+	return scene;
+}
+
+TEST(TextWindow, ShowText)
+{
+	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.ShowText", WinSize, true);
+	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
+
+	SimpleTextWindowAdapter adapter;
+	Engine::Get().RunObject(CreateShowTextScene(adapter));
+}
+
+TEST(TextWindow, FastFadeIn)
+{
+	auto engine = PlatformImpls::WindowsImpl::MakeEngine(L"TextWindow.ShowText", WinSize, true);
+	Device::Get().MainContext().SetRenderTarget(&Device::Get().MainRenderTarget());
+
+	SimpleTextWindowAdapter adapter;
+	auto scene = CreateShowTextScene(adapter);
+
+	scene.Emplace<Scene::VirtualTask>(1.0f, [&scene] {
+		scene.IterType<TextWindow>([](TextWindow & w) {
+			w.FastFadeIn();
+		});
+	});
 
 	Engine::Get().RunObject(scene);
 }
