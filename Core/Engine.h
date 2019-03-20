@@ -31,7 +31,7 @@ namespace Snowing
 
 
 		template <typename TFunc>
-		inline void Run(TFunc& updateFunc)
+		inline void Run(const TFunc& updateFunc)
 		{
 			keep_ = true;
 
@@ -66,7 +66,7 @@ namespace Snowing
 		{
 			Run([&obj] {
 				if (!obj.Update())
-					Engine::Get().Exit();
+					EngineInterface<WindowImpl,GraphicsImpl,InputImpl>::Get().Exit();
 			});
 		}
 
