@@ -55,24 +55,24 @@ namespace Snowing
 
 			deltaTime_ = 0;
 		}
+		
+		inline void Exit() noexcept
+		{
+			keep_ = false;
+		}
 
 		template <typename TObject>
 		inline void RunObject(TObject& obj)
 		{
 			Run([&obj] {
 				if (!obj.Update())
-					this->Get().Exit();
+					Engine::Get().Exit();
 			});
 		}
 
 		inline float DeltaTime() const
 		{
 			return std::clamp(deltaTime_,0.0f,0.1f);
-		}
-
-		inline void Exit() noexcept
-		{
-			keep_ = false;
 		}
 	};
 }
