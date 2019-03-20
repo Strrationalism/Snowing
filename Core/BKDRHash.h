@@ -46,6 +46,12 @@ namespace Snowing
 			assert(bytes);
 		}
 
+		BKDRHash(std::string_view sv) noexcept :
+			hash_{ Hash(sv.data(),sv.size()) }
+		{}
+
+		BKDRHash(const BKDRHash&) = default;
+
 		[[nodiscard]]
 		constexpr operator uint64_t() const noexcept
 		{

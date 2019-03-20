@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AudioChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
+  </ItemGroup>
+</Project>

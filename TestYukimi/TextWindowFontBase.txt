@@ -1,0 +1,8 @@
+r = 1
+g = 0.5
+b = 0.25
+
+size = 5
+animation = "Fucked"
+shader = "Shutted"
+stroke = 2

@@ -18,11 +18,19 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
   </ItemGroup>
 </Project>
