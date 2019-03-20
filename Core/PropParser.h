@@ -8,11 +8,11 @@ namespace Snowing
 	class[[nodiscard]] PropParser final
 	{
 	private:
-		const Blob &blob_;
+		const Blob & blob_;
 		using StringView = std::basic_string_view<CharType>;
-	
+
 	public:
-		PropParser(const Blob *b):
+		PropParser(const Blob* b) :
 			blob_{ *b }
 		{}
 
@@ -31,7 +31,7 @@ namespace Snowing
 					auto key = line.substr(0, equalTokenPosition);
 					{
 						const auto firstNotSpace = key.find_first_not_of(' ');
-						if(firstNotSpace != StringView::npos)
+						if (firstNotSpace != StringView::npos)
 							key.remove_prefix(firstNotSpace);
 						const auto lastNotSpace = key.find_last_not_of(' ');
 						if (lastNotSpace != StringView::npos)
@@ -57,9 +57,34 @@ namespace Snowing
 		}
 
 		template <typename T>
-		T Get(StringView requestKey)
+		T Get(StringView requestKey) const
 		{
 			return To<T>(Get(requestKey));
 		}
-	};
+
+		std::optional<StringView> GetOpt(StringView requestKey) const
+		{
+			try
+			{
+				return Get(requestKey);
+			}
+			catch (std::out_of_range)
+			{
+				return std::nullopt;
+			}
+		}
+
+		template <typename T>
+		std::optional<T> GetOpt(StringView requestKey) const
+		{
+			try
+			{
+				return Get<T>(requestKey);
+			}
+			catch (std::out_of_range)
+			{
+				return std::nullopt;
+			}
+		}
+	}; 
 }

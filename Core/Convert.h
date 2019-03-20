@@ -2,6 +2,7 @@
 #include <cassert>
 #include <string_view>
 #include <string>
+#include <optional>
 
 namespace Snowing
 {
@@ -31,12 +32,28 @@ namespace Snowing
 			static_assert(false,"No matched converter.");
 	}
 
+
+	template <typename T,typename TFrom>
+	std::optional<T> To(const std::optional<TFrom>& f)
+	{
+		if (f.has_value())
+			return std::make_optional(To<T>(*f));
+		else
+			return std::nullopt;
+	}
+
 	template <typename T>
 	T To(std::string_view s)
 	{
-		T t{ 0 };
-		std::from_chars(s.data(), s.data() + s.size(), t);
-		return t;
+		if constexpr (std::is_same<T, Snowing::BKDRHash>::value)
+			return s;
+		else
+		{
+			T t{ 0 };
+			s = s.substr(s.find_first_not_of(' '));
+			std::from_chars(s.data(), s.data() + s.size(), t);
+			return t;
+		}
 	}
 
 	template <typename T>

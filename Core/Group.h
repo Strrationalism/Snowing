@@ -60,6 +60,20 @@ namespace Snowing::Scene
 				{ }
 			});
 		}
+		
+		template <typename TObjectType>
+		TObjectType * FindFirst()
+		{
+			for(auto& p : objs_)
+			{
+				try
+				{
+					return dynamic_cast<TObjectType*>(p.get());
+				}
+				catch(std::bad_cast)
+				{ }
+			}
+		}
 
 		void Clear()
 		{
