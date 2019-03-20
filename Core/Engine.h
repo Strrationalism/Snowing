@@ -61,7 +61,7 @@ namespace Snowing
 		{
 			Run([&obj] {
 				if (!obj.Update())
-					decltype(*this)::Get().Exit();
+					this->Get().Exit();
 			});
 		}
 
