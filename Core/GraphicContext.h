@@ -2,6 +2,8 @@
 #include "Platforms.h"
 #include "Vec4.h"
 #include "Platforms.h"
+#include "RenderTarget.h"
+#include "GraphicBuffer.h"
 #include <array>
 
 namespace Snowing::Graphics
