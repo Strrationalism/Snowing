@@ -1,6 +1,7 @@
 #pragma once
 #include "Platforms.h"
 #include "Vec2.h"
+#include "Texture2D.h"
 
 namespace Snowing::Graphics
 {
