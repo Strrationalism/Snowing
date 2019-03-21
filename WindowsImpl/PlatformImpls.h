@@ -25,9 +25,9 @@ namespace Snowing
 	using AssetName = const char*;
 
 	[[nodiscard]]
-	inline Blob LoadAsset(AssetName name, size_t alignment = 0)
+	inline Blob LoadAsset(AssetName name)
 	{
-		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name, alignment);
+		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name);
 	}
 #endif
 }
