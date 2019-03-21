@@ -11,5 +11,6 @@ let Proc : JobProc = {
     InputType = None
     Command = "MakeDir"  
     FinishLogEnabled = false
+    Prority = 0
 }
 
