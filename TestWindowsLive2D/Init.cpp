@@ -1,6 +1,6 @@
 #include "pch.h"
 #include <L2DDevice.h>
-#include <L2DModel.h>
+#include <L2DModelAsset.h>
 TEST(Init, InitQuit) 
 {
 	auto engine =
@@ -8,15 +8,15 @@ TEST(Init, InitQuit)
 	Live2D::Device device;
 }
 
-TEST(Init, LoadModel)
+TEST(Init, LoadModelAsset)
 {
 	auto engine =
 		PlatformImpls::WindowsImpl::MakeEngine(L"Init.LoadModel", { 800,600 }, true);
 
 	Live2D::Device device;
 
-	Live2D::Model haru{ "Live2D/Haru/","Haru.model3.json" };
-	Live2D::Model hiyori{ "Live2D/Hiyori/","Hiyori.model3.json" };
-	Live2D::Model mark{ "Live2D/Mark/","Mark.model3.json" };
+	Live2D::ModelAsset haru{ "Live2D/Haru/","Haru.model3.json" };
+	Live2D::ModelAsset hiyori{ "Live2D/Hiyori/","Hiyori.model3.json" };
+	Live2D::ModelAsset mark{ "Live2D/Mark/","Mark.model3.json" };
 
 }

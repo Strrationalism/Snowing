@@ -225,7 +225,7 @@
     <ClInclude Include="L2DDevice.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="L2DModel.h">
+    <ClInclude Include="L2DModelAsset.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -347,7 +347,7 @@
     <ClCompile Include="L2DDevice.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="L2DModel.cpp">
+    <ClCompile Include="L2DModelAsset.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -4,11 +4,11 @@
 
 namespace Live2D
 {
-	class Model final : Snowing::NoCopyMove
+	class ModelAsset final : Snowing::NoCopyMove
 	{
 	private:
-
-		constexpr static size_t CubismModelSettingJsonSize = 24;
+#
+		constexpr static size_t CubismModelSettingJsonSize = 40;
 		constexpr static size_t MaxTextureCounts = 4;
 
 		Live2D::AssetLoader loader_;
@@ -22,6 +22,6 @@ namespace Live2D
 
 
 	public:
-		Model(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &Snowing::LoadAsset);
+		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &Snowing::LoadAsset);
 	};
 }

@@ -239,7 +239,7 @@
     <ClInclude Include="CubismNativeFramework\src\Utils\CubismJson.hpp" />
     <ClInclude Include="CubismNativeFramework\src\Utils\CubismString.hpp" />
     <ClInclude Include="L2DDevice.h" />
-    <ClInclude Include="L2DModel.h" />
+    <ClInclude Include="L2DModelAsset.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp" />
@@ -281,7 +281,7 @@
     <ClCompile Include="CubismNativeFramework\src\Utils\CubismJson.cpp" />
     <ClCompile Include="CubismNativeFramework\src\Utils\CubismString.cpp" />
     <ClCompile Include="L2DDevice.cpp" />
-    <ClCompile Include="L2DModel.cpp" />
+    <ClCompile Include="L2DModelAsset.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
