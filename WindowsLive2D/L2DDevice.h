@@ -1,10 +1,12 @@
 #pragma once
 #include <SingleInstance.h>
+#include <Snowing.h>
 
-namespace Snowing::Live2D
+namespace Live2D
 {
+	using AssetLoader = Snowing::Blob(*) (Snowing::AssetName);
 	class Device final : 
-		public SingleInstance<Device>
+		public Snowing::SingleInstance<Device>
 	{
 	public:
 		Device();

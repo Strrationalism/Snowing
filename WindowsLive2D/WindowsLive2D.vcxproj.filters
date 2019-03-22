@@ -225,6 +225,9 @@
     <ClInclude Include="L2DDevice.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="L2DModel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp">
@@ -342,6 +345,9 @@
       <Filter>源文件\Framework\Utils</Filter>
     </ClCompile>
     <ClCompile Include="L2DDevice.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="L2DModel.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

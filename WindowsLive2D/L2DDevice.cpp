@@ -3,7 +3,7 @@
 #include <Snowing.h>
 #include <string_view>
 
-using namespace Snowing::Live2D;
+using namespace Live2D;
 using namespace Csm;
 
 // Live2D所需要的内存分配器
@@ -57,7 +57,7 @@ Device::Device()
 		std::string_view sv = log;
 		if (sv.back() == '\n')
 			sv = sv.substr(0, sv.size() - 1);
-		Log(sv);
+		Snowing::Log(sv);
 	};
 	opt.LoggingLevel = opt.LogLevel_Off;
 #ifdef _DEBUG
