@@ -16,5 +16,7 @@ namespace Live2D
 		Model(Snowing::Graphics::Context*,const ModelAsset* asset,float ratio);
 
 		bool Update() override;
+
+		const Snowing::Platforms::Handler& GetModel() const;
 	};
 }

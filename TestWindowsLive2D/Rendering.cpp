@@ -2,6 +2,7 @@
 #include <L2DDevice.h>
 #include <L2DModelAsset.h>
 #include <L2DModel.h>
+#include <L2DBreath.h>
 
 void RenderModel(const char* modelHome, const char* modelJson)
 {
@@ -21,9 +22,10 @@ void RenderModel(const char* modelHome, const char* modelJson)
 		&Graphics::Device::MainRenderTarget(),
 		Math::Vec4f{ 0,0,0,0 });
 
-	group.Emplace<Scene::VirtualTask>(1.0f,[] {Engine::Get().Exit(); });
+	group.Emplace<Scene::VirtualTask>(5.0f,[] {Engine::Get().Exit(); });
 
-	group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),&ass, 1024.0f / 768.0f);
+	auto model = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),&ass, 1024.0f / 768.0f);
+	group.Emplace<Live2D::Breath>(model, Live2D::Breath::Params{});
 
 	Snowing::Engine::Get().RunObject(group);
 }

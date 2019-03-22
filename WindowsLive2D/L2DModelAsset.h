@@ -13,9 +13,7 @@ namespace Live2D
 		using Handler = Snowing::Platforms::Handler;
 
 	private:
-#
 		constexpr static size_t CubismModelSettingJsonSize = 40;
-		
 
 		Live2D::AssetLoader loader_;
 

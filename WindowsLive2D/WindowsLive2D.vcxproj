@@ -238,6 +238,7 @@
     <ClInclude Include="CubismNativeFramework\src\Utils\CubismDebug.hpp" />
     <ClInclude Include="CubismNativeFramework\src\Utils\CubismJson.hpp" />
     <ClInclude Include="CubismNativeFramework\src\Utils\CubismString.hpp" />
+    <ClInclude Include="L2DBreath.h" />
     <ClInclude Include="L2DDevice.h" />
     <ClInclude Include="L2DModel.h" />
     <ClInclude Include="L2DModelAsset.h" />
@@ -281,6 +282,7 @@
     <ClCompile Include="CubismNativeFramework\src\Utils\CubismDebug.cpp" />
     <ClCompile Include="CubismNativeFramework\src\Utils\CubismJson.cpp" />
     <ClCompile Include="CubismNativeFramework\src\Utils\CubismString.cpp" />
+    <ClCompile Include="L2DBreath.cpp" />
     <ClCompile Include="L2DDevice.cpp" />
     <ClCompile Include="L2DModel.cpp" />
     <ClCompile Include="L2DModelAsset.cpp" />

@@ -84,3 +84,8 @@ bool Live2D::Model::Update()
 
 	return true;
 }
+
+const Snowing::Platforms::Handler& Live2D::Model::GetModel() const
+{
+	return model_;
+}
