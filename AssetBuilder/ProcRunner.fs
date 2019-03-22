@@ -12,6 +12,9 @@ let private FilesLastWriteTime (files : string list) =
 
 let private ShoudRebuild (job : Job) : bool =
     try
+        if File.Exists job.OutputPath |> not then
+            raise (FileNotFoundException())
+
         let outputTime =
             let outputFile =
                 job.OutputPath
@@ -23,11 +26,12 @@ let private ShoudRebuild (job : Job) : bool =
         | File -> 
             let inputTime = 
                 let inputFile =
-                    job.Input.Head |> FileInfo
+                    job.ScriptDir.FullName + job.Input.Head |> FileInfo
                 inputFile.LastWriteTimeUtc
             inputTime > outputTime
         | Files -> 
-            let inputTime = FilesLastWriteTime job.Input
+            let inputTime =
+                FilesLastWriteTime (job.Input |> List.map (fun x -> job.ScriptDir.FullName + "\\" + x))
             inputTime > outputTime
         | Directory ->
             let dir = 
@@ -46,8 +50,13 @@ let private ShoudRebuild (job : Job) : bool =
 let RunProcs (procs : Job[]) outputPath =  
     let failed = ref 0
     let logLock = obj()
-    procs
-    |> Array.filter ShoudRebuild
+
+    let p =
+        procs
+        |> Array.filter ShoudRebuild
+        
+        
+    p
     |> Array.groupBy (fun x -> x.Processor.Prority)
     |> Array.sortBy fst
     |> Array.iter

@@ -66,7 +66,7 @@ CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\Hiyori.pos
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\Hiyori.userdata3.json]			[Live2D\Hiyori\Hiyori.userdata3.json]
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m01.motion3.json]		[Live2D\Hiyori\motions\Hiyori_m01.motion3.json]
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m02.motion3.json]	[Live2D\Hiyori\motions\Hiyori_m02.motion3.json]
-CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m03motion3.json]		[Live2D\Hiyori\motions\Hiyori_m03.motion3.json]
+CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m03.motion3.json]	[Live2D\Hiyori\motions\Hiyori_m03.motion3.json]
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m04.motion3.json]	[Live2D\Hiyori\motions\Hiyori_m04.motion3.json]
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m05.motion3.json]	[Live2D\Hiyori\motions\Hiyori_m05.motion3.json]
 CopyFile	[..\TestWindowsLive2D\CubismNativeSamples\Samples\Res\Hiyori\motions\Hiyori_m06.motion3.json]	[Live2D\Hiyori\motions\Hiyori_m06.motion3.json]
