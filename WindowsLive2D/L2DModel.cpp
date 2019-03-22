@@ -8,7 +8,26 @@
 // Magic Matrix
 #include <Math/CubismModelMatrix.hpp>
 
+void Live2D::Model::updateMatrix()
+{
+	auto model = model_.Get<Csm::CubismModel*>();
+	Csm::CubismModelMatrix modelMatrix(model->GetCanvasWidth(), model->GetCanvasHeight());
+
+	Csm::csmMap<Csm::csmString, Csm::csmFloat32> layout;
+	asset_->GetSetting().Get<Csm::CubismModelSettingJson*>()->GetLayoutMap(layout);
+	modelMatrix.SetupFromLayout(layout);
+
+	modelMatrix.SetPosition(translate_.x, translate_.y);
+	modelMatrix.Scale(scale_.x, scale_.y);
+
+	Csm::CubismMatrix44 projectionMatrix;
+	projectionMatrix.Scale(1, ratio_);
+	projectionMatrix.MultiplyByMatrix(&modelMatrix);
+	renderer_.Get<Csm::Rendering::CubismRenderer_D3D11*>()->SetMvpMatrix(&projectionMatrix);
+}
+
 Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,float ratio):
+	ratio_{ ratio },
 	ctx_{ ctx },
 	asset_{ asset },
 	model_{
@@ -19,7 +38,7 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 		}
 	},
 	renderer_{
-		std::invoke([ratio,asset,model = model_.Get<Csm::CubismModel*>()] {
+		std::invoke([this,ratio,asset,model = model_.Get<Csm::CubismModel*>()] {
 			Csm::Rendering::CubismRenderer* renderer = Csm::Rendering::CubismRenderer::Create();
 			renderer->Initialize(model);
 			auto p = dynamic_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer);
@@ -28,17 +47,6 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 				if (asset->GetTextures()[i].has_value())
 					p->BindTexture(i,asset->GetTextures()[i]->GetImpl().ShaderResource().Cast<IUnknown*, ID3D11ShaderResourceView*>());
 
-			Csm::CubismModelMatrix modelMatrix(model->GetCanvasWidth(), model->GetCanvasHeight());
-
-			Csm::csmMap<Csm::csmString, Csm::csmFloat32> layout;
-			asset->GetSetting().Get<Csm::CubismModelSettingJson*>()->GetLayoutMap(layout);
-			modelMatrix.SetupFromLayout(layout);
-
-			Csm::CubismMatrix44 projectionMatrix;
-			projectionMatrix.Scale(1, ratio);
-			projectionMatrix.MultiplyByMatrix(&modelMatrix);
-			dynamic_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer)->SetMvpMatrix(&projectionMatrix);
-
 			return p;
 		}),
 		[](void* p) {
@@ -46,6 +54,7 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 		}
 	}
 {
+	updateMatrix();
 }
 
 bool Live2D::Model::Update()
@@ -83,6 +92,18 @@ bool Live2D::Model::Update()
 	});
 
 	return true;
+}
+
+void Live2D::Model::SetTranslate(Snowing::Math::Vec2f translate)
+{
+	translate_ = translate;
+	updateMatrix();
+}
+
+void Live2D::Model::SetScale(Snowing::Math::Vec2f scale)
+{
+	scale_ = scale;
+	updateMatrix();
 }
 
 const Snowing::Platforms::Handler& Live2D::Model::GetModel() const
