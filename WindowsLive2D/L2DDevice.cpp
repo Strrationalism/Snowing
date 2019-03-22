@@ -1,5 +1,6 @@
 #include "L2DDevice.h"
-#include "CubismFramework.hpp"
+#include <CubismFramework.hpp>
+#include <Rendering/D3D11/CubismRenderer_D3D11.hpp>
 #include <Snowing.h>
 #include <string_view>
 
@@ -66,9 +67,13 @@ Device::Device()
 
 	Csm::CubismFramework::StartUp(&allocator, &opt);
 	Csm::CubismFramework::Initialize();
+
+	Csm::Rendering::CubismRenderer_D3D11::InitializeConstantSettings(2,
+		Snowing::PlatformImpls::WindowsImpl::D3D::Device::Get().GetHandler().Cast<IUnknown*, ID3D11Device*>());
 }
 
 Device::~Device()
 {
 	Csm::CubismFramework::Dispose();
 }
+

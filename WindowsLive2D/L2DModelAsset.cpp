@@ -57,3 +57,18 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		}
 	}
 }
+
+const Live2D::ModelAsset::Handler& Live2D::ModelAsset::GetSetting() const
+{
+	return modelSetting_;
+}
+
+const Live2D::ModelAsset::TextureSet& Live2D::ModelAsset::GetTextures() const
+{
+	return tex_;
+}
+
+const Live2D::ModelAsset::Handler& Live2D::ModelAsset::GetMoc() const
+{
+	return csmMoc_;
+}
