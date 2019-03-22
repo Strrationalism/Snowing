@@ -234,6 +234,9 @@
     <ClInclude Include="L2DBreath.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="L2DBlink.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp">
@@ -360,6 +363,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="L2DBreath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="L2DBlink.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

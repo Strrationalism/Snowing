@@ -18,5 +18,6 @@ namespace Live2D
 		bool Update() override;
 
 		const Snowing::Platforms::Handler& GetModel() const;
+		const ModelAsset* GetAsset() const;
 	};
 }

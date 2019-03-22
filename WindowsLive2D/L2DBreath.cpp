@@ -9,10 +9,7 @@ Live2D::Breath::Breath(Model* model, const Params& params) :
 		Snowing::Platforms::Handler::DoNothingDeleter
 	},
 	breath_{
-		std::invoke([&params] {
-			auto p = Csm::CubismBreath::Create();
-			return p;
-		}),
+		Csm::CubismBreath::Create(),
 		[](void* p){
 			Csm::CubismBreath::Delete(static_cast<Csm::CubismBreath*>(p));
 		}

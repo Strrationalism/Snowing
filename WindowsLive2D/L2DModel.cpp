@@ -89,3 +89,8 @@ const Snowing::Platforms::Handler& Live2D::Model::GetModel() const
 {
 	return model_;
 }
+
+const Live2D::ModelAsset* Live2D::Model::GetAsset() const
+{
+	return asset_;
+}
