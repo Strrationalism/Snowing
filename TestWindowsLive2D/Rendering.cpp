@@ -4,6 +4,7 @@
 #include <L2DModel.h>
 #include <L2DBreath.h>
 #include <L2DBlink.h>
+#include <L2DPhysics.h>
 
 void RenderModel(const char* modelHome, const char* modelJson)
 {
@@ -36,6 +37,9 @@ void RenderModel(const char* modelHome, const char* modelJson)
 
 	// 添加Live2D对象的眨眼效果
 	group.Emplace<Live2D::Blink>(model, 1.0f);
+
+	// 添加物理效果
+	group.Emplace<Live2D::Physics>(model);
 
 	Snowing::Engine::Get().RunObject(group);
 }

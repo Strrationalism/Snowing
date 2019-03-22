@@ -243,6 +243,7 @@
     <ClInclude Include="L2DDevice.h" />
     <ClInclude Include="L2DModel.h" />
     <ClInclude Include="L2DModelAsset.h" />
+    <ClInclude Include="L2DPhysics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp" />
@@ -288,6 +289,7 @@
     <ClCompile Include="L2DDevice.cpp" />
     <ClCompile Include="L2DModel.cpp" />
     <ClCompile Include="L2DModelAsset.cpp" />
+    <ClCompile Include="L2DPhysics.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

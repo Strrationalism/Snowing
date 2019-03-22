@@ -50,6 +50,15 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 			else
 				return std::nullopt;
 		})
+		},
+	physicsJson_{
+		std::invoke([this]() -> std::optional<Snowing::Blob> {
+			const auto phyName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPhysicsFileName();
+			if (*phyName)
+				return loader_((homeDir_ + phyName).c_str());
+			else
+				return std::nullopt;
+		})
 	}
 {
 	assert(homeDir_.back() == '/');
@@ -94,4 +103,9 @@ const Live2D::ModelAsset::Handler& Live2D::ModelAsset::GetMoc() const
 const std::optional<Live2D::ModelAsset::Handler>& Live2D::ModelAsset::GetPose() const
 {
 	return pose_;
+}
+
+const std::optional<Snowing::Blob>& Live2D::ModelAsset::GetPhysicsJson() const
+{
+	return physicsJson_;
 }
