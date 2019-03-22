@@ -24,7 +24,7 @@ namespace Live2D
 		Handler csmMoc_;
 		TextureSet tex_;
 
-		std::optional<Handler> pose_;
+		std::optional<Snowing::Blob> pose_;
 
 		std::optional<Snowing::Blob> physicsJson_;
 
@@ -34,7 +34,7 @@ namespace Live2D
 		const Handler& GetSetting() const;
 		const TextureSet& GetTextures() const;
 		const Handler& GetMoc() const;
-		const std::optional<Handler>& GetPose() const;
+		const std::optional<Snowing::Blob>& GetPose() const;
 		const std::optional<Snowing::Blob>& GetPhysicsJson() const;
 	};
 }

@@ -12,7 +12,7 @@ namespace Live2D
 		Snowing::Graphics::Context* ctx_;
 		Snowing::Platforms::Handler model_;
 		Snowing::Platforms::Handler renderer_;
-
+		Snowing::Platforms::Handler pose_;
 		
 		
 

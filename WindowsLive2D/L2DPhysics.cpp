@@ -14,7 +14,7 @@ Live2D::Physics::Physics(Model* model) :
 				const auto& blob = model->GetAsset()->GetPhysicsJson().value();
 				return Snowing::Platforms::Handler
 				{
-					Csm::CubismPhysics::Create(blob.Get<Csm::csmByte*>(), blob.Size()),
+					Csm::CubismPhysics::Create(blob.Get<Csm::csmByte*>(), static_cast<Csm::csmSizeInt>(blob.Size())),
 					[](void* p) { Csm::CubismPhysics::Delete(static_cast<Csm::CubismPhysics*>(p)); }
 				};
 			}

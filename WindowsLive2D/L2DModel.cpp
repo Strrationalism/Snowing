@@ -55,12 +55,22 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 	}
 {
 	updateMatrix();
+
+	if (asset_->GetPose().has_value())
+	{
+		const auto& poseBlob = asset_->GetPose().value();
+		pose_ = Snowing::Platforms::Handler
+		{
+			Csm::CubismPose::Create(poseBlob.Get<Csm::csmByte*>(),static_cast<Csm::csmSizeInt>(poseBlob.Size())),
+			[](void* ptr) { Csm::CubismPose::Delete(static_cast<Csm::CubismPose*>(ptr)); }
+		};
+	}
 }
 
 bool Live2D::Model::Update()
 {
-	if(asset_->GetPose().has_value())
-		asset_->GetPose().value().Get<Csm::CubismPose*>()->UpdateParameters(
+	if(pose_.IsSome())
+		pose_.Get<Csm::CubismPose*>()->UpdateParameters(
 			model_.Get<Csm::CubismModel*>(),
 			Snowing::Engine::Get().DeltaTime());
 
