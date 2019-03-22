@@ -3,19 +3,17 @@
 #include <Model/CubismModel.hpp>
 #include <CubismModelSettingJson.hpp>
 #include <Rendering/D3D11/CubismRenderer_D3D11.hpp>
+#include <Effect/CubismPose.hpp>
 
 // Magic Matrix
 #include <Math/CubismModelMatrix.hpp>
 
 Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,float ratio):
 	ctx_{ ctx },
-	moc_{
-		asset->GetMoc().Get<Csm::CubismMoc*>(),
-		Snowing::Platforms::Handler::DoNothingDeleter
-	},
+	asset_{ asset },
 	model_{
-		moc_.Get<Csm::CubismMoc*>()->CreateModel(),
-		[moc = moc_.Get<Csm::CubismMoc*>()](void* model) {
+		asset_->GetMoc().Get<Csm::CubismMoc*>()->CreateModel(),
+		[moc = asset_->GetMoc().Get<Csm::CubismMoc*>()](void* model) {
 			moc->DeleteModel(
 				static_cast<Csm::CubismModel*>(model));
 		}
@@ -52,6 +50,11 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 
 bool Live2D::Model::Update()
 {
+	if(asset_->GetPose().has_value())
+		asset_->GetPose().value().Get<Csm::CubismPose*>()->UpdateParameters(
+			model_.Get<Csm::CubismModel*>(),
+			Snowing::Engine::Get().DeltaTime());
+
 	model_.Get<Csm::CubismModel*>()->Update();
 
 	Snowing::Engine::Get().Draw([this] {

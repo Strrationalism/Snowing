@@ -21,11 +21,12 @@ namespace Live2D
 
 		std::string homeDir_;
 		std::array<std::uint8_t, CubismModelSettingJsonSize> modelSettingBox_;
-		Snowing::Platforms::Handler modelSetting_;
+		Handler modelSetting_;
 
-		Snowing::Platforms::Handler csmMoc_;
+		Handler csmMoc_;
 		TextureSet tex_;
 
+		std::optional<Handler> pose_;
 
 	public:
 		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &Snowing::LoadAsset);
@@ -33,5 +34,6 @@ namespace Live2D
 		const Handler& GetSetting() const;
 		const TextureSet& GetTextures() const;
 		const Handler& GetMoc() const;
+		const std::optional<Handler>& GetPose() const;
 	};
 }

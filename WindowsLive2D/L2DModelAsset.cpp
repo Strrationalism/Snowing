@@ -1,6 +1,7 @@
 #include "L2DModelAsset.h"
 #include <CubismModelSettingJson.hpp>
 #include <Model/CubismMoc.hpp>
+#include <Effect/CubismPose.hpp>
 
 Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader loader) :
 	loader_{ loader },
@@ -32,6 +33,23 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		[](void* ptr) {
 			Csm::CubismMoc::Delete(static_cast<Csm::CubismMoc*>(ptr));
 		}
+	},
+	pose_{
+		std::invoke([this] () -> std::optional<Handler> {
+			const auto fileName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPoseFileName();
+			if (*fileName)
+			{
+				const auto poseBlob = loader_((homeDir_ + fileName).c_str());
+				return Handler{
+					Csm::CubismPose::Create(poseBlob.Get<Csm::csmByte*>(), poseBlob.Size()),
+					[](void* p) {
+						Csm::CubismPose::Delete(static_cast<Csm::CubismPose*>(p));
+					}
+				};
+			}
+			else
+				return std::nullopt;
+		})
 	}
 {
 	assert(homeDir_.back() == '/');
@@ -71,4 +89,9 @@ const Live2D::ModelAsset::TextureSet& Live2D::ModelAsset::GetTextures() const
 const Live2D::ModelAsset::Handler& Live2D::ModelAsset::GetMoc() const
 {
 	return csmMoc_;
+}
+
+const std::optional<Live2D::ModelAsset::Handler>& Live2D::ModelAsset::GetPose() const
+{
+	return pose_;
 }
