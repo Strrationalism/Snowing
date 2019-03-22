@@ -29,7 +29,7 @@ namespace Live2D
 		std::optional<Snowing::Blob> physicsJson_;
 
 	public:
-		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &Snowing::LoadAsset);
+		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &DefaultAssetLoader);
 
 		const Handler& GetSetting() const;
 		const TextureSet& GetTextures() const;

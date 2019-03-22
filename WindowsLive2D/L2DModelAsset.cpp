@@ -7,7 +7,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 	homeDir_{ homeDir },
 	modelSetting_{
 		std::invoke([this,modelJson] {
-			const auto blob = loader_((homeDir_ + modelJson).c_str());
+			const auto blob = loader_(homeDir_.c_str(), modelJson);
 
 			constexpr size_t CubismModelSettingJsonSizeInner = sizeof(Csm::CubismModelSettingJson);
 			static_assert(CubismModelSettingJsonSize >= CubismModelSettingJsonSizeInner);
@@ -24,7 +24,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 	csmMoc_{
 		std::invoke([this] {
 			const auto moc3Name = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetModelFileName();
-			const auto blob = loader_((homeDir_ + moc3Name).c_str());
+			const auto blob = loader_(homeDir_.c_str(),moc3Name);
 			return Csm::CubismMoc::Create(
 				blob.Get<Csm::csmByte*>(),
 				static_cast<Csm::csmSizeInt>(blob.Size()));
@@ -37,7 +37,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		std::invoke([this] () -> std::optional<Snowing::Blob> {
 			const auto fileName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPoseFileName();
 			if (*fileName)
-				return loader_((homeDir_ + fileName).c_str());
+				return loader_(homeDir_.c_str(),fileName);
 			else
 				return std::nullopt;
 		})
@@ -46,7 +46,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		std::invoke([this]() -> std::optional<Snowing::Blob> {
 			const auto phyName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPhysicsFileName();
 			if (*phyName)
-				return loader_((homeDir_ + phyName).c_str());
+				return loader_(homeDir_.c_str(),phyName);
 			else
 				return std::nullopt;
 		})
@@ -63,15 +63,17 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		assert(texCount <= MaxTextureCounts);
 		for (Csm::csmInt32 i = 0; i < texCount; ++i)
 		{
-			std::string path = homeDir_ + setting->GetTextureFileName(i);
+			char path[64];
+			strcpy_s(path, setting->GetTextureFileName(i));
 			
 			// Modify Texture Extract Name
-			auto iter = path.end();
-			*(iter - 3) = 'c';
-			*(iter - 2) = 't';
-			*(iter - 1) = 'x';
+			auto iter = strlen(path);
+			assert(iter > 4);
+			path[iter - 3] = 'c';
+			path[iter - 2] = 't';
+			path[iter - 1] = 'x';
 
-			tex_[i].emplace(Snowing::Graphics::LoadTexture(loader_(path.c_str())));
+			tex_[i].emplace(Snowing::Graphics::LoadTexture(loader_(homeDir_.c_str(),path)));
 		}
 	}
 }

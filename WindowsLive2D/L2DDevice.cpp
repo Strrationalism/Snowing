@@ -77,3 +77,10 @@ Device::~Device()
 	Csm::CubismFramework::Dispose();
 }
 
+Snowing::Blob Live2D::DefaultAssetLoader(Snowing::AssetName homeDir, Snowing::AssetName file)
+{
+	char path[128];
+	strcpy_s(path, homeDir);
+	strcat_s(path, file);
+	return Snowing::LoadAsset(path);
+}
