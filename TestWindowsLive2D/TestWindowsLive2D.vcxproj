@@ -60,6 +60,7 @@
   <ItemGroup>
     <ClCompile Include="Expression.cpp" />
     <ClCompile Include="Init.cpp" />
+    <ClCompile Include="LipSync.cpp" />
     <ClCompile Include="Motion.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -242,6 +242,7 @@
     <ClInclude Include="L2DBlink.h" />
     <ClInclude Include="L2DBreath.h" />
     <ClInclude Include="L2DDevice.h" />
+    <ClInclude Include="L2DLipSync.h" />
     <ClInclude Include="L2DModel.h" />
     <ClInclude Include="L2DModelAsset.h" />
     <ClInclude Include="L2DMotion.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="L2DBreath.cpp" />
     <ClCompile Include="L2DDevice.cpp" />
     <ClCompile Include="L2DExpression.cpp" />
+    <ClCompile Include="L2DLipSync.cpp" />
     <ClCompile Include="L2DModel.cpp" />
     <ClCompile Include="L2DModelAsset.cpp" />
     <ClCompile Include="L2DMotion.cpp" />
