@@ -9,7 +9,7 @@
 void RenderModel(const char* modelHome, const char* modelJson,float height)
 {
 	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Rendering.RenderModel", { 1024,768 }, true);
+		PlatformImpls::WindowsImpl::MakeEngine(L"Rendering.RenderModel", { 1920 / 3 * 2,1080 / 3 * 2 }, true);
 
 	// 启动Live2D设备
 	Live2D::Device device;
@@ -19,6 +19,14 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());
+
+
+	// 屏幕坐标系
+	Math::Coordinate2DRect Coord
+	{
+		{-512,-384},
+		{512,384}
+	};
 
 	// 根场景
 	Scene::Group<> group;
@@ -30,8 +38,8 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 	group.Emplace<Scene::VirtualTask>(5.0f,[] {Engine::Get().Exit(); });
 
 	// 一个Live2D对象
-	auto model = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),&ass, 1024.0f / 768.0f);
-	auto model2 = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(), &ass, 1024.0f / 768.0f);
+	auto model = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),&ass, 1920.0f / 1080.0f);
+	auto model2 = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(), &ass, 1920.0f / 1080.0f);
 
 	// 添加Live2D对象的呼吸效果
 	group.Emplace<Live2D::Breath>(model, Live2D::Breath::Params{});
@@ -44,8 +52,8 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 	// 添加物理效果
 	group.Emplace<Live2D::Physics>(model);
 
-	model->SetTranslate({ 0.5f,-0.15f });
-	model2->SetTranslate({ -0.5f,-height });
+	model->SetTranslate({ 256.0f,-0.15f*384.0f }, Coord);
+	model2->SetTranslate({ -256.0f,-height * 384.0f }, Coord);
 	model2->SetScale({ 4,4 });
 
 	Snowing::Engine::Get().RunObject(group);

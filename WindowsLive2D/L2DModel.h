@@ -24,7 +24,21 @@ namespace Live2D
 
 		bool Update() override;
 
+		static constexpr Snowing::Math::Coordinate2DCenter Coordinate
+		{
+			{ 0,0 },
+			{ 2,2 }
+		};
+
 		void SetTranslate(Snowing::Math::Vec2f translate);
+
+		template <typename TCoord>
+		void SetTranslate(Snowing::Math::Vec2f translate, TCoord coord)
+		{
+			SetTranslate(
+				Snowing::Math::ConvertPosition2DCoordinate(translate, coord, Coordinate));
+		}
+
 		void SetScale(Snowing::Math::Vec2f scale);
 
 		const Snowing::Platforms::Handler& GetModel() const;
