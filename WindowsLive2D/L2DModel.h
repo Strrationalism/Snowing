@@ -3,7 +3,7 @@
 
 namespace Live2D
 {
-	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>
+	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>,Snowing::NoCopyMove
 	{
 	private:
 		float ratio_;
