@@ -1,10 +1,10 @@
 #include "pch.h"
 #include <L2DMotion.h>
 
-TEST(Motion, HaruMotion)
+void RenderMotion(const char* homeDir,const char* entryFile)
 {
 	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Expression.HaruExpressions", { 800,600 }, true);
+		PlatformImpls::WindowsImpl::MakeEngine(L"Motion.RenderMotion", { 800,600 }, true);
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());
@@ -12,7 +12,7 @@ TEST(Motion, HaruMotion)
 
 	Live2D::Device device;
 
-	Live2D::ModelAsset haru{ "Live2D/Haru/","Haru.model3.json" };
+	Live2D::ModelAsset ass{ homeDir,entryFile };
 
 	Scene::Group<> s;
 
@@ -23,11 +23,41 @@ TEST(Motion, HaruMotion)
 
 	auto model = s.Emplace<Live2D::Model>(
 		&Graphics::Device::MainContext(),
-		&haru,
+		&ass,
 		800.0f / 600.0f);
 
-	auto motion = s.Emplace<Live2D::Motion>(model, 0u, 0u);
-	motion->Play();
+	float waitTime = 0;
+	for (size_t groupID = 0; groupID < ass.GetMotionGroups().size(); ++groupID)
+	{
+		for (size_t motionID = 0; motionID < ass.GetMotionGroup(groupID).second.size(); ++motionID)
+		{
+			auto motion =s.Emplace<Live2D::Motion>(model, groupID, motionID);
+
+			s.Emplace<Scene::VirtualTask>(waitTime, [groupID, motionID,motion,&ass] {
+				motion->Play();
+				Log("Play Motion:", ass.GetMotionGroups()[groupID].first, motionID);
+			});
+
+			waitTime += 20;
+		}
+	}
+
+	s.Emplace<Scene::PointerTask>(waitTime, [] { Snowing::Engine::Get().Exit(); });
 
 	Engine::Get().RunObject(s);
+}
+
+TEST(Motion, Hiyori)
+{
+	RenderMotion("Live2D/Hiyori/", "Hiyori.model3.json");
+}
+
+TEST(Motion, Haru)
+{
+	RenderMotion("Live2D/Haru/", "Haru.model3.json");
+}
+
+TEST(Motion, Mark)
+{
+	RenderMotion("Live2D/Mark/", "Mark.model3.json");
 }

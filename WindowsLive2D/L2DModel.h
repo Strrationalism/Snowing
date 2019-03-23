@@ -32,6 +32,12 @@ namespace Live2D
 			{ 2,2 }
 		};
 
+		bool MotionFinished() const;
+		bool ExpressionFinished() const;
+
+		void StopAllMotion();
+		void StopAllExpression();
+
 		void SetTranslate(Snowing::Math::Vec2f translate);
 
 		template <typename TCoord>

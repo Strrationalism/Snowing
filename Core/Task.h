@@ -55,4 +55,10 @@ namespace Snowing::Scene
 	public:
 		using Task::Task;
 	};
+
+	class PointerTask final : public Task<void(*)()>, public MemPool<PointerTask>
+	{
+	public:
+		using Task::Task;
+	};
 }

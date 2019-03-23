@@ -11,6 +11,7 @@ namespace Live2D
 
 	public:
 		Motion(Model* model, size_t groupID,size_t motionID);
+		void SetLoop(bool);
 
 		void Play();
 	};

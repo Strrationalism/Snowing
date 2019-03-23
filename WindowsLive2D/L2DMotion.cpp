@@ -15,6 +15,11 @@ Live2D::Motion::Motion(Model* model, size_t groupID, size_t motionID):
 {
 }
 
+void Live2D::Motion::SetLoop(bool b)
+{
+	motion_.Get<Csm::CubismMotion*>()->IsLoop(b);
+}
+
 void Live2D::Motion::Play()
 {
 	const auto m = model_->GetMotionManager().Get<Csm::CubismMotionManager*>();

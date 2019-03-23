@@ -80,6 +80,8 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 			[](void* ptr) { Csm::CubismPose::Delete(static_cast<Csm::CubismPose*>(ptr)); }
 		};
 	}
+
+	motionManager_.Get<Csm::CubismMotionManager*>()->SetEventCallback([] (auto,auto,auto){}, nullptr);
 }
 
 bool Live2D::Model::Update()
@@ -127,6 +129,26 @@ bool Live2D::Model::Update()
 	});
 
 	return true;
+}
+
+bool Live2D::Model::MotionFinished() const
+{
+	return motionManager_.Get<Csm::CubismMotionManager*>()->IsFinished();
+}
+
+bool Live2D::Model::ExpressionFinished() const
+{
+	return expressionManager_.Get<Csm::CubismMotionManager*>()->IsFinished();
+}
+
+void Live2D::Model::StopAllMotion()
+{
+	motionManager_.Get<Csm::CubismMotionManager*>()->StopAllMotions();
+}
+
+void Live2D::Model::StopAllExpression()
+{
+	expressionManager_.Get<Csm::CubismMotionManager*>()->StopAllMotions();
 }
 
 void Live2D::Model::SetTranslate(Snowing::Math::Vec2f translate)
