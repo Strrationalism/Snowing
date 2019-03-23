@@ -15,18 +15,22 @@ namespace Live2D
 	private:
 		constexpr static size_t CubismModelSettingJsonSize = 40;
 
-		Live2D::AssetLoader loader_;
+		const Live2D::AssetLoader loader_;
 
-		std::string homeDir_;
+		const std::string homeDir_;
 		std::array<std::uint8_t, CubismModelSettingJsonSize> modelSettingBox_;
-		Handler modelSetting_;
+		const Handler modelSetting_;
 
-		Handler csmMoc_;
+		const Handler csmMoc_;
 		TextureSet tex_;
 
-		std::optional<Snowing::Blob> pose_;
+		const std::optional<Snowing::Blob> pose_;
 
-		std::optional<Snowing::Blob> physicsJson_;
+		const std::optional<Snowing::Blob> physicsJson_;
+
+		
+		const std::vector<std::pair<std::string_view,Snowing::Blob>> expressionJson_;
+		const std::vector<std::string_view> expressionNames_;
 
 	public:
 		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &DefaultAssetLoader);
@@ -36,5 +40,8 @@ namespace Live2D
 		const Handler& GetMoc() const;
 		const std::optional<Snowing::Blob>& GetPose() const;
 		const std::optional<Snowing::Blob>& GetPhysicsJson() const;
+		const std::vector<std::pair<std::string_view, Snowing::Blob>>& GetExpressionsJson() const;
+		const std::vector<std::string_view>& GetExpressionNames() const;
+		const size_t GetExpressionID(std::string_view name) const;
 	};
 }

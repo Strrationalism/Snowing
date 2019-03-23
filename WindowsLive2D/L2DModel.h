@@ -3,7 +3,7 @@
 
 namespace Live2D
 {
-	class Model final : public Snowing::Scene::Object
+	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>
 	{
 	private:
 		float ratio_;
@@ -14,7 +14,9 @@ namespace Live2D
 		Snowing::Platforms::Handler renderer_;
 		Snowing::Platforms::Handler pose_;
 		
-		
+		constexpr static size_t CsmMotionManagerSize = 64;
+		std::array<std::uint8_t, CsmMotionManagerSize> motionManagerBox_, expressionManagerBox_;
+		Snowing::Platforms::Handler motionManager_, expressionManager_;
 
 		void updateMatrix();
 		
@@ -43,5 +45,8 @@ namespace Live2D
 
 		const Snowing::Platforms::Handler& GetModel() const;
 		const ModelAsset* GetAsset() const;
+
+		const Snowing::Platforms::Handler& GetMotionManager() const;
+		const Snowing::Platforms::Handler& GetExpressionManager() const;
 	};
 }

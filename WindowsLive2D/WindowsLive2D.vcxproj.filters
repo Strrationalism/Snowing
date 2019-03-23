@@ -240,6 +240,9 @@
     <ClInclude Include="L2DPhysics.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="L2DExpression.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp">
@@ -372,6 +375,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="L2DPhysics.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="L2DExpression.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

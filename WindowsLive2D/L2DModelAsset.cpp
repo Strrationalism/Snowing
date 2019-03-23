@@ -41,7 +41,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 			else
 				return std::nullopt;
 		})
-		},
+	},
 	physicsJson_{
 		std::invoke([this]() -> std::optional<Snowing::Blob> {
 			const auto phyName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPhysicsFileName();
@@ -49,6 +49,34 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 				return loader_(homeDir_.c_str(),phyName);
 			else
 				return std::nullopt;
+		})
+	},
+	expressionJson_{
+		std::invoke([this] {
+			std::vector<std::pair<std::string_view,Snowing::Blob>> ret;
+
+			Csm::csmInt32 len = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionCount();
+			for (Csm::csmInt32 i = 0; i < len; ++i)
+				ret.emplace_back(
+					std::make_pair(
+						std::string_view{ modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionName(i)},
+						loader_(
+							homeDir_.c_str(), 
+							modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionFileName(i))));
+			ret.shrink_to_fit();
+			return ret;
+		})
+	},
+	expressionNames_{
+		std::invoke([this] {
+			std::vector<std::string_view> ret;
+			ret.reserve(expressionJson_.size());
+
+			for (const auto& i : expressionJson_)
+				ret.push_back(i.first);
+
+			ret.shrink_to_fit();
+			return ret;
 		})
 	}
 {
@@ -101,4 +129,22 @@ const std::optional<Snowing::Blob>& Live2D::ModelAsset::GetPose() const
 const std::optional<Snowing::Blob>& Live2D::ModelAsset::GetPhysicsJson() const
 {
 	return physicsJson_;
+}
+
+const std::vector<std::pair<std::string_view, Snowing::Blob>>& Live2D::ModelAsset::GetExpressionsJson() const
+{
+	return expressionJson_;
+}
+
+const std::vector<std::string_view>& Live2D::ModelAsset::GetExpressionNames() const
+{
+	return expressionNames_;
+}
+
+const size_t Live2D::ModelAsset::GetExpressionID(std::string_view name) const
+{
+	for (size_t i = 0; i < expressionNames_.size(); ++i)
+		if (expressionNames_[i] == name)
+			return i;
+	throw std::out_of_range{"Can not find expression in model asset."};
 }

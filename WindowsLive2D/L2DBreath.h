@@ -4,7 +4,7 @@
 
 namespace Live2D
 {
-	class Breath final : public Snowing::Scene::Object
+	class Breath final : public Snowing::Scene::Object, public Snowing::MemPool<Breath>
 	{
 	private:
 		Snowing::Platforms::Handler model_;

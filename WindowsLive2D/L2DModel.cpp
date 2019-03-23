@@ -4,9 +4,8 @@
 #include <CubismModelSettingJson.hpp>
 #include <Rendering/D3D11/CubismRenderer_D3D11.hpp>
 #include <Effect/CubismPose.hpp>
-
-// Magic Matrix
 #include <Math/CubismModelMatrix.hpp>
+#include <Motion/CubismMotionManager.hpp>
 
 void Live2D::Model::updateMatrix()
 {
@@ -52,8 +51,24 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 		[](void* p) {
 			Csm::Rendering::CubismRenderer::Delete(static_cast<Csm::Rendering::CubismRenderer_D3D11*>(p));
 		}
+	},
+	motionManager_{
+		new (motionManagerBox_.data()) Csm::CubismMotionManager,
+		[](void * p){
+			static_cast<Csm::CubismMotionManager*>(p)->
+				 Csm::CubismMotionManager::~CubismMotionManager();
+		}
+	},
+	expressionManager_{
+		new (expressionManagerBox_.data()) Csm::CubismMotionManager,
+		[](void* p) {
+			static_cast<Csm::CubismMotionManager*>(p)->
+				 Csm::CubismMotionManager::~CubismMotionManager();
+		}
 	}
 {
+	static_assert(sizeof(Csm::CubismMotionManager) <= CsmMotionManagerSize);
+
 	updateMatrix();
 
 	if (asset_->GetPose().has_value())
@@ -69,10 +84,20 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 
 bool Live2D::Model::Update()
 {
+	const float dt = Snowing::Engine::Get().DeltaTime();
+
+	motionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
+		model_.Get<Csm::CubismModel*>(),
+		dt);
+
+	expressionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
+		model_.Get<Csm::CubismModel*>(),
+		dt);
+
 	if(pose_.IsSome())
 		pose_.Get<Csm::CubismPose*>()->UpdateParameters(
 			model_.Get<Csm::CubismModel*>(),
-			Snowing::Engine::Get().DeltaTime());
+			dt);
 
 	model_.Get<Csm::CubismModel*>()->Update();
 
@@ -124,4 +149,14 @@ const Snowing::Platforms::Handler& Live2D::Model::GetModel() const
 const Live2D::ModelAsset* Live2D::Model::GetAsset() const
 {
 	return asset_;
+}
+
+const Snowing::Platforms::Handler& Live2D::Model::GetMotionManager() const
+{
+	return motionManager_;
+}
+
+const Snowing::Platforms::Handler& Live2D::Model::GetExpressionManager() const
+{
+	return expressionManager_;
 }

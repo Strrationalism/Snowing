@@ -12,7 +12,7 @@ namespace Snowing::Scene
 	};
 
 	template <typename TFunc>
-	class Task final : public BaseTask, public MemPool<Task<TFunc>>
+	class Task : public BaseTask
 	{
 	private:
 		TFunc func_;
@@ -50,5 +50,9 @@ namespace Snowing::Scene
 		}
 	};
 
-	using VirtualTask = Task<std::function<void()>>;
+	class VirtualTask final : public Task<std::function<void()>>, public MemPool<VirtualTask>
+	{
+	public:
+		using Task::Task;
+	};
 }

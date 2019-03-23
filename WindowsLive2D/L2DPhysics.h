@@ -4,7 +4,7 @@
 
 namespace Live2D
 {
-	class Physics final : public Snowing::Scene::Object
+	class Physics final : public Snowing::Scene::Object, public Snowing::MemPool<Physics>
 	{
 	private:
 		Snowing::Platforms::Handler model_;

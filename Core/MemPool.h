@@ -2,6 +2,7 @@
 #include <type_traits>
 #include <new>
 #include <queue>
+#include "NoCopyMove.h"
 
 namespace Snowing
 {
@@ -9,23 +10,39 @@ namespace Snowing
 	class MemPool
 	{
 	private:
-		static inline std::queue<std::unique_ptr<uint8_t[]>> freeList_;
+
+		struct FreeList : NoCopyMove
+		{
+			std::queue<void*> freeList_;
+			size_t allocCount_ = 0;
+
+			~FreeList()
+			{
+				while (!freeList_.empty())
+				{
+					free(freeList_.front());
+					freeList_.pop();
+				}
+			}
+		};
+
+		static inline FreeList freeList_;
 
 	public:
 		void * operator new (size_t size, const std::nothrow_t&) noexcept
 		{
 			static_assert(std::is_final<PooledClass>::value, "PooledClass must is a final class.");
 			constexpr static size_t S = sizeof(PooledClass);
-			assert(size <= S);
+  			assert(size == S);
 
-			if (freeList_.empty())
-				return ::operator new(S, std::nothrow_t{});
+			freeList_.allocCount_++;
+
+			if (freeList_.freeList_.empty())
+				return malloc(size);
 			else
 			{
-				auto& u = freeList_.front();
-				const auto p = reinterpret_cast<void*>(u.get());
-				u.release();
-				freeList_.pop();
+				auto p = freeList_.freeList_.front();
+				freeList_.freeList_.pop();
 				return p;
 			}
 		}
@@ -41,7 +58,8 @@ namespace Snowing
 
 		void operator delete (void *p)
 		{
-			freeList_.push(std::unique_ptr<uint8_t[]>{ reinterpret_cast<uint8_t*>(p) });
+			freeList_.allocCount_--;
+			freeList_.freeList_.push(p);
 		}
 	};
 }

@@ -4,7 +4,7 @@
 
 namespace Live2D
 {
-	class Blink final : public Snowing::Scene::Object
+	class Blink final : public Snowing::Scene::Object, public Snowing::MemPool<Blink>
 	{
 	private:
 		Snowing::Platforms::Handler model_, blink_;
