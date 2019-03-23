@@ -1,4 +1,5 @@
 #include "pch.h"
+#include <future>
 #include <L2DDevice.h>
 #include <L2DModelAsset.h>
 #include <L2DModel.h>
@@ -14,8 +15,12 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 	// 启动Live2D设备
 	Live2D::Device device;
 
-	// 加载Live2D资源
-	Live2D::ModelAsset ass{ modelHome,modelJson };
+	// 异步加载Live2D资源
+	auto assFut = std::async([modelHome, modelJson]{
+		return std::make_unique<Live2D::ModelAsset>( modelHome,modelJson );
+	});
+	assFut.wait();
+	auto ass = assFut.get();
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());
@@ -38,8 +43,8 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 	group.Emplace<Scene::VirtualTask>(5.0f,[] {Engine::Get().Exit(); });
 
 	// 一个Live2D对象
-	auto model = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),&ass, 1920.0f / 1080.0f);
-	auto model2 = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(), &ass, 1920.0f / 1080.0f);
+	auto model = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(),ass.get(), 1920.0f / 1080.0f);
+	auto model2 = group.Emplace<Live2D::Model>(&Graphics::Device::MainContext(), ass.get(), 1920.0f / 1080.0f);
 
 	// 添加Live2D对象的呼吸效果
 	group.Emplace<Live2D::Breath>(model, Live2D::Breath::Params{});
