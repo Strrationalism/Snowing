@@ -26,9 +26,9 @@ TEST(Expression, HaruExpressions)
 
 	
 
-	for (size_t i = 0; i < model->GetAsset()->GetExpressionNames().size(); ++i)
+	for (size_t i = 0; i < model->GetAsset()->GetExpressions().size(); ++i)
 	{
-		auto expressionName = model->GetAsset()->GetExpressionNames()[i];
+		auto expressionName = model->GetAsset()->GetExpressions()[i].first;
 		auto expression = s.Emplace<Live2D::Expression>(
 			model,
 			model->GetAsset()->GetExpressionID(expressionName));
@@ -39,7 +39,7 @@ TEST(Expression, HaruExpressions)
 		});
 	}
 
-	s.Emplace<Scene::VirtualTask>(model->GetAsset()->GetExpressionNames().size() + 2.0f, [] {Snowing::Engine::Get().Exit(); });
+	s.Emplace<Scene::VirtualTask>(model->GetAsset()->GetExpressions().size() + 2.0f, [] {Snowing::Engine::Get().Exit(); });
 
 	
 

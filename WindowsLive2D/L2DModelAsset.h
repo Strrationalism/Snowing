@@ -29,7 +29,6 @@ namespace Live2D
 
 		
 		const std::vector<std::pair<std::string_view,Snowing::Blob>> expressionJson_;
-		const std::vector<std::string_view> expressionNames_;
 
 		using Motion = Snowing::Blob;
 		using MotionGroup = std::pair<std::string_view, std::vector<Motion>>;
@@ -43,8 +42,7 @@ namespace Live2D
 		const Handler& GetMoc() const;
 		const std::optional<Snowing::Blob>& GetPose() const;
 		const std::optional<Snowing::Blob>& GetPhysicsJson() const;
-		const std::vector<std::pair<std::string_view, Snowing::Blob>>& GetExpressionsJson() const;
-		const std::vector<std::string_view>& GetExpressionNames() const;
+		const std::vector<std::pair<std::string_view, Snowing::Blob>>& GetExpressions() const;
 		const size_t GetExpressionID(std::string_view name) const;
 	};
 }

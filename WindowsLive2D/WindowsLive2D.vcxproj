@@ -244,7 +244,7 @@
     <ClInclude Include="L2DDevice.h" />
     <ClInclude Include="L2DModel.h" />
     <ClInclude Include="L2DModelAsset.h" />
-    <ClInclude Include="L2DMoton.h" />
+    <ClInclude Include="L2DMotion.h" />
     <ClInclude Include="L2DPhysics.h" />
   </ItemGroup>
   <ItemGroup>

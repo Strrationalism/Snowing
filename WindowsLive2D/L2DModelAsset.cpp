@@ -66,18 +66,6 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 			return ret;
 		})
 	},
-	expressionNames_{
-		std::invoke([this] {
-			std::vector<std::string_view> ret;
-			ret.reserve(expressionJson_.size());
-
-			for (const auto& i : expressionJson_)
-				ret.push_back(i.first);
-
-			ret.shrink_to_fit();
-			return ret;
-		})
-		},
 	motionGroup_{
 		std::invoke([this,loader] {
 			const auto setting = modelSetting_.Get<Csm::CubismModelSettingJson*>();
@@ -154,20 +142,15 @@ const std::optional<Snowing::Blob>& Live2D::ModelAsset::GetPhysicsJson() const
 	return physicsJson_;
 }
 
-const std::vector<std::pair<std::string_view, Snowing::Blob>>& Live2D::ModelAsset::GetExpressionsJson() const
+const std::vector<std::pair<std::string_view, Snowing::Blob>>& Live2D::ModelAsset::GetExpressions() const
 {
 	return expressionJson_;
 }
 
-const std::vector<std::string_view>& Live2D::ModelAsset::GetExpressionNames() const
-{
-	return expressionNames_;
-}
-
 const size_t Live2D::ModelAsset::GetExpressionID(std::string_view name) const
 {
-	for (size_t i = 0; i < expressionNames_.size(); ++i)
-		if (expressionNames_[i] == name)
+	for (size_t i = 0; i < expressionJson_.size(); ++i)
+		if (expressionJson_[i].first == name)
 			return i;
 	throw std::out_of_range{"Can not find expression in model asset."};
 }
