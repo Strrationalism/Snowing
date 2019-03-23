@@ -3,11 +3,10 @@
 #include <Model/CubismMoc.hpp>
 
 Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader loader) :
-	loader_{ loader },
 	homeDir_{ homeDir },
 	modelSetting_{
-		std::invoke([this,modelJson] {
-			const auto blob = loader_(homeDir_.c_str(), modelJson);
+		std::invoke([this,modelJson,loader] {
+			const auto blob = loader(homeDir_.c_str(), modelJson);
 
 			constexpr size_t CubismModelSettingJsonSizeInner = sizeof(Csm::CubismModelSettingJson);
 			static_assert(CubismModelSettingJsonSize >= CubismModelSettingJsonSizeInner);
@@ -22,9 +21,9 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		}
 	},
 	csmMoc_{
-		std::invoke([this] {
+		std::invoke([this,loader] {
 			const auto moc3Name = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetModelFileName();
-			const auto blob = loader_(homeDir_.c_str(),moc3Name);
+			const auto blob = loader(homeDir_.c_str(),moc3Name);
 			return Csm::CubismMoc::Create(
 				blob.Get<Csm::csmByte*>(),
 				static_cast<Csm::csmSizeInt>(blob.Size()));
@@ -34,25 +33,25 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		}
 	},
 	pose_{
-		std::invoke([this] () -> std::optional<Snowing::Blob> {
+		std::invoke([this,loader] () -> std::optional<Snowing::Blob> {
 			const auto fileName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPoseFileName();
 			if (*fileName)
-				return loader_(homeDir_.c_str(),fileName);
+				return loader(homeDir_.c_str(),fileName);
 			else
 				return std::nullopt;
 		})
 	},
 	physicsJson_{
-		std::invoke([this]() -> std::optional<Snowing::Blob> {
+		std::invoke([this,loader]() -> std::optional<Snowing::Blob> {
 			const auto phyName = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetPhysicsFileName();
 			if (*phyName)
-				return loader_(homeDir_.c_str(),phyName);
+				return loader(homeDir_.c_str(),phyName);
 			else
 				return std::nullopt;
 		})
 	},
 	expressionJson_{
-		std::invoke([this] {
+		std::invoke([this,loader] {
 			std::vector<std::pair<std::string_view,Snowing::Blob>> ret;
 
 			Csm::csmInt32 len = modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionCount();
@@ -60,7 +59,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 				ret.emplace_back(
 					std::make_pair(
 						std::string_view{ modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionName(i)},
-						loader_(
+						loader(
 							homeDir_.c_str(), 
 							modelSetting_.Get<Csm::CubismModelSettingJson*>()->GetExpressionFileName(i))));
 			ret.shrink_to_fit();
@@ -80,7 +79,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 		})
 		},
 	motionGroup_{
-		std::invoke([this] {
+		std::invoke([this,loader] {
 			const auto setting = modelSetting_.Get<Csm::CubismModelSettingJson*>();
 			const Csm::csmInt32 groupCount = setting->GetMotionGroupCount();
 			std::vector<MotionGroup> motionGroup_;
@@ -95,7 +94,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 				for (Csm::csmInt32 motionID = 0; motionID < motionCount; ++motionID)
 				{
 					curGroup.emplace_back(
-						loader_(homeDir_.c_str(),setting->GetMotionFileName(groupName, motionID)));
+						loader(homeDir_.c_str(),setting->GetMotionFileName(groupName, motionID)));
 				}
 				curGroup.shrink_to_fit();
 			}
@@ -125,7 +124,7 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 			path[iter - 2] = 't';
 			path[iter - 1] = 'x';
 
-			tex_[i].emplace(Snowing::Graphics::LoadTexture(loader_(homeDir_.c_str(),path)));
+			tex_[i].emplace(Snowing::Graphics::LoadTexture(loader(homeDir_.c_str(),path)));
 		}
 	}
 }

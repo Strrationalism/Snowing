@@ -15,7 +15,6 @@ namespace Live2D
 	private:
 		constexpr static size_t CubismModelSettingJsonSize = 40;
 
-		const Live2D::AssetLoader loader_;
 
 		const std::string homeDir_;
 		std::array<std::uint8_t, CubismModelSettingJsonSize> modelSettingBox_;
