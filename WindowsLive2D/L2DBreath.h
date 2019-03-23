@@ -14,17 +14,23 @@ namespace Live2D
 
 		struct Params final
 		{
-			Snowing::Math::Vec3<Snowing::Math::Vec4f> Angle
+			struct Param
+			{
+				float Offset, Peak, Cycle, Weight;
+			};
+
+
+			Snowing::Math::Vec3<Param> Angle
 			{
 					{ 0.0f, 15.0f, 6.5345f, 0.5f },
 					{ 0.0f, 8.0f, 3.5345f, 0.5f },
 					{ 0.0f, 10.0f, 5.5345f, 0.5f }
 			};
 
-			Snowing::Math::Vec4f BodyAngleX
+			Param BodyAngleX
 			{ 0.0f, 4.0f, 15.5345f, 0.5f };
 
-			Snowing::Math::Vec4f Breath
+			Param Breath
 			{ 0.5f, 0.5f, 3.2345f, 0.5f };
 		};
 

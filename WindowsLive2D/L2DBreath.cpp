@@ -30,15 +30,15 @@ void Live2D::Breath::SetParams(const Params& params)
 	Csm::csmVector<Csm::CubismBreath::BreathParameterData> breathParameters;
 
 	breathParameters.PushBack(Csm::CubismBreath::BreathParameterData(_idParamAngleX,
-		params.Angle.x.x, params.Angle.x.y, params.Angle.x.z, params.Angle.x.w));
+		params.Angle.x.Offset, params.Angle.x.Peak, params.Angle.x.Cycle, params.Angle.x.Weight));
 	breathParameters.PushBack(Csm::CubismBreath::BreathParameterData(_idParamAngleY,
-		params.Angle.y.x, params.Angle.y.y, params.Angle.y.z, params.Angle.y.w));
+		params.Angle.y.Offset, params.Angle.y.Peak, params.Angle.y.Cycle, params.Angle.y.Weight));
 	breathParameters.PushBack(Csm::CubismBreath::BreathParameterData(_idParamAngleZ,
-		params.Angle.z.x, params.Angle.z.y, params.Angle.z.z, params.Angle.z.w));
+		params.Angle.z.Offset, params.Angle.z.Peak, params.Angle.z.Cycle, params.Angle.z.Weight));
 	breathParameters.PushBack(Csm::CubismBreath::BreathParameterData(_idParamBodyAngleX,
-		params.BodyAngleX.x, params.BodyAngleX.y, params.BodyAngleX.z, params.BodyAngleX.w));
+		params.BodyAngleX.Offset, params.BodyAngleX.Peak, params.BodyAngleX.Cycle, params.BodyAngleX.Weight));
 	breathParameters.PushBack(Csm::CubismBreath::BreathParameterData(_idParamBreath,
-		params.Breath.x, params.Breath.y, params.Breath.z, params.Breath.w));
+		params.Breath.Offset, params.Breath.Peak, params.Breath.Cycle, params.Breath.Weight));
 	p->SetParameters(breathParameters);
 }
 
