@@ -4,7 +4,7 @@
 TEST(Expression, HaruExpressions)
 {
 	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Init.LoadModel", { 800,600 }, true);
+		PlatformImpls::WindowsImpl::MakeEngine(L"Expression.HaruExpressions", { 800,600 }, true);
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());

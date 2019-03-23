@@ -78,6 +78,30 @@ Live2D::ModelAsset::ModelAsset(const char* homeDir, const char* modelJson, Live2
 			ret.shrink_to_fit();
 			return ret;
 		})
+		},
+	motionGroup_{
+		std::invoke([this] {
+			const auto setting = modelSetting_.Get<Csm::CubismModelSettingJson*>();
+			const Csm::csmInt32 groupCount = setting->GetMotionGroupCount();
+			std::vector<MotionGroup> motionGroup_;
+
+			for (Csm::csmInt32 groupID = 0; groupID < groupCount; ++groupID)
+			{
+				const auto groupName = setting->GetMotionGroupName(groupID);
+				motionGroup_.emplace_back(std::make_pair(groupName,std::vector<Motion>{}));
+				auto& curGroup = motionGroup_.back().second;
+				const auto motionCount = setting->GetMotionCount(groupName);
+
+				for (Csm::csmInt32 motionID = 0; motionID < motionCount; ++motionID)
+				{
+					curGroup.emplace_back(
+						loader_(homeDir_.c_str(),setting->GetMotionFileName(groupName, motionID)));
+				}
+				curGroup.shrink_to_fit();
+			}
+			motionGroup_.shrink_to_fit();
+			return motionGroup_;
+		})
 	}
 {
 	assert(homeDir_.back() == '/');

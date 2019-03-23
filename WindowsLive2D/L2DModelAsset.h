@@ -32,6 +32,10 @@ namespace Live2D
 		const std::vector<std::pair<std::string_view,Snowing::Blob>> expressionJson_;
 		const std::vector<std::string_view> expressionNames_;
 
+		using Motion = Snowing::Blob;
+		using MotionGroup = std::pair<std::string_view, std::vector<Motion>>;
+		const std::vector<MotionGroup> motionGroup_;
+
 	public:
 		ModelAsset(const char* homeDir, const char* modelJson, Live2D::AssetLoader = &DefaultAssetLoader);
 
