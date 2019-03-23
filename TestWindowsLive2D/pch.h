@@ -6,4 +6,5 @@
 #pragma once
 
 #include "../TestWindows/pch.h"
+#include <Live2D.h>
 

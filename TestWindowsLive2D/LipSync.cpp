@@ -1,6 +1,4 @@
 #include "pch.h"
-#include <L2DDevice.h>
-#include <L2DLipSync.h>
 
 void LipSyncTest(const char* home, const char* entryJson,float height)
 {

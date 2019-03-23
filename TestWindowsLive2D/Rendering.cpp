@@ -1,11 +1,5 @@
 #include "pch.h"
 #include <future>
-#include <L2DDevice.h>
-#include <L2DModelAsset.h>
-#include <L2DModel.h>
-#include <L2DBreath.h>
-#include <L2DBlink.h>
-#include <L2DPhysics.h>
 
 void RenderModel(const char* modelHome, const char* modelJson,float height)
 {

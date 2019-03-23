@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <L2DExpression.h>
 
 TEST(Expression, HaruExpressions)
 {

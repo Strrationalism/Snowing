@@ -247,6 +247,7 @@
     <ClInclude Include="L2DModelAsset.h" />
     <ClInclude Include="L2DMotion.h" />
     <ClInclude Include="L2DPhysics.h" />
+    <ClInclude Include="Live2D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp" />

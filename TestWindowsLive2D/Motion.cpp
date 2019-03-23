@@ -1,5 +1,4 @@
 #include "pch.h"
-#include <L2DMotion.h>
 
 void RenderMotion(const char* homeDir,const char* entryFile)
 {
