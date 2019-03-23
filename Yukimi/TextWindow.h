@@ -6,7 +6,7 @@
 namespace Yukimi
 {
 	class TextWindow final : 
-		public virtual Snowing::Scene::Object
+		public Snowing::Scene::Object
 	{
 	public:
 		class TextAnimation;

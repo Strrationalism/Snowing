@@ -42,6 +42,7 @@
 #include "MenuKeyController.h"
 #include "MenuPositionController.h"
 #include "ConditionTask.h"
+#include "FrameFunc.h"
 
 // Utils
 #include "BKDRHash.h"

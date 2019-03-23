@@ -2,3 +2,10 @@
 	path = FX11
 	url = https://github.com/Microsoft/FX11.git
 	ignore = all
+[submodule "WindowsLive2D/CubismNativeFramework"]
+	path = WindowsLive2D/CubismNativeFramework
+	url = https://github.com/Strrationalism/CubismNativeFramework
+
+[submodule "TestWindowsLive2D/CubismNativeSamples"]
+	path = TestWindowsLive2D/CubismNativeSamples
+	url = https://github.com/Live2D/CubismNativeSamples

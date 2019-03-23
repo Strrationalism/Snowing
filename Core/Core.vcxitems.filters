@@ -192,5 +192,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ConditionTask.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FrameFunc.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

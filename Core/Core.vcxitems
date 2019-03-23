@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Controller.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugDisplay.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)DebugMenu.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FrameFunc.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Library.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h" />

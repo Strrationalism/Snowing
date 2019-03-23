@@ -9,6 +9,7 @@ let Proc = {
     InputType = InputType.File
     Command = "CopyFile"
     FinishLogEnabled = true
+    Prority = 100
 }
 
 

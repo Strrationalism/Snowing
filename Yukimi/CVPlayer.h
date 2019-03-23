@@ -5,8 +5,7 @@ namespace Yukimi
 {
 	class[[nodiscard]] CVPlayer final:
 		private virtual Snowing::Scene::Group<AudioChannel>,
-		public virtual Snowing::Scene::Object,
-		public Snowing::SingleInstance<CVPlayer>
+		public virtual Snowing::Scene::Object
 	{
 		constexpr static float speedTime = 0.25f;
 
