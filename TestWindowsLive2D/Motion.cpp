@@ -38,7 +38,7 @@ void RenderMotion(const char* homeDir,const char* entryFile)
 				Log("Play Motion:", ass.GetMotionGroups()[groupID].first, motionID);
 			});
 
-			waitTime += 20;
+			waitTime += 4;
 		}
 	}
 
