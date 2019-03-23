@@ -65,6 +65,7 @@ Global
 		Core\Core.vcxitems*{6fc916c6-4f90-4f04-8822-7fa924836c0a}*SharedItemsImports = 4
 		Core\Core.vcxitems*{7cdad54a-d204-4907-b516-25a5f2061cae}*SharedItemsImports = 4
 		Core\Core.vcxitems*{85496e07-c508-46ed-89ce-f5d4a4ab5483}*SharedItemsImports = 4
+		Yukimi\Yukimi.vcxitems*{8ecf6d8f-86cd-47e4-befd-3e80aafc3bc0}*SharedItemsImports = 9
 		Core\Core.vcxitems*{917aa553-454b-4ff9-a680-da5d7feb59a8}*SharedItemsImports = 9
 		Core\Core.vcxitems*{96b98788-122f-4a37-8f0c-8472cac072de}*SharedItemsImports = 4
 		Core\Core.vcxitems*{9793ced4-9f61-4d5e-86b3-99250f799e23}*SharedItemsImports = 4
@@ -72,6 +73,8 @@ Global
 		Core\Core.vcxitems*{9f7b0bd8-50ae-4082-aa73-5652f12259b0}*SharedItemsImports = 4
 		Core\Core.vcxitems*{aabb5086-262e-4dbe-aad6-eff23211272c}*SharedItemsImports = 4
 		Core\Core.vcxitems*{b6edcecb-3930-4654-a41e-a60b9db7d153}*SharedItemsImports = 4
+		Core\Core.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
+		Yukimi\Yukimi.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
 		Core\Core.vcxitems*{d6f422f5-94c8-49e0-9c6f-16af1e8d5eca}*SharedItemsImports = 4
 		Core\Core.vcxitems*{e53b8b36-214e-4419-92ac-05ae39d70531}*SharedItemsImports = 4
 	EndGlobalSection
