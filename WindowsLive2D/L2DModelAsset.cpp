@@ -154,3 +154,26 @@ const size_t Live2D::ModelAsset::GetExpressionID(std::string_view name) const
 			return i;
 	throw std::out_of_range{"Can not find expression in model asset."};
 }
+
+const std::vector<Live2D::ModelAsset::MotionGroup>& Live2D::ModelAsset::GetMotionGroups() const
+{
+	return motionGroup_;
+}
+
+const size_t Live2D::ModelAsset::GetMotionGroupID(std::string_view n) const
+{
+	for (size_t i = 0; i < motionGroup_.size(); ++i)
+		if (motionGroup_[i].first == n)
+			return i;
+	throw std::out_of_range{ "Can not find motion group in model asset." };
+}
+
+const Live2D::ModelAsset::MotionGroup& Live2D::ModelAsset::GetMotionGroup(size_t id) const
+{
+	return motionGroup_.at(id);
+}
+
+const Live2D::ModelAsset::MotionGroup& Live2D::ModelAsset::GetMotionGroup(std::string_view name) const
+{
+	return GetMotionGroup(GetMotionGroupID(name));
+}

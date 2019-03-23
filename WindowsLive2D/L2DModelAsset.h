@@ -11,6 +11,8 @@ namespace Live2D
 		constexpr static size_t MaxTextureCounts = 4;
 		using TextureSet = std::array<std::optional<Snowing::Graphics::Texture2D>, MaxTextureCounts>;
 		using Handler = Snowing::Platforms::Handler;
+		using Motion = Snowing::Blob;
+		using MotionGroup = std::pair<std::string_view, std::vector<Motion>>;
 
 	private:
 		constexpr static size_t CubismModelSettingJsonSize = 40;
@@ -30,8 +32,7 @@ namespace Live2D
 		
 		const std::vector<std::pair<std::string_view,Snowing::Blob>> expressionJson_;
 
-		using Motion = Snowing::Blob;
-		using MotionGroup = std::pair<std::string_view, std::vector<Motion>>;
+
 		const std::vector<MotionGroup> motionGroup_;
 
 	public:
@@ -44,5 +45,10 @@ namespace Live2D
 		const std::optional<Snowing::Blob>& GetPhysicsJson() const;
 		const std::vector<std::pair<std::string_view, Snowing::Blob>>& GetExpressions() const;
 		const size_t GetExpressionID(std::string_view name) const;
+
+		const std::vector<MotionGroup>& GetMotionGroups() const;
+		const size_t GetMotionGroupID(std::string_view name) const;
+		const MotionGroup& GetMotionGroup(size_t id) const;
+		const MotionGroup& GetMotionGroup(std::string_view name) const;
 	};
 }

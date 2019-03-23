@@ -292,6 +292,7 @@
     <ClCompile Include="L2DExpression.cpp" />
     <ClCompile Include="L2DModel.cpp" />
     <ClCompile Include="L2DModelAsset.cpp" />
+    <ClCompile Include="L2DMotion.cpp" />
     <ClCompile Include="L2DPhysics.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
