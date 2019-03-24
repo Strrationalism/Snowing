@@ -64,3 +64,8 @@ uint32_t AudioChannel::GetPosition() const
 {
 	return player_.GetPosition();
 }
+
+float AudioChannel::GetRealtimeVolume() const
+{
+	return player_.GetRealtimeVolume();
+}

@@ -7,7 +7,7 @@ Live2D::Motion::Motion(Model* model, size_t groupID, size_t motionID):
 	motion_{
 		Csm::CubismMotion::Create(
 			model->GetAsset()->GetMotionGroup(groupID).second.at(motionID).Get<Csm::csmByte*>(),
-			model->GetAsset()->GetMotionGroup(groupID).second.at(motionID).Size()),
+			static_cast<Csm::csmSizeInt>(model->GetAsset()->GetMotionGroup(groupID).second.at(motionID).Size())),
 		[](void* p) {
 			Csm::CubismMotion::Delete(static_cast<Csm::CubismMotion*>(p));
 		}

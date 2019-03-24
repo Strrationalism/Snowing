@@ -13,6 +13,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::XAudio2
 		Handler xaVoice_;
 
 		std::uint32_t beginSample_ = 0;
+
 	public:
 		XASoundPlayer();
 		~XASoundPlayer();
@@ -25,6 +26,9 @@ namespace Snowing::PlatformImpls::WindowsImpl::XAudio2
 		void SetVolume(float v);
 		void SetPan(float pan);
 		void SetSpeed(float pitch);
+
+		float GetVolume() const;
+		float GetRealtimeVolume() const;
 	};
 }
 

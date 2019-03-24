@@ -27,6 +27,10 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 		{512,384}
 	};
 
+	auto font = LoadFont(LoadAsset("Font-chs.fnt"));
+	Effect eff{ LoadAsset("DebugDisplay.cso") };
+	auto tech = eff.LoadTechnique("DebugDisplay", Sprite::DataLayout);
+
 	// ¸ù³¡¾°
 	Scene::Group<> group;
 	group.Emplace<Scene::RenderTargetCleaner>(
@@ -54,6 +58,13 @@ void RenderModel(const char* modelHome, const char* modelJson,float height)
 	model->SetTranslate({ 256.0f,-0.15f*384.0f }, Coord);
 	model2->SetTranslate({ -256.0f,-height * 384.0f }, Coord);
 	model2->SetScale({ 4,4 });
+
+
+	group.Emplace<Scene::Debug::DebugDisplay>(
+		&tech, &font, L"FPS", Scene::Debug::DebugDisplay::FPSGetter);
+
+	group.Emplace<Scene::Debug::DebugDisplay>(
+		&tech, &font, L"Frame Time", Scene::Debug::DebugDisplay::FrameTimeGetter);
 
 	Snowing::Engine::Get().RunObject(group);
 }

@@ -41,5 +41,8 @@ namespace Yukimi
 
 		// 当声音播放结束或被完全停止后，对象死亡
 		bool Update() override;
+
+		// 获取实时音量
+		float GetRealtimeVolume() const;
 	};
 }

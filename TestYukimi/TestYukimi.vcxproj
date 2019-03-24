@@ -162,6 +162,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -189,6 +190,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <AdditionalOptions>/LTCG %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <FxCompile>
       <AdditionalIncludeDirectories>$(ProjectDir)..\WindowsImpl;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

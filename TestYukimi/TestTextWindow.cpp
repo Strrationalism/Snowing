@@ -4,6 +4,36 @@
 
 using namespace Yukimi;
 
+void SetupDebugDisplay(
+	Graphics::EffectTech* tech,
+	Graphics::Font* font,
+	TextWindow* tw,
+	Scene::Group<>& scene)
+{
+	scene.Emplace<Scene::Debug::DebugDisplay>(
+		tech, font, L"Text Window State", [tw] {
+		switch (tw->GetState())
+		{
+		case TextWindow::State::EmptyTextWindow:
+			return L"EmptyTextWindow";
+		case TextWindow::State::Displaying:
+			return L"Displaying";
+		case TextWindow::State::FadingInText:
+			return L"FadingIn";
+		case TextWindow::State::FadingOutText:
+			return L"FadingOut";
+		default:
+			throw std::exception{};
+		}
+	});
+
+	scene.Emplace<Scene::Debug::DebugDisplay>(
+		tech, font, L"FPS", Scene::Debug::DebugDisplay::FPSGetter);
+
+	scene.Emplace<Scene::Debug::DebugDisplay>(
+		tech, font, L"Frame Time", Scene::Debug::DebugDisplay::FrameTimeGetter);
+}
+
 TEST(TextWindow, FontStyleLoadingCombine)
 {
 	const TextWindowFontStyle styles[] =
@@ -96,9 +126,13 @@ class SimpleTextWindowAdapter final : public TextWindow::TextWindowUserAdapter
 {
 private:
 	Effect effect_{ LoadAsset("TextWindowShaders.cso") };
+
+public:
 	EffectTech basicFont_ = effect_.LoadTechnique("BasicFont", Sprite::DataLayout);
 	Font font_ = LoadFont(LoadAsset("Font-chs.fnt"));
 	Buffer vb_ = TextWindow::FontRenderer::MakeGPUVertexBuffer();
+
+private:
 
 	TextWindow::FontRenderer basicFr_
 	{
@@ -154,7 +188,7 @@ constexpr TextWindowFontStyle DefaultFontStyle
 	Math::Vec3f{1.0f,1.0f,1.0f}
 };
 
-auto CreateShowTextScene(TextWindow::TextWindowUserAdapter& adapter)
+auto CreateShowTextScene(SimpleTextWindowAdapter& adapter)
 {
 	Scene::Group<> scene;
 	scene.Emplace<Scene::RenderTargetCleaner>(
@@ -181,6 +215,8 @@ auto CreateShowTextScene(TextWindow::TextWindowUserAdapter& adapter)
 		textWindow->AppendText(L"Strrationalism", bigFont, 0.03f);
 		textWindow->AppendText(L"Strrationalism", smallFont, 0.03f);
 	}
+
+	SetupDebugDisplay(&adapter.basicFont_, &adapter.font_, textWindow, scene);
 
 	return scene;
 }
