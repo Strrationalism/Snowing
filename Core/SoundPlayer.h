@@ -63,6 +63,20 @@ namespace Snowing::Audio
 			impl_.SetSpeed(spd);
 		}
 
+		// 获取音量
+		[[nodiscard]]
+		float GetVolume() const
+		{
+			return impl_.GetVolume();
+		}
+
+		// 获取实时音量
+		[[nodiscard]]
+		float GetRealtimeVolume() const
+		{
+			return impl_.GetRealtimeVolume();
+		}
+
 		void ResetStates()
 		{
 			SetSpeed(1);

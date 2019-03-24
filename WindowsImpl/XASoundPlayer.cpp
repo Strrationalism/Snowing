@@ -160,3 +160,39 @@ void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::SetSpeed(float
 	}
 }
 
+float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetVolume() const
+{
+	if (XADevice::Get().Avaliable())
+	{
+		const auto sv = xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>();
+
+		float v;
+		sv->GetVolume(&v);
+
+		return v;
+	}
+	else
+		return 0.0f;
+}
+
+float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVolume() const
+{
+	const auto blob = GetPlaying();
+
+	if (blob)
+	{
+		const auto position = GetPosition() * format.nChannels * (format.wBitsPerSample / 8);
+
+		static_assert(format.wBitsPerSample == 16);
+		const auto pSample = blob->Get<uint16_t*>(position);
+
+		uint16_t all = 0;
+		for (int i = 0; i < format.nChannels; ++i)
+			all += pSample[i];
+
+		return fabs(static_cast<float>(all) / 65535.0f);
+	}
+	else
+		return false;
+}
+

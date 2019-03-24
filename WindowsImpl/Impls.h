@@ -37,7 +37,7 @@ namespace Snowing::Graphics
 		BufferSize>;
 
 	using Font = FontInterface<SpriteSheet, Texture2D,Buffer>;
-	Font LoadFont(const Blob& b, std::map<wchar_t, Math::Vec2f>&& = {});
+	Font LoadFont(const Blob& b);
 
 	template <
 		typename TSprite = Sprite,
