@@ -4,43 +4,58 @@
 using namespace Snowing;
 using namespace Yukimi;
 
-CVPlayer::CVPlayer(AudioChannel::AudioLoader l) :
-	loader_ { l }
+constexpr float FadeTime = 0.25f;
+constexpr float LoVolume = 0.2f;
+constexpr float HiVolume = 1.0f;
+
+CVPlayer::CVPlayer(AudioChannel::AudioLoader loader) :
+	loader_{ loader }
 {}
 
-bool CVPlayer::Update()
+void CVPlayer::Play(Snowing::AssetName ass)
 {
-	Scene::Group<AudioChannel>::Update();
-	return true;
+	FadeOutAll();
+	activeChannel_ = Emplace<>(loader_, ass, 0.0f, 0u, 0.0f);
+	activeChannel_->FadeVolume(volume_);
 }
 
 void CVPlayer::FadeOutAll()
 {
-	Iter([](AudioChannel& c) {
-		c.Stop(speedTime);
+	Iter([this](AudioChannel & c) {
+		c.Stop(FadeTime);
 	});
 }
 
-void CVPlayer::Play(Snowing::AssetName ass)
+bool CVPlayer::Update()
 {
-	constexpr static float pan = 0.0f;
-	auto p = Emplace<>(loader_,ass, 0.0F, 0u, pan);
-	p->FadeVolume(1.0f);
-}
+	Snowing::Scene::Group<AudioChannel>::Update();
+	bool found = false;
+	if (!Exist(activeChannel_))
+		activeChannel_ = nullptr;
 
-void CVPlayer::VolumeUp()
-{
-	SetVolumeHelper(1.0f);
+	return true;
 }
 
 void CVPlayer::VolumeDown()
 {
-	SetVolumeHelper(0.5f);
+	if (Exist(activeChannel_))
+		activeChannel_->FadeVolume(LoVolume, FadeTime);
+
+	volume_ = LoVolume;
 }
 
-inline void CVPlayer::SetVolumeHelper(float volume)
+void CVPlayer::VolumeUp()
 {
-	Iter([volume](AudioChannel& c) {
-		c.FadeVolume(volume);
-	});
+	if (Exist(activeChannel_))
+		activeChannel_->FadeVolume(LoVolume, HiVolume);
+
+	volume_ = HiVolume;
+}
+
+float CVPlayer::GetRealtimeVolume() const
+{
+	if (Exist(activeChannel_))
+		return activeChannel_->GetRealtimeVolume();
+	else
+		return 0.0f;
 }
