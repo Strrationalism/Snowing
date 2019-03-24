@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{9F7B0BD8-50AE-4082-AA73-5652F12259B0}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>WindowsLive2D</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+    <Import Project="..\Core\Core.vcxitems" Label="Shared" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
+    <IncludePath>$(ProjectDir)CubismNativeFramework\src;$(ProjectDir)..\WindowsImpl;$(ProjectDir)Core\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
+    <IncludePath>$(ProjectDir)CubismNativeFramework\src;$(ProjectDir)..\WindowsImpl;$(ProjectDir)Core\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
+    <IncludePath>$(ProjectDir)CubismNativeFramework\src;$(ProjectDir)..\WindowsImpl;$(ProjectDir)Core\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
+    <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
+    <IncludePath>$(ProjectDir)CubismNativeFramework\src;$(ProjectDir)..\WindowsImpl;$(ProjectDir)Core\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\140</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Live2DCubismCore_MDd.lib;D3DCompiler.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\140</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Live2DCubismCore_MDd.lib;D3DCompiler.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\140</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Live2DCubismCore_MD.lib;D3DCompiler.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>false</ConformanceMode>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\140</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Live2DCubismCore_MD.lib;D3DCompiler.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WindowsImpl\WindowsImpl.vcxproj">
+      <Project>{36976dba-7802-4549-8f43-f56245d4115e}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CubismNativeFramework\src\CubismDefaultParameterId.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\CubismFramework.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\CubismFrameworkConfig.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\CubismModelSettingJson.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Effect\CubismBreath.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Effect\CubismEyeBlink.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Effect\CubismPose.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\ICubismAllocator.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\ICubismModelSetting.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Id\CubismId.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Id\CubismIdManager.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Live2DCubismCore.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismMath.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismMatrix44.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismModelMatrix.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismTargetPoint.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismVector2.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Math\CubismViewMatrix.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Model\CubismMoc.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Model\CubismModel.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Model\CubismModelUserData.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Model\CubismModelUserDataJson.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Model\CubismUserModel.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\ACubismMotion.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismExpressionMotion.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotion.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotionInternal.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotionJson.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotionManager.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotionQueueEntry.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Motion\CubismMotionQueueManager.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Physics\CubismPhysics.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Physics\CubismPhysicsInternal.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Physics\CubismPhysicsJson.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\CubismRenderer.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismNativeInclude_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismOffscreenSurface_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismRenderer_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismRenderState_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismShader_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Rendering\D3D11\CubismType_D3D11.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Type\csmMap.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Type\csmRectF.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Type\csmString.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Type\csmVector.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Type\CubismBasicType.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Utils\CubismDebug.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Utils\CubismJson.hpp" />
+    <ClInclude Include="CubismNativeFramework\src\Utils\CubismString.hpp" />
+    <ClInclude Include="L2DExpression.h" />
+    <ClInclude Include="L2DBlink.h" />
+    <ClInclude Include="L2DBreath.h" />
+    <ClInclude Include="L2DDevice.h" />
+    <ClInclude Include="L2DLipSync.h" />
+    <ClInclude Include="L2DModel.h" />
+    <ClInclude Include="L2DModelAsset.h" />
+    <ClInclude Include="L2DMotion.h" />
+    <ClInclude Include="L2DPhysics.h" />
+    <ClInclude Include="Live2D.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CubismNativeFramework\src\CubismDefaultParameterId.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\CubismFramework.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\CubismModelSettingJson.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Effect\CubismBreath.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Effect\CubismEyeBlink.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Effect\CubismPose.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Id\CubismId.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Id\CubismIdManager.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismMath.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismMatrix44.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismModelMatrix.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismTargetPoint.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismVector2.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Math\CubismViewMatrix.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Model\CubismMoc.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Model\CubismModel.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Model\CubismModelUserData.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Model\CubismModelUserDataJson.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Model\CubismUserModel.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\ACubismMotion.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismExpressionMotion.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismMotion.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismMotionJson.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismMotionManager.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismMotionQueueEntry.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Motion\CubismMotionQueueManager.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Physics\CubismPhysics.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Physics\CubismPhysicsJson.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Rendering\CubismRenderer.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Rendering\D3D11\CubismOffscreenSurface_D3D11.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Rendering\D3D11\CubismRenderer_D3D11.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Rendering\D3D11\CubismRenderState_D3D11.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Rendering\D3D11\CubismShader_D3D11.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Type\csmRectF.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Type\csmString.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Utils\CubismDebug.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Utils\CubismJson.cpp" />
+    <ClCompile Include="CubismNativeFramework\src\Utils\CubismString.cpp" />
+    <ClCompile Include="L2DBlink.cpp" />
+    <ClCompile Include="L2DBreath.cpp" />
+    <ClCompile Include="L2DDevice.cpp" />
+    <ClCompile Include="L2DExpression.cpp" />
+    <ClCompile Include="L2DLipSync.cpp" />
+    <ClCompile Include="L2DModel.cpp" />
+    <ClCompile Include="L2DModelAsset.cpp" />
+    <ClCompile Include="L2DMotion.cpp" />
+    <ClCompile Include="L2DPhysics.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

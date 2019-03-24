@@ -138,4 +138,5 @@ let Proc = {
     InputType = InputType.File
     Command = "ConvertTexture"
     FinishLogEnabled = true
+    Prority = 100
 }

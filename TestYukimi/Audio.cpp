@@ -170,7 +170,7 @@ TEST(Audio, CVPlayer)
 	Graphics::EffectTech tech1 = eff.LoadTechnique("Font", Sprite::DataLayout);
 	
 	Scene::Group<> scene;
-	scene.Emplace<CVPlayer>(AudioLoader);
+	auto cv = scene.Emplace<CVPlayer>(AudioLoader);
 	scene.Emplace<Scene::RenderTargetCleaner>(
 		&Graphics::Device::MainContext(), &Graphics::Device::MainRenderTarget());
 	scene.Emplace<Scene::Debug::DebugDisplay>(
@@ -180,18 +180,18 @@ TEST(Audio, CVPlayer)
 	scene.Emplace<Scene::Debug::DebugDisplay>(
 		&tech1, &font, L"Scene Objs", [&scene] { return std::to_wstring(scene.Count()); });
 
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&] {
-		CVPlayer::Get().Play("Dir/Sound/HeadOnly.snd");
+	scene.Emplace<Scene::VirtualTask>(0.5f, [&, cv] {
+		cv->Play("Dir/Sound/HeadOnly.snd");
 	});
 
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&] {
-		auto& player = CVPlayer::Get();
+	scene.Emplace<Scene::VirtualTask>(0.5f, [&, cv] {
+		auto& player = *cv;
 		player.Play("Dir/Sound/HeadOnly.snd");
 		player.VolumeUp();
 	});
 
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&] {
-		auto& player = CVPlayer::Get();
+	scene.Emplace<Scene::VirtualTask>(0.5f, [&, cv] {
+		auto& player = *cv;
 		player.Play("Dir/Sound/HeadOnly.snd");
 		player.VolumeDown();
 	});

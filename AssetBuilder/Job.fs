@@ -13,6 +13,7 @@ type JobProc = {
     InputType : InputType
     Command : string
     FinishLogEnabled : bool
+    Prority : int
 }
 
 and Job = {

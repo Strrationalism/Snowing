@@ -1,5 +1,6 @@
 Include	[BasicAssets/BuildScript.txt]
 Include	[ExampleAssets/BuildScript.txt]
+Include	[Live2DAssetBuildScript.txt]
 
 # 构建任务说明
 # PackSprite、PackSound、ConvertFont等为构建任务

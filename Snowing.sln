@@ -53,6 +53,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestYukimi", "TestYukimi\Te
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsSteam", "TestWindowsSteam\TestWindowsSteam.vcxproj", "{EE1C4CB8-E547-4963-8DFA-5BE87E6B9879}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WindowsLive2D", "WindowsLive2D\WindowsLive2D.vcxproj", "{9F7B0BD8-50AE-4082-AA73-5652F12259B0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsLive2D", "TestWindowsLive2D\TestWindowsLive2D.vcxproj", "{9793CED4-9F61-4D5E-86B3-99250F799E23}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Core\Core.vcxitems*{36976dba-7802-4549-8f43-f56245d4115e}*SharedItemsImports = 4
@@ -64,15 +68,15 @@ Global
 		Yukimi\Yukimi.vcxitems*{8ecf6d8f-86cd-47e4-befd-3e80aafc3bc0}*SharedItemsImports = 9
 		Core\Core.vcxitems*{917aa553-454b-4ff9-a680-da5d7feb59a8}*SharedItemsImports = 9
 		Core\Core.vcxitems*{96b98788-122f-4a37-8f0c-8472cac072de}*SharedItemsImports = 4
+		Core\Core.vcxitems*{9793ced4-9f61-4d5e-86b3-99250f799e23}*SharedItemsImports = 4
 		Core\Core.vcxitems*{9819e64a-728d-48e9-be7a-cc7fe678d97f}*SharedItemsImports = 4
+		Core\Core.vcxitems*{9f7b0bd8-50ae-4082-aa73-5652f12259b0}*SharedItemsImports = 4
 		Core\Core.vcxitems*{aabb5086-262e-4dbe-aad6-eff23211272c}*SharedItemsImports = 4
 		Core\Core.vcxitems*{b6edcecb-3930-4654-a41e-a60b9db7d153}*SharedItemsImports = 4
-		Core\Core.vcxitems*{d1d71e00-3887-4eee-9bd3-26d1d86490b7}*SharedItemsImports = 4
 		Core\Core.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
 		Yukimi\Yukimi.vcxitems*{d63385f3-cf24-4932-9f69-36a1f42ac98d}*SharedItemsImports = 4
 		Core\Core.vcxitems*{d6f422f5-94c8-49e0-9c6f-16af1e8d5eca}*SharedItemsImports = 4
 		Core\Core.vcxitems*{e53b8b36-214e-4419-92ac-05ae39d70531}*SharedItemsImports = 4
-		Core\Core.vcxitems*{e72cb55e-fc8d-46ef-96d6-7cd5921b58bf}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -281,6 +285,26 @@ Global
 		{EE1C4CB8-E547-4963-8DFA-5BE87E6B9879}.Release|x64.Build.0 = Release|x64
 		{EE1C4CB8-E547-4963-8DFA-5BE87E6B9879}.Release|x86.ActiveCfg = Release|Win32
 		{EE1C4CB8-E547-4963-8DFA-5BE87E6B9879}.Release|x86.Build.0 = Release|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Debug|x64.ActiveCfg = Debug|x64
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Debug|x64.Build.0 = Debug|x64
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Debug|x86.ActiveCfg = Debug|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Debug|x86.Build.0 = Debug|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Release|x64.ActiveCfg = Release|x64
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Release|x64.Build.0 = Release|x64
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Release|x86.ActiveCfg = Release|Win32
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0}.Release|x86.Build.0 = Release|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Debug|x64.ActiveCfg = Debug|x64
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Debug|x64.Build.0 = Debug|x64
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Debug|x86.ActiveCfg = Debug|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Debug|x86.Build.0 = Debug|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Release|x64.ActiveCfg = Release|x64
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Release|x64.Build.0 = Release|x64
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Release|x86.ActiveCfg = Release|Win32
+		{9793CED4-9F61-4D5E-86B3-99250F799E23}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -300,6 +324,8 @@ Global
 		{8ECF6D8F-86CD-47E4-BEFD-3E80AAFC3BC0} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 		{D63385F3-CF24-4932-9F69-36A1F42AC98D} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 		{EE1C4CB8-E547-4963-8DFA-5BE87E6B9879} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
+		{9F7B0BD8-50AE-4082-AA73-5652F12259B0} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
+		{9793CED4-9F61-4D5E-86B3-99250F799E23} = {30AA46A1-BF9D-4317-B419-40BE16FF82BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {141F636F-971C-4E6F-BAA6-C6B7054CFD86}

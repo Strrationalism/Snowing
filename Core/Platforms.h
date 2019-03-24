@@ -5,6 +5,7 @@
 #include <typeindex>
 #include <array>
 #include <cassert>
+#include <functional>
 
 namespace Snowing::Platforms
 {
@@ -34,7 +35,7 @@ namespace Snowing::Platforms
 	class Handler final
 	{
 	public:
-		using Deleter = void(*)(void*);
+		using Deleter = std::function<void(void*)>;
 		static inline void DoNothingDeleter(void *) {}
 	private:
 		void* ptr_;

@@ -23,36 +23,40 @@ let FindProcByCommand command =
         Option.None
 
 
+let private allProcsLock = obj()
 let AddCustumProc (cusJob:Job) = 
-    let CommandProc (job:Job) =
-        let args = 
-            let a1 =
-                "\"" + job.OutputPath + "\"" ::
-                List.map (fun x -> "\"" + job.ScriptDir.FullName + "\\" + x + "\"") job.Input
-            List.concat (seq {yield a1;yield job.Arguments})
+    lock allProcsLock (fun _ ->
+        let CommandProc (job:Job) =
+            let args = 
+                let a1 =
+                    "\"" + job.OutputPath + "\"" ::
+                    List.map (fun x -> "\"" + job.ScriptDir.FullName + "\\" + x + "\"") job.Input
+                List.concat (seq {yield a1;yield job.Arguments})
             
-        let arg = List.reduce (fun x y -> x + " " + y) args
-        Utils.StartWait (job.ScriptDir.FullName + "\\" + cusJob.Input.Head) arg
-        Utils.WaitForFile 10 job.OutputPath
+            let arg = List.reduce (fun x y -> x + " " + y) args
+            Utils.StartWait (job.ScriptDir.FullName + "\\" + cusJob.Input.Head) arg
+            Utils.WaitForFile 10 job.OutputPath
 
-    let newProc = {
-        Proc = CommandProc
-        InputType = 
-            match cusJob.Arguments.[0] with
-            | "File" -> File
-            | "Files" -> Files
-            | "Dir" -> Directory
-            | "None" -> Job.None
-            | _ -> failwith "Bad custum tool define."
-        Command = cusJob.Arguments.[1]
-        FinishLogEnabled = true }
-    AllProcs <- newProc :: AllProcs
+        let newProc = {
+            Proc = CommandProc
+            InputType = 
+                match cusJob.Arguments.[0] with
+                | "File" -> File
+                | "Files" -> Files
+                | "Dir" -> Directory
+                | "None" -> Job.None
+                | _ -> failwith "Bad custum tool define."
+            Command = cusJob.Arguments.[1]
+            FinishLogEnabled = true 
+            Prority = 100 }
+        AllProcs <- newProc :: AllProcs)
 
 let CustumJobProc = {
     Proc = AddCustumProc
     InputType = File
     Command = "Custum"
-    FinishLogEnabled = false }
+    FinishLogEnabled = false
+    Prority = 0 }
 
 AllProcs <- CustumJobProc :: AllProcs
 

@@ -69,4 +69,5 @@ let Proc = {
     InputType = Directory
     Command = "PackSprite"
     FinishLogEnabled = true
+    Prority = 100
 }

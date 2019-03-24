@@ -58,4 +58,5 @@ let Proc = {
     InputType = Files
     Command = "PackSound" 
     FinishLogEnabled = true
+    Prority = 100
 }

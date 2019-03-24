@@ -101,5 +101,6 @@ let Proc = {
     InputType = InputType.Directory
     Command = "ConvertFont"
     FinishLogEnabled = true
+    Prority = 100
 }
 
