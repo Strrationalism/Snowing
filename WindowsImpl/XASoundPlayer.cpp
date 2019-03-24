@@ -185,8 +185,8 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 		const size_t currentSampleID = GetPosition();
 		constexpr size_t sampleNeed = 4096;
 
-		const auto beginSample = std::clamp(currentSampleID - sampleNeed / 2, 0u, sampleCount);
-		const auto endSample = std::clamp(currentSampleID + sampleNeed / 2, 0u, sampleCount);
+		const auto beginSample = std::clamp(size_t(currentSampleID - sampleNeed / 2), size_t(0u), sampleCount);
+		const auto endSample = std::clamp(size_t(currentSampleID + sampleNeed / 2), size_t(0u), sampleCount);
 
 		float volume = 0;
 		for (size_t currentSampleID = beginSample; currentSampleID < endSample; ++currentSampleID)
