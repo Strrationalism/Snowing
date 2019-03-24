@@ -186,11 +186,11 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 		static_assert(format.wBitsPerSample == 16);
 		const auto pSample = blob->Get<uint16_t*>(position);
 
-		uint16_t all = 0;
+		float all = 0;
 		for (int i = 0; i < format.nChannels; ++i)
-			all += pSample[i];
+			all += fabs(static_cast<float>(pSample[i]) / 65535.0f);
 
-		return fabs(static_cast<float>(all) / 65535.0f);
+		return all / format.nChannels;
 	}
 	else
 		return false;
