@@ -4,14 +4,6 @@
 //
 
 #pragma once
-
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
-const static inline auto ignore = _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-/* 注意：有4个内存泄露区块，这是正常的。*/
-
 #define USE_XAUDIO2
 #define GTEST_HAS_TR1_TUPLE 0
 #define GTEST_HAS_STD_TUPLE_ 1

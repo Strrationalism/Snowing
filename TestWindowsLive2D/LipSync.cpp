@@ -3,7 +3,7 @@
 void LipSyncTest(const char* home, const char* entryJson,float height)
 {
 	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Motion.RenderMotion", { 800,600 }, true);
+		PlatformImpls::WindowsImpl::MakeEngine(L"LipSync.LipSyncTest", { 800,600 }, true);
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());
@@ -53,7 +53,3 @@ TEST(LipSync, Hiyori)
 	LipSyncTest("Live2D/Hiyori/", "Hiyori.model3.json", 1.7f);
 }
 
-TEST(LipSync, Mark)
-{
-	LipSyncTest("Live2D/Mark/", "Mark.model3.json", 0.65f);
-}
