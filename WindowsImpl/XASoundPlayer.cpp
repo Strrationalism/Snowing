@@ -181,28 +181,30 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 
 	if (blob)
 	{
-		const auto position = GetPosition() * format.nChannels * (format.wBitsPerSample / 8);
+		const size_t sampleCount = blob->Size() / (format.wBitsPerSample / 8) / format.nChannels;
+		const size_t currentSampleID = GetPosition();
+		constexpr size_t sampleNeed = 4096;
 
-		static_assert(format.wBitsPerSample == 16);
+		const auto beginSample = std::clamp(currentSampleID - sampleNeed / 2, 0u, sampleCount);
+		const auto endSample = std::clamp(currentSampleID + sampleNeed / 2, 0u, sampleCount);
 
-		float all = 0;
-		size_t count = 0;
-		for (int i = 0; i < format.nSamplesPerSec / 60; ++i)
+		float volume = 0;
+		for (size_t currentSampleID = beginSample; currentSampleID < endSample; ++currentSampleID)
 		{
-			if (position + i * format.nChannels * (format.wBitsPerSample / 8) >= blob->Size())
-				break;
+			const size_t bytePosition = currentSampleID * (format.wBitsPerSample / 8) * format.nChannels;
+			const auto pSample = blob->Get<uint16_t*>(bytePosition);
 
-			const auto pSample = blob->Get<uint16_t*>(position + i);
-			for (int i = 0; i < format.nChannels; ++i)
+			for (size_t channel = 0; channel < format.nChannels; ++channel)
 			{
-				all += fabs(static_cast<float>(pSample[i]) / 65535.0f);
-				count++;
+				const float vol = static_cast<float>(pSample[channel]) / 65535.0f;
+				volume += vol;
 			}
 		}
 
-		return all / std::clamp(count,1u,count);
+
+		return volume / (endSample - beginSample) / format.nChannels;
 	}
 	else
-		return false;
+		return 0;
 }
 
