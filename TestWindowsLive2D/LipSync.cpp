@@ -45,7 +45,9 @@ void LipSyncTest(const char* home, const char* entryJson,float height)
 	});
 
 	s.Emplace<Scene::VirtualFrameFunc>([lipSync,&soundPlayer] {
-		lipSync->SetVolume(soundPlayer.GetRealtimeVolume());
+		const float t = soundPlayer.GetRealtimeVolume();
+		Snowing::Log(t);
+		lipSync->SetVolume(t);
 		return true;
 	});
 

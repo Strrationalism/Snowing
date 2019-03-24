@@ -184,13 +184,23 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 		const auto position = GetPosition() * format.nChannels * (format.wBitsPerSample / 8);
 
 		static_assert(format.wBitsPerSample == 16);
-		const auto pSample = blob->Get<uint16_t*>(position);
 
 		float all = 0;
-		for (int i = 0; i < format.nChannels; ++i)
-			all += fabs(static_cast<float>(pSample[i]) / 65535.0f);
+		size_t count = 0;
+		for (int i = 0; i < format.nSamplesPerSec / 60; ++i)
+		{
+			if (position + i * format.nChannels * (format.wBitsPerSample / 8) >= blob->Size())
+				break;
 
-		return all / format.nChannels;
+			const auto pSample = blob->Get<uint16_t*>(position + i);
+			for (int i = 0; i < format.nChannels; ++i)
+			{
+				all += fabs(static_cast<float>(pSample[i]) / 65535.0f);
+				count++;
+			}
+		}
+
+		return all / std::clamp(count,1u,count);
 	}
 	else
 		return false;
