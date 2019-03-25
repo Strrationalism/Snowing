@@ -160,3 +160,51 @@ void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::SetSpeed(float
 	}
 }
 
+float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetVolume() const
+{
+	if (XADevice::Get().Avaliable())
+	{
+		const auto sv = xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>();
+
+		float v;
+		sv->GetVolume(&v);
+
+		return v;
+	}
+	else
+		return 0.0f;
+}
+
+float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVolume() const
+{
+	const auto blob = GetPlaying();
+
+	if (blob)
+	{
+		const size_t sampleCount = blob->Size() / (format.wBitsPerSample / 8) / format.nChannels;
+		const size_t currentSampleID = GetPosition();
+		constexpr size_t sampleNeed = 4096;
+
+		const auto beginSample = std::clamp(size_t(currentSampleID - sampleNeed / 2), size_t(0u), sampleCount);
+		const auto endSample = std::clamp(size_t(currentSampleID + sampleNeed / 2), size_t(0u), sampleCount);
+
+		float volume = 0;
+		for (size_t currentSampleID = beginSample; currentSampleID < endSample; ++currentSampleID)
+		{
+			const size_t bytePosition = currentSampleID * (format.wBitsPerSample / 8) * format.nChannels;
+			const auto pSample = blob->Get<uint16_t*>(bytePosition);
+
+			for (size_t channel = 0; channel < format.nChannels; ++channel)
+			{
+				const float vol = static_cast<float>(pSample[channel]) / 65535.0f;
+				volume += vol;
+			}
+		}
+
+
+		return volume / (endSample - beginSample) / format.nChannels;
+	}
+	else
+		return 0;
+}
+

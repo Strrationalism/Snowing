@@ -107,20 +107,26 @@ bool Live2D::Model::Update()
 		const auto renderer = renderer_.Get<Csm::Rendering::CubismRenderer_D3D11*>();
 		const auto device = Snowing::PlatformImpls::WindowsImpl::D3D::Device::Get().GetHandler().Cast<IUnknown*, ID3D11Device*>();
 		const auto context = ctx_->GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>();
+
+		
 		
 		// 获取当前RenderTarget的大小
 		ID3D11Resource* rtTex = nullptr;
-		ID3D11RenderTargetView* renderTarget = nullptr;
-		context->OMGetRenderTargets(1,&renderTarget,nullptr);
-		assert(renderTarget);
-		renderTarget->GetResource(&rtTex);
+		ID3D11RenderTargetView* renderTarget[] = { nullptr,nullptr };
+		context->OMGetRenderTargets(2,renderTarget,nullptr);
+		assert(renderTarget[0]);
+		assert(renderTarget[1] == nullptr);
+		renderTarget[0]->GetResource(&rtTex);
 		assert(rtTex);
 
 		D3D11_TEXTURE2D_DESC desc;
 
+		context->ClearState();
+		context->OMSetRenderTargets(1, &renderTarget[0], nullptr);
+
 		static_cast<ID3D11Texture2D*>(rtTex)->GetDesc(&desc);
 		rtTex->Release();
-		renderTarget->Release();
+		renderTarget[0]->Release();
 
 		// 绘制Live2D内容
 		renderer->StartFrame(device, context, desc.Width, desc.Height);

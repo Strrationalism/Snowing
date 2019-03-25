@@ -3,11 +3,16 @@
 void LipSyncTest(const char* home, const char* entryJson,float height)
 {
 	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Motion.RenderMotion", { 800,600 }, true);
+		PlatformImpls::WindowsImpl::MakeEngine(L"LipSync.LipSyncTest", { 800,600 }, true);
+
+	PlatformImpls::WindowsImpl::XAudio2::XADevice d;
 
 	Graphics::Device::MainContext().SetRenderTarget(
 		&Graphics::Device::MainRenderTarget());
 
+	auto font = LoadFont(LoadAsset("Font-chs.fnt"));
+	Effect eff{ LoadAsset("DebugDisplay.cso") };
+	auto tech = eff.LoadTechnique("DebugDisplay", Sprite::DataLayout);
 
 	Live2D::Device device;
 
@@ -31,13 +36,30 @@ void LipSyncTest(const char* home, const char* entryJson,float height)
 	model->SetTranslate({ 0,-height });
 	model->SetScale({ 4.0F,4.0F });
 
-	s.Emplace<Scene::VirtualFrameFunc>([lipSync] {
-		lipSync->SetVolume(float(rand()) / RAND_MAX);
+	auto sound = LoadAsset("Dir/Sound/HeadOnly.snd");
+
+	Audio::SoundPlayer soundPlayer;
+
+	s.Emplace<Scene::VirtualTask>(2.0f, [&] {
+		soundPlayer.Play(&sound);
+	});
+
+	s.Emplace<Scene::VirtualFrameFunc>([lipSync,&soundPlayer] {
+		const float t = soundPlayer.GetRealtimeVolume();
+		Snowing::Log(t);
+		lipSync->SetVolume(t);
 		return true;
 	});
 
 	s.Emplace<Scene::PointerTask>(5.0f,[] {
 		Snowing::Engine::Get().Exit();
+	});
+
+	
+
+	s.Emplace<Scene::Debug::DebugDisplay>(
+		&tech, &font, L"RealtimeVolume", [&] {
+		return std::to_wstring(soundPlayer.GetRealtimeVolume());
 	});
 
 	Snowing::Engine::Get().RunObject(s);
@@ -53,7 +75,3 @@ TEST(LipSync, Hiyori)
 	LipSyncTest("Live2D/Hiyori/", "Hiyori.model3.json", 1.7f);
 }
 
-TEST(LipSync, Mark)
-{
-	LipSyncTest("Live2D/Mark/", "Mark.model3.json", 0.65f);
-}

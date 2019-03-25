@@ -184,16 +184,16 @@ TEST(Audio, CVPlayer)
 		cv->Play("Dir/Sound/HeadOnly.snd");
 	});
 
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&, cv] {
-		auto& player = *cv;
-		player.Play("Dir/Sound/HeadOnly.snd");
-		player.VolumeUp();
-	});
-
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&, cv] {
+	scene.Emplace<Scene::VirtualTask>(0.75f, [&, cv] {
 		auto& player = *cv;
 		player.Play("Dir/Sound/HeadOnly.snd");
 		player.VolumeDown();
+	});
+
+	scene.Emplace<Scene::VirtualTask>(1.0f, [&, cv] {
+		auto& player = *cv;
+		player.Play("Dir/Sound/HeadOnly.snd");
+		
 	});
 
 	scene.Emplace<Scene::VirtualTask>(2.5f, [&] {

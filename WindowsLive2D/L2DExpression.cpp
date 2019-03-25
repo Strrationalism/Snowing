@@ -7,7 +7,7 @@ Live2D::Expression::Expression(Model* model, size_t expressionID):
 	expression_{
 		std::invoke([model,expressionID] {
 			const auto& blob = model->GetAsset()->GetExpressions().at(expressionID).second;
-			return Csm::CubismExpressionMotion::Create(blob.Get<Csm::csmByte*>(), blob.Size());
+			return Csm::CubismExpressionMotion::Create(blob.Get<Csm::csmByte*>(), static_cast<Csm::csmSizeInt>(blob.Size()));
 		}),
 		[](void* p) {
 			Csm::CubismExpressionMotion::Delete(static_cast<Csm::CubismExpressionMotion*>(p));
