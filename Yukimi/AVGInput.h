@@ -27,7 +27,7 @@ namespace Yukimi
 		virtual std::optional<Snowing::Math::Vec2f> Position(Snowing::Input::MousePosition) = 0;
 	};
 
-	class AVGInput final
+	class AVGInput final : Snowing::NoCopyMove
 	{
 	private:
 		class AVGInputKeyboardMouse final : public AVGInputDevice
@@ -42,6 +42,8 @@ namespace Yukimi
 		std::vector<std::unique_ptr<AVGInputDevice>> devices_;
 
 	public:
+		AVGInput();
+
 		bool KeyPressed(AVGKeys) ;
 		bool KeyPressed(Snowing::Input::ClassicGamepadArrow);
 		void Vibration(Snowing::Input::VibrationLeftRight);

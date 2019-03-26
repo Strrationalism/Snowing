@@ -73,6 +73,11 @@ void Yukimi::AVGInput::AVGInputKeyboardMouse::Vibration(Snowing::Input::Vibratio
 {
 }
 
+Yukimi::AVGInput::AVGInput()
+{
+	Emplace<AVGInputKeyboardMouse>();
+}
+
 bool Yukimi::AVGInput::KeyPressed(AVGKeys a)
 {
 	return std::any_of(devices_.begin(), devices_.end(), [a](auto & p) {
