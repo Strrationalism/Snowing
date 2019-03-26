@@ -8,6 +8,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AVGInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
@@ -16,6 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AVGInput.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
