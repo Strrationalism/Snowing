@@ -8,9 +8,12 @@ namespace Yukimi::Script
 {
 	constexpr size_t MaxArguments = 4;
 	constexpr size_t MaxFontStyles = 4;
-	constexpr size_t MaxElementInLine = 16;
+	constexpr size_t MaxElementInLine = 32;
 
-	struct Nop {};
+	struct Nop {
+		constexpr bool operator != (Nop p) const { return false; }
+	};
+
 	struct CommandElement
 	{
 		std::wstring_view Command;
@@ -36,9 +39,40 @@ namespace Yukimi::Script
 
 	struct TextElement
 	{
-		std::array<std::wstring_view, MaxFontStyles> FontStyles;
-		std::wstring_view Charater;
 		std::wstring_view Text;
+
+		inline bool operator != (TextElement b) const { return Text != b.Text; }
+	};
+
+	struct FontStyleElement
+	{
+		std::array<std::wstring_view, MaxFontStyles> FontStyles;
+		size_t StyleCount;
+
+		inline bool operator != (FontStyleElement b) const
+		{
+			size_t i;
+			for (i = 0; i < StyleCount; ++i)
+				if (FontStyles[i] != b.FontStyles[i])
+					return true;
+
+			for (; i < MaxArguments; ++i)
+				if (!b.FontStyles[i].empty() || !FontStyles[i].empty())
+					return true;
+
+			return StyleCount != b.StyleCount;
+		}
+	};
+
+	struct FontStylePopElement {
+		constexpr bool operator != (FontStylePopElement p) const { return false; }
+	};
+
+	struct CharaterNameElement
+	{
+		std::wstring_view Name;
+
+		inline bool operator != (CharaterNameElement b) const { return Name != b.Name; }
 	};
 
 	struct LabelElement
@@ -48,7 +82,15 @@ namespace Yukimi::Script
 		inline bool operator != (LabelElement b) const { return LabelName != b.LabelName; }
 	};
 
-	using Element = std::variant<Nop, LabelElement, CommandElement, TextElement>;
+	using Element = std::variant<
+		Nop, 
+		LabelElement,
+		CommandElement,
+		TextElement,
+		CharaterNameElement,
+		FontStylePopElement,
+		FontStyleElement>;
+
 	using Line = std::array<Element, MaxElementInLine>;
 	using Script = std::vector<Line>;
 
