@@ -24,7 +24,6 @@ namespace Yukimi
 		virtual bool KeyPressed(Snowing::Input::ClassicGamepadArrow) = 0;
 		virtual void Vibration(Snowing::Input::VibrationLeftRight) = 0;
 		virtual void Vibration(Snowing::Input::VibrationStop) = 0;
-		virtual std::optional<Snowing::Math::Vec2f> Position(Snowing::Input::MousePosition) = 0;
 	};
 
 	class AVGInput final : Snowing::NoCopyMove
