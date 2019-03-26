@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AVGInput.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScriptParser.h" />
@@ -24,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioChannel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AVGInput.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScriptParser.cpp" />
