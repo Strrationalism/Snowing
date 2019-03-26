@@ -17,6 +17,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BGMPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CVPlayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScriptParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SEPlayer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindowFontStyle.h" />
@@ -25,6 +26,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AudioChannel.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BGMPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)CVPlayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScriptParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SEPlayer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TextWindow.cpp" />

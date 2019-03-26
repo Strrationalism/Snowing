@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		License.md = License.md
 		Readme.md = Readme.md
+		Yukimi\YukimiScriptDesign.md = Yukimi\YukimiScriptDesign.md
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestWindowsInput", "TestWindowsInput\TestWindowsInput.vcxproj", "{AABB5086-262E-4DBE-AAD6-EFF23211272C}"
