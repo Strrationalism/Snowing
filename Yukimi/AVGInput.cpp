@@ -4,7 +4,7 @@
 
 using namespace Snowing::Input;
 
-bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(AVGKeys k)
+bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(AVGKeys k) const
 {
 	using Input = Snowing::Input::Input;
 	switch (k)
@@ -39,7 +39,7 @@ bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(AVGKeys k)
 	return false;
 }
 
-bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(Snowing::Input::ClassicGamepadArrow a)
+bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(Snowing::Input::ClassicGamepadArrow a) const
 {
 	using Input = Snowing::Input::Input;
 	switch (a)
@@ -78,14 +78,14 @@ Yukimi::AVGInput::AVGInput()
 	Emplace<AVGInputKeyboardMouse>();
 }
 
-bool Yukimi::AVGInput::KeyPressed(AVGKeys a)
+bool Yukimi::AVGInput::KeyPressed(AVGKeys a) const
 {
 	return std::any_of(devices_.begin(), devices_.end(), [a](auto & p) {
 		return p->KeyPressed(a);
 	});
 }
 
-bool Yukimi::AVGInput::KeyPressed(Snowing::Input::ClassicGamepadArrow a)
+bool Yukimi::AVGInput::KeyPressed(Snowing::Input::ClassicGamepadArrow a) const
 {
 	return std::any_of(devices_.begin(), devices_.end(), [a](auto & p) {
 		return p->KeyPressed(a);
