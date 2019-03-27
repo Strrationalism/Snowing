@@ -73,6 +73,7 @@ namespace Snowing::Scene
 				catch(std::bad_cast)
 				{ }
 			}
+			return nullptr;
 		}
 
 		void Clear()

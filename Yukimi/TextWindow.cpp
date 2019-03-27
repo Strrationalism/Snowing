@@ -150,7 +150,9 @@ Yukimi::TextWindow::State Yukimi::TextWindow::GetState() const
 	{
 		if (std::any_of(text_.begin(), text_.end(),
 			[](const Charater & ch) {
-			return ch.Animation->GetState(ch) == TextAnimation::AnimationState::FadingIn;
+			return 
+				ch.Animation->GetState(ch) == TextAnimation::AnimationState::FadingIn ||
+				ch.Animation->GetState(ch) == TextAnimation::AnimationState::Ready;
 		}))
 			return Yukimi::TextWindow::State::FadingInText;
 

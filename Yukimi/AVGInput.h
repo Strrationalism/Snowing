@@ -20,20 +20,20 @@ namespace Yukimi
 	public:
 		virtual ~AVGInputDevice() = default;
 
-		virtual bool KeyPressed(AVGKeys) = 0;
-		virtual bool KeyPressed(Snowing::Input::ClassicGamepadArrow) = 0;
+		virtual bool KeyPressed(AVGKeys) const = 0;
+		virtual bool KeyPressed(Snowing::Input::ClassicGamepadArrow) const = 0;
 		virtual void Vibration(Snowing::Input::VibrationLeftRight) = 0;
 		virtual void Vibration(Snowing::Input::VibrationStop) = 0;
 	};
 
-	class AVGInput final : Snowing::NoCopyMove
+	class AVGInput final : Snowing::NoCopyMove,public Snowing::SingleInstance<AVGInput>
 	{
 	private:
 		class AVGInputKeyboardMouse final : public AVGInputDevice
 		{
 		public:
-			bool KeyPressed(AVGKeys) override;
-			bool KeyPressed(Snowing::Input::ClassicGamepadArrow) override;
+			bool KeyPressed(AVGKeys) const override;
+			bool KeyPressed(Snowing::Input::ClassicGamepadArrow) const override;
 			void Vibration(Snowing::Input::VibrationLeftRight) override;
 			void Vibration(Snowing::Input::VibrationStop) override;
 		};
@@ -43,8 +43,8 @@ namespace Yukimi
 	public:
 		AVGInput();
 
-		bool KeyPressed(AVGKeys) ;
-		bool KeyPressed(Snowing::Input::ClassicGamepadArrow);
+		bool KeyPressed(AVGKeys) const;
+		bool KeyPressed(Snowing::Input::ClassicGamepadArrow) const;
 		void Vibration(Snowing::Input::VibrationLeftRight);
 		void Vibration(Snowing::Input::VibrationStop);
 		std::optional<Snowing::Math::Vec2f> Position(Snowing::Input::MousePosition);
