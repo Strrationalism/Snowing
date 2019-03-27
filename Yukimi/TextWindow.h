@@ -1,3 +1,4 @@
+#pragma once
 #include <Coordinate2D.h>
 #include <PlatformImpls.h>
 #include "TextWindowFontStyle.h"
@@ -16,80 +17,80 @@ namespace Yukimi
 			Snowing::Graphics::SpriteSheet,
 			64>;
 
-		// ±íÊ¾ÎÄ±¾¿òÖĞµÄµ¥¸ö×Ö·û
+		// è¡¨ç¤ºæ–‡æœ¬æ¡†ä¸­çš„å•ä¸ªå­—ç¬¦
 		struct Charater final
 		{
 			Snowing::Graphics::FontSprite Sprite;
 			std::unique_ptr<TextAnimation> Animation;
 			FontRenderer* Renderer;
 
-			float LifeTime;			// ×ÜÉúÃüÊ±¼ä
-			float SinceFadeInTime;	// ÈôÎª¸ºÊı£¬ÔòÎª¡°¾àÀë±»Õı³£ÏÔÊ¾»¹ÓĞ¡±£¬ÈôÎªÕıÊı£¬ÔòÎª¡°¾àÀëÕı³£ÏÔÊ¾ÒÑ¾­¹ıÈ¥¡±
-			float WaitTime;			// ´Ó´´½¨µ½±»ÍêÕûÏÔÊ¾Ê±¼äÒÔÍâµÄÆ«ÒÆÊ±¼ä
+			float LifeTime;			// æ€»ç”Ÿå‘½æ—¶é—´
+			float SinceFadeInTime;	// è‹¥ä¸ºè´Ÿæ•°ï¼Œåˆ™ä¸ºâ€œè·ç¦»è¢«æ­£å¸¸æ˜¾ç¤ºè¿˜æœ‰â€ï¼Œè‹¥ä¸ºæ­£æ•°ï¼Œåˆ™ä¸ºâ€œè·ç¦»æ­£å¸¸æ˜¾ç¤ºå·²ç»è¿‡å»â€
+			float WaitTime;			// ä»åˆ›å»ºåˆ°è¢«å®Œæ•´æ˜¾ç¤ºæ—¶é—´ä»¥å¤–çš„åç§»æ—¶é—´
 		};
 
 	public:
 
-		// TextWindowµÄ×´Ì¬
+		// TextWindowçš„çŠ¶æ€
 		enum class State
 		{
 			EmptyTextWindow,
 			FadingInText,
 			Displaying,
-			FadingOutText	// ×¢ÒâÔÚÕâ¸ö×´Ì¬ÏÂ£¬²»ÄÜAppendText
+			FadingOutText	// æ³¨æ„åœ¨è¿™ä¸ªçŠ¶æ€ä¸‹ï¼Œä¸èƒ½AppendText
 		};
 
-		// ´ËÀàÓÃÓÚ´´½¨ÎÄ×ÖµÄ¶¯»­Ğ§¹û
+		// æ­¤ç±»ç”¨äºåˆ›å»ºæ–‡å­—çš„åŠ¨ç”»æ•ˆæœ
 		class TextAnimation
 		{
 		public:
 
-			// ¶¯»­×´Ì¬
+			// åŠ¨ç”»çŠ¶æ€
 			enum class AnimationState
 			{
-				Ready,			// ÉĞÎ´ÏÔÊ¾
-				FadingIn,		// ÕıÔÚµ­Èë
-				Displaying,		// Ä¿Ç°ÔÚÕı³£ÏÔÊ¾
-				FadingOut,		// ÕıÔÚµ­³ö
-				Killed			// ÒÑËÀÍö
+				Ready,			// å°šæœªæ˜¾ç¤º
+				FadingIn,		// æ­£åœ¨æ·¡å…¥
+				Displaying,		// ç›®å‰åœ¨æ­£å¸¸æ˜¾ç¤º
+				FadingOut,		// æ­£åœ¨æ·¡å‡º
+				Killed			// å·²æ­»äº¡
 			};
 
-			// Ã¿Ö¡¸üĞÂÒ»´Î£¬µ±ÎÄ×Ö³¹µ×ÏûÊ§ºó·µ»Øfalse
+			// æ¯å¸§æ›´æ–°ä¸€æ¬¡ï¼Œå½“æ–‡å­—å½»åº•æ¶ˆå¤±åè¿”å›false
 			virtual void Update(Charater&) = 0;
 
-			// »ñÈ¡¶¯»­×´Ì¬
+			// è·å–åŠ¨ç”»çŠ¶æ€
 			virtual AnimationState GetState(const Charater&) const = 0;
 			
-			// ÓÃ»§µã»÷Êó±êÒªÇó¿ìËÙÍê³Éµ­ÈëĞ§¹ûÊ±
+			// ç”¨æˆ·ç‚¹å‡»é¼ æ ‡è¦æ±‚å¿«é€Ÿå®Œæˆæ·¡å…¥æ•ˆæœæ—¶
 			virtual void FastFadeIn(Charater&) = 0;
 
-			// µ±ÒªÇó±»µ­³öÊ±
+			// å½“è¦æ±‚è¢«æ·¡å‡ºæ—¶
 			virtual void FadeOut(Charater&) = 0;
 
-			// µ±´°¿Ú±»ÏÔÊ¾/Òş²ØÊ±
+			// å½“çª—å£è¢«æ˜¾ç¤º/éšè—æ—¶
 			virtual void SetVisible(Charater&,bool vis) = 0;
 		};
 
-		// ´ËÀàÓÃÓÚÓÃ»§ÅäÖÃ¶Ô»°¿òÏµÍ³£¬Ê¹ÓÃÕßĞèÒª¼Ì³ĞÓÚ´ËÀà£¬×Ó¶ÔÏó´«µİ¸øTextWindow
+		// æ­¤ç±»ç”¨äºç”¨æˆ·é…ç½®å¯¹è¯æ¡†ç³»ç»Ÿï¼Œä½¿ç”¨è€…éœ€è¦ç»§æ‰¿äºæ­¤ç±»ï¼Œå­å¯¹è±¡ä¼ é€’ç»™TextWindow
 		class TextWindowUserAdapter
 		{
 		public:
-			// »ñÈ¡¶Ô»°¿òÎ»ÖÃ
+			// è·å–å¯¹è¯æ¡†ä½ç½®
 			virtual Snowing::Math::Vec4f GetTextWindowBox() const = 0;
 
-			// ¸ù¾İID»ñÈ¡×ÅÉ«Æ÷Tech¶ÔÓ¦µÄFontRenderer
+			// æ ¹æ®IDè·å–ç€è‰²å™¨Techå¯¹åº”çš„FontRenderer
 			virtual FontRenderer* GetFontRendererByShaderName(Snowing::BKDRHash) = 0;
 
-			// Á¢¼´Íê³ÉËùÓĞ»æÖÆ²Ù×÷
+			// ç«‹å³å®Œæˆæ‰€æœ‰ç»˜åˆ¶æ“ä½œ
 			virtual void FlushDrawCall() = 0;
 
-			// »ñÈ¡×ÖÌå
+			// è·å–å­—ä½“
 			virtual const Snowing::Graphics::Font& GetFont() const = 0;
 			
-			// ¸ù¾İID´´½¨ÎÄ×Ö¶¯»­Ğ§¹û
+			// æ ¹æ®IDåˆ›å»ºæ–‡å­—åŠ¨ç”»æ•ˆæœ
 			virtual std::unique_ptr<TextAnimation> CreateAnimationByName(Charater& ch,Snowing::BKDRHash) = 0;
 
-			// µ±´°¿Ú±»ÏÔÊ¾/Òş²ØÊ±
+			// å½“çª—å£è¢«æ˜¾ç¤º/éšè—æ—¶
 			virtual void SetVisible(bool) = 0;
 		};
 
@@ -110,25 +111,25 @@ namespace Yukimi
 			TextWindowUserAdapter* userAdapter
 		);
 
-		// Ç¿ÖÆÇå³ı
+		// å¼ºåˆ¶æ¸…é™¤
 		void Clear();
 
-		// ½¥³öÇå³ı
+		// æ¸å‡ºæ¸…é™¤
 		void FadeClear();
 
-		// ×·¼ÓÎÄ×Ö
+		// è¿½åŠ æ–‡å­—
 		void AppendText(
 			std::wstring_view text,
 			const TextWindowFontStyle& style,
 			float wait);
 
-		// Í£Ö¹µ­³öĞ§¹û
+		// åœæ­¢æ·¡å‡ºæ•ˆæœ
 		void FastFadeIn();
 
-		// ÉèÖÃ´°¿ÚÊÇ·ñÏÔÊ¾/Òş²Ø
+		// è®¾ç½®çª—å£æ˜¯å¦æ˜¾ç¤º/éšè—
 		void SetVisible(bool);
 
-		// »ñÈ¡×´Ì¬
+		// è·å–çŠ¶æ€
 		State GetState() const;
 
 		bool Update() override;
