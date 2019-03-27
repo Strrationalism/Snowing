@@ -165,3 +165,41 @@ Yukimi::TextWindow::State Yukimi::TextWindow::GetState() const
 			throw std::runtime_error{ "TextWindow in unknown state." };
 	}
 }
+
+Yukimi::TextWindow::BasicAnimation::BasicAnimation(Ch& ch)
+{
+	ch.Sprite.Sprite.Color.w = 0;
+}
+
+void Yukimi::TextWindow::BasicAnimation::Update(Ch& ch)
+{
+	if (ch.SinceFadeInTime > 0 && state_ != State::Killed && vis_)
+	{
+		FastFadeIn(ch);
+	}
+	else if (state_ == State::Displaying)
+		ch.Sprite.Sprite.Color.w = 1;
+	else
+		ch.Sprite.Sprite.Color.w = 0;
+}
+
+Yukimi::TextWindow::TextAnimation::AnimationState Yukimi::TextWindow::BasicAnimation::GetState(const Ch&) const
+{
+	return state_;
+}
+
+void Yukimi::TextWindow::BasicAnimation::FastFadeIn(Ch& ch)
+{
+	ch.Sprite.Sprite.Color.w = 1;
+	state_ = State::Displaying;
+}
+
+void Yukimi::TextWindow::BasicAnimation::FadeOut(Ch&)
+{
+	state_ = State::Killed;
+}
+
+void Yukimi::TextWindow::BasicAnimation::SetVisible(Ch&, bool vis)
+{
+	vis_ = vis;
+}
