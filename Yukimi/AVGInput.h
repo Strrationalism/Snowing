@@ -26,7 +26,7 @@ namespace Yukimi
 		virtual void Vibration(Snowing::Input::VibrationStop) = 0;
 	};
 
-	class AVGInput final : Snowing::NoCopyMove
+	class AVGInput final : Snowing::NoCopyMove,public Snowing::SingleInstance<AVGInput>
 	{
 	private:
 		class AVGInputKeyboardMouse final : public AVGInputDevice
