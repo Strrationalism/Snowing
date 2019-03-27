@@ -10,6 +10,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TextTyper.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScriptParser.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AVGInput.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AVGPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AudioChannel.h" />
@@ -20,6 +21,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TextWindow.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScriptParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AVGInput.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AVGPlayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="$(MSBuildThisFileDirectory)TextTyper.h" />
