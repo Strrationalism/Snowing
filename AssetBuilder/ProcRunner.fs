@@ -26,7 +26,7 @@ let private ShoudRebuild (job : Job) : bool =
         | File -> 
             let inputTime = 
                 let inputFile =
-                    job.ScriptDir.FullName + job.Input.Head |> FileInfo
+                    job.ScriptDir.FullName  + "\\" + job.Input.Head |> FileInfo
                 inputFile.LastWriteTimeUtc
             inputTime > outputTime
         | Files -> 
