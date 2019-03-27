@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AVGPlayer.h"
+#include <ConditionTask.h>
 
 using namespace Yukimi::Script;
 
