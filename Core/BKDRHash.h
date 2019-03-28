@@ -15,7 +15,7 @@ namespace Snowing
 		{
 			constexpr unsigned int seed = 131;
 			uint64_t hash = 0;
-			for (size_t i = 0; i < StrLen - 1; i++)
+			for (size_t i = 0; i < StrLen - 2; i++)
 				hash = hash * seed + str[i];
 			return hash;
 		}

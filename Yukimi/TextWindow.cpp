@@ -13,7 +13,7 @@ void Yukimi::TextWindow::appendCharacter(wchar_t ch, const TextWindowFontStyle& 
 		GetState() == State::Displaying);
 
 	if (!currentTimeLineEnd_.has_value())
-		currentTimeLineEnd_.emplace(0);
+		currentTimeLineEnd_.emplace(0.0f);
 
 	auto pos = typer_.Type(ch, *style.Size);
 
