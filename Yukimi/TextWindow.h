@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <Coordinate2D.h>
 #include <PlatformImpls.h>
 #include "TextWindowFontStyle.h"
@@ -122,7 +122,7 @@ namespace Yukimi
 		bool visible_ = true;
 		std::vector<Character> text_;
 		TextTyper typer_;
-		float currentTimeLineEnd_;
+		std::optional<float> currentTimeLineEnd_;
 		void appendCharacter(wchar_t ch, const TextWindowFontStyle& style, float wait);
 
 	public:

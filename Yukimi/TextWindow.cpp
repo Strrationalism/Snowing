@@ -12,9 +12,12 @@ void Yukimi::TextWindow::appendCharacter(wchar_t ch, const TextWindowFontStyle& 
 		GetState() == State::FadingInText ||
 		GetState() == State::Displaying);
 
+	if (!currentTimeLineEnd_.has_value())
+		currentTimeLineEnd_.emplace(0);
+
 	auto pos = typer_.Type(ch, *style.Size);
 
-	currentTimeLineEnd_ += wait;
+	*currentTimeLineEnd_ += wait;
 
 	if (ch != '\n' && ch != ' ')
 	{
@@ -24,7 +27,7 @@ void Yukimi::TextWindow::appendCharacter(wchar_t ch, const TextWindowFontStyle& 
 		p.Sprite.SetCharacter(userAdapter_->GetFont(), ch);
 		p.LifeTime = 0;
 		p.WaitTime = wait;
-		p.SinceFadeInTime = -currentTimeLineEnd_;	//TODO:此计算不正确，目前仅用于Debug
+		p.SinceFadeInTime = -*currentTimeLineEnd_;	//TODO:此计算不正确，目前仅用于Debug
 
 		assert(style.AnimationID.has_value());
 		assert(style.ShaderID.has_value());
@@ -54,8 +57,7 @@ Yukimi::TextWindow::TextWindow(TextWindowUserAdapter* userAdapter) :
 		{MagicFontSize,MagicFontSize},
 		{0.9f,180.0f},
 		&fix_
-	},
-	currentTimeLineEnd_{ 0 }
+	}
 {
 }
 
@@ -65,7 +67,7 @@ void Yukimi::TextWindow::Clear()
 	text_.clear();
 	typer_.Reset();
 
-	currentTimeLineEnd_ = 0;
+	currentTimeLineEnd_.reset();
 }
 
 void Yukimi::TextWindow::FadeClear()
@@ -116,7 +118,8 @@ bool Yukimi::TextWindow::Update()
 {
 	float deltaTime = Snowing::Engine::Get().DeltaTime();
 
-	currentTimeLineEnd_ = std::min(0.0f, currentTimeLineEnd_ - deltaTime);
+	if(currentTimeLineEnd_.has_value())
+		*currentTimeLineEnd_ = std::min(0.0f, *currentTimeLineEnd_ - deltaTime);
 
 	for (auto& p : text_)
 	{

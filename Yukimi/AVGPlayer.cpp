@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "AVGPlayer.h"
 #include <ConditionTask.h>
 
@@ -27,7 +27,19 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 		fontStyleStackCounts_.pop();
 	}
 	else if (auto commandElement = std::get_if<CommandElement>(&e))
-		adapter_->OnCommand(*commandElement);
+	{
+		auto condition = adapter_->OnCommand(*commandElement);
+		if (!condition())
+		{
+			waitingForCommand_ = true;
+			auto task = [this] { 
+				waitingForCommand_ = false; 
+				runScriptContinuation();
+			};
+			Emplace<Snowing::Scene::ConditionTask<std::function<bool()>,decltype(task)>>(std::move(condition),task);
+		}
+		
+	}
 	else if (auto charNameElement = std::get_if<CharacterNameElement>(&e))
 	{
 		fontStyleStack_.push_back(*adapter_->GetCharacterDefaultFontStyle(charNameElement->Name));
@@ -45,7 +57,9 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 	{
 		assert(nextLine_ < script_->size());
 
-		// Çå³ýÐÐ×´Ì¬
+		if (waitingForCommand_) break;
+
+		// 清空行状态
 
 		characterNameElement_ = nullptr;
 		fontStyleStack_.clear();

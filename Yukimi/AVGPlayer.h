@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <stack>
 #include <Object.h>
 #include <ScriptParser.h>
@@ -17,7 +17,7 @@ namespace Yukimi
 			virtual const TextWindowFontStyle* GetFontStyle(std::wstring_view name) const = 0;
 			virtual const TextWindowFontStyle* GetCharacterDefaultFontStyle(std::wstring_view name) const = 0;
 
-			virtual void OnCommand(const Script::CommandElement& command) = 0;
+			virtual std::function<bool()> OnCommand(const Script::CommandElement& command) = 0;
 			virtual void OnCharacter(const std::wstring_view name) = 0;
 		};
 
@@ -38,6 +38,8 @@ namespace Yukimi
 		// 如果当前行结束后需要停止，则返回true
 		bool doElement(const Script::Element&);
 		void runScriptContinuation();
+
+		bool waitingForCommand_ = false;
 		
 		size_t nextLine_ = 0;
 
