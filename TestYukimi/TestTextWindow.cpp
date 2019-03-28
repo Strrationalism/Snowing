@@ -65,7 +65,7 @@ private:
 	bool fadingOut_ = false;
 public:
 	SimpleTextAnimation(float orgSize) : orgSize_{ orgSize } {}
-	void Update(TextWindow::Charater& c) override
+	void Update(TextWindow::Character& c) override
 	{
 		if (fadingOut_)
 		{
@@ -88,7 +88,7 @@ public:
 		}
 	}
 
-	AnimationState GetState(const TextWindow::Charater& c) const override
+	AnimationState GetState(const TextWindow::Character& c) const override
 	{
 		if (fadingOut_)
 		{
@@ -106,17 +106,17 @@ public:
 		throw std::exception{};
 	}
 
-	void FastFadeIn(TextWindow::Charater& c) override 
+	void FastFadeIn(TextWindow::Character& c) override 
 	{
 		c.SinceFadeInTime = 1;
 	}
 
-	void FadeOut(TextWindow::Charater&) override 
+	void FadeOut(TextWindow::Character&) override 
 	{
 		fadingOut_ = true;
 	}
 
-	void SetVisible(TextWindow::Charater&,bool v) override 
+	void SetVisible(TextWindow::Character&,bool v) override 
 	{
 		visible_ = v;
 	}
@@ -168,7 +168,7 @@ public:
 	}
 
 	std::unique_ptr<TextWindow::TextAnimation> CreateAnimationByName(
-		TextWindow::Charater& ch, Snowing::BKDRHash) override
+		TextWindow::Character& ch, Snowing::BKDRHash) override
 	{
 		ch.Sprite.Sprite.Color.w = 0;
 		return std::make_unique<SimpleTextAnimation>(ch.Sprite.Sprite.Size.x);

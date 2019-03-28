@@ -51,7 +51,7 @@ Snowing::Math::Vec2f TextTyper::Type(wchar_t c,float size)
 			fix = positionFix_->at(c);
 
 
-		auto [faceID, spID] = font_->Charaters.at(c);
+		auto [faceID, spID] = font_->Characters.at(c);
 
 		auto xMove =
 			(fix.x + space_.x) *

@@ -181,7 +181,7 @@ static void parseLine(std::wstring_view line, Line& out)
 
 	if (nameSpilter != std::wstring_view::npos)
 	{
-		writeElement(out,CharaterNameElement{ trimString(line.substr(0,nameSpilter)) });
+		writeElement(out,CharacterNameElement{ trimString(line.substr(0,nameSpilter)) });
 		line = trimString(line.substr(nameSpilter));
 		if(!line.empty())
 			line.remove_prefix(1);

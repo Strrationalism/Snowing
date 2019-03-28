@@ -59,9 +59,9 @@ TEST(Script, CharaterName)
 		"D: Excp\n"
 		"");
 
-	SAssert(s[0][0], CharaterNameElement{ L"D" });
-	SAssert(s[1][0], CharaterNameElement{ L"SZZ" });
-	SAssert(s[2][0], CharaterNameElement{ L"D"});
+	SAssert(s[0][0], CharacterNameElement{ L"D" });
+	SAssert(s[1][0], CharacterNameElement{ L"SZZ" });
+	SAssert(s[2][0], CharacterNameElement{ L"D"});
 }
 
 
@@ -78,13 +78,13 @@ TEST(Script, TextLine)
 	SAssert(s[0][2], TextElement{ L" Default" });
 	SAssert(s[0][3], Nop{ });
 
-	SAssert(s[1][0], CharaterNameElement{ L"D" });
+	SAssert(s[1][0], CharacterNameElement{ L"D" });
 	SAssert(s[1][1], TextElement{ L"Sz" });
 	SAssert(s[1][2], CommandElement{ L"NMSL",{},0 });
 	SAssert(s[1][3], TextElement{ L"z" });
 	SAssert(s[1][4], Nop{ });
 
-	SAssert(s[2][0], CharaterNameElement{ L"SZZ" });
+	SAssert(s[2][0], CharacterNameElement{ L"SZZ" });
 	SAssert(s[2][1], TextElement{ L"A" });
 	SAssert(s[2][2], CommandElement{ L"Stupid",{L"1",L"2",L"3",L"4"},4 });
 	SAssert(s[2][3], TextElement{ L"S" });
@@ -101,7 +101,7 @@ TEST(Script, TextLine2)
 		L"<Stupid,Stupid stup[s 10]id>\n"
 	);
 
-	SAssert(s[0][0], CharaterNameElement{ L"Daiyousei" });
+	SAssert(s[0][0], CharacterNameElement{ L"Daiyousei" });
 	SAssert(s[0][1], FontStyleElement{ {L"s",L"b",L"x",L"y"},4 });
 	SAssert(s[0][2], CommandElement{ L"NMSL",{L"1",L"2",L"3"},3 });
 	SAssert(s[0][3], TextElement{ L" This is an text " });
@@ -112,7 +112,7 @@ TEST(Script, TextLine2)
 	SAssert(s[0][8], TextElement{ L"." });
 	SAssert(s[0][9], Nop{ });
 
-	SAssert(s[1][0], CharaterNameElement{ L"Lyt" });
+	SAssert(s[1][0], CharacterNameElement{ L"Lyt" });
 	SAssert(s[1][1], TextElement{ L"WYDSLNM,NMSL,WCNMB " });
 	SAssert(s[1][2], CommandElement{ L"I",{L"1",L"2",L"3"},3 });
 	SAssert(s[1][3], TextElement{ L" " });

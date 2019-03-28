@@ -5,7 +5,7 @@ using namespace Snowing::Graphics;
 
 constexpr float MagicFontSize = 0.25f;
 
-void Yukimi::TextWindow::appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait)
+void Yukimi::TextWindow::appendCharacter(wchar_t ch, const TextWindowFontStyle& style, float wait)
 {
 	assert(
 		GetState() == State::EmptyTextWindow ||
@@ -21,7 +21,7 @@ void Yukimi::TextWindow::appendCharater(wchar_t ch, const TextWindowFontStyle& s
 		text_.emplace_back();
 		auto& p = text_.back();
 
-		p.Sprite.SetCharater(userAdapter_->GetFont(), ch);
+		p.Sprite.SetCharacter(userAdapter_->GetFont(), ch);
 		p.LifeTime = 0;
 		p.WaitTime = wait;
 		p.SinceFadeInTime = -currentTimeLineEnd_;	//TODO:此计算不正确，目前仅用于Debug
@@ -86,7 +86,7 @@ void Yukimi::TextWindow::FadeClear()
 void Yukimi::TextWindow::AppendText(std::wstring_view text, const TextWindowFontStyle& style, float wait)
 {
 	for (auto p : text)
-		appendCharater(p, style, wait);
+		appendCharacter(p, style, wait);
 }
 
 void Yukimi::TextWindow::FastFadeIn()
@@ -131,7 +131,7 @@ bool Yukimi::TextWindow::Update()
 
 	if (fadingOut_)
 	{
-		if (std::all_of(text_.begin(), text_.end(), [](const Charater & c) {
+		if (std::all_of(text_.begin(), text_.end(), [](const Character & c) {
 			return c.Animation->GetState(c) == TextAnimation::AnimationState::Killed;
 		}))
 			Clear();
@@ -149,7 +149,7 @@ Yukimi::TextWindow::State Yukimi::TextWindow::GetState() const
 	else
 	{
 		if (std::any_of(text_.begin(), text_.end(),
-			[](const Charater & ch) {
+			[](const Character & ch) {
 			return 
 				ch.Animation->GetState(ch) == TextAnimation::AnimationState::FadingIn ||
 				ch.Animation->GetState(ch) == TextAnimation::AnimationState::Ready;
@@ -157,7 +157,7 @@ Yukimi::TextWindow::State Yukimi::TextWindow::GetState() const
 			return Yukimi::TextWindow::State::FadingInText;
 
 		else if (std::all_of(text_.begin(), text_.end(),
-			[](const Charater & ch) {
+			[](const Character & ch) {
 			return ch.Animation->GetState(ch) == TextAnimation::AnimationState::Displaying;
 		}))
 			return Yukimi::TextWindow::State::Displaying;

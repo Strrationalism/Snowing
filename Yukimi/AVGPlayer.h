@@ -15,10 +15,10 @@ namespace Yukimi
 		public:
 			virtual const TextWindowFontStyle* GetDefaultFontStyle() const = 0;
 			virtual const TextWindowFontStyle* GetFontStyle(std::wstring_view name) const = 0;
-			virtual const TextWindowFontStyle* GetCharaterDefaultFontStyle(std::wstring_view name) const = 0;
+			virtual const TextWindowFontStyle* GetCharacterDefaultFontStyle(std::wstring_view name) const = 0;
 
 			virtual void OnCommand(const Script::CommandElement& command) = 0;
-			virtual void OnCharater(const std::wstring_view name) = 0;
+			virtual void OnCharacter(const std::wstring_view name) = 0;
 		};
 
 	private:
@@ -30,7 +30,7 @@ namespace Yukimi
 		// 行状态，每行结束需要重置
 		std::vector<TextWindowFontStyle> fontStyleStack_;
 		std::stack<size_t> fontStyleStackCounts_;
-		Script::CharaterNameElement* charaterNameElement_;
+		Script::CharacterNameElement* characterNameElement_;
 
 
 		// 如果当前行结束后需要停止，则返回true

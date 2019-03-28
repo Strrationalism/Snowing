@@ -28,10 +28,10 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	}
 	else if (auto commandElement = std::get_if<CommandElement>(&e))
 		adapter_->OnCommand(*commandElement);
-	else if (auto charaterNameElement = std::get_if<CharaterNameElement>(&e))
+	else if (auto charNameElement = std::get_if<CharacterNameElement>(&e))
 	{
-		fontStyleStack_.push_back(*adapter_->GetCharaterDefaultFontStyle(charaterNameElement->Name));
-		adapter_->OnCharater(charaterNameElement->Name);
+		fontStyleStack_.push_back(*adapter_->GetCharacterDefaultFontStyle(charNameElement->Name));
+		adapter_->OnCharacter(charNameElement->Name);
 	}
 
 	return false;
@@ -45,7 +45,7 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 		assert(nextLine_ < script_->size());
 
 		// Çå³ýÐÐ×´Ì¬
-		charaterNameElement_ = nullptr;
+		characterNameElement_ = nullptr;
 		fontStyleStack_.clear();
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
 		while (!fontStyleStackCounts_.empty()) fontStyleStackCounts_.pop();

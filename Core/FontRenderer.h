@@ -15,7 +15,7 @@ namespace Snowing::Graphics
 		std::vector<TTexture2D> Faces;
 		std::vector<TBuffer> SpriteSheets;
 		std::vector<TSpriteSheet> SpriteSheetsCPU;
-		std::map<wchar_t, std::pair<uint16_t, uint16_t>> Charaters;
+		std::map<wchar_t, std::pair<uint16_t, uint16_t>> Characters;
 		std::map<wchar_t, Math::Vec2f> PositionFix;
 	};
 
@@ -25,9 +25,9 @@ namespace Snowing::Graphics
 		uint32_t FaceID = 0;
 
 		template <typename TFont>
-		inline void SetCharater(const TFont& font, wchar_t ch)
+		inline void SetCharacter(const TFont& font, wchar_t ch)
 		{
-			auto[faceID, spID] = font.Charaters.at(ch);
+			auto[faceID, spID] = font.Characters.at(ch);
 			FaceID = faceID;
 			Sprite.ImageID = spID;
 		};
@@ -49,7 +49,7 @@ namespace Snowing::Graphics
 		{
 			out.clear();
 
-			auto& charaterFix = font.PositionFix;
+			auto& characterFix = font.PositionFix;
 
 			float xPos = 0;
 			int lineNum = 0;
@@ -98,12 +98,12 @@ namespace Snowing::Graphics
 				}
 
 				Math::Vec2f fix = { 0.0f,0.0f };
-				if (charaterFix.count(sv[i]))
-					fix = charaterFix.at(sv[i]);
+				if (characterFix.count(sv[i]))
+					fix = characterFix.at(sv[i]);
 
 
 				out.emplace_back();
-				out.back().SetCharater(font, sv[i]);
+				out.back().SetCharacter(font, sv[i]);
 
 				auto xMove =
 					(fix.x + space.x) *

@@ -18,7 +18,7 @@ namespace Yukimi
 			64>;
 
 		// 表示文本框中的单个字符
-		struct Charater final
+		struct Character final
 		{
 			Snowing::Graphics::FontSprite Sprite;
 			std::unique_ptr<TextAnimation> Animation;
@@ -56,26 +56,26 @@ namespace Yukimi
 			};
 
 			// 每帧更新一次，当文字彻底消失后返回false
-			virtual void Update(Charater&) = 0;
+			virtual void Update(Character&) = 0;
 
 			// 获取动画状态
-			virtual AnimationState GetState(const Charater&) const = 0;
+			virtual AnimationState GetState(const Character&) const = 0;
 			
 			// 用户点击鼠标要求快速完成淡入效果时
-			virtual void FastFadeIn(Charater&) = 0;
+			virtual void FastFadeIn(Character&) = 0;
 
 			// 当要求被淡出时
-			virtual void FadeOut(Charater&) = 0;
+			virtual void FadeOut(Character&) = 0;
 
 			// 当窗口被显示/隐藏时
-			virtual void SetVisible(Charater&,bool vis) = 0;
+			virtual void SetVisible(Character&,bool vis) = 0;
 		};
 
 		// 一个基本的动画效果
 		class BasicAnimation final : public Yukimi::TextWindow::TextAnimation
 		{
 		private:
-			using Ch = Yukimi::TextWindow::Charater;
+			using Ch = Yukimi::TextWindow::Character;
 			using State = Yukimi::TextWindow::TextAnimation::AnimationState;
 
 			State state_ = State::Ready;
@@ -108,7 +108,7 @@ namespace Yukimi
 			virtual const Snowing::Graphics::Font& GetFont() const = 0;
 			
 			// 根据ID创建文字动画效果
-			virtual std::unique_ptr<TextAnimation> CreateAnimationByName(Charater& ch,Snowing::BKDRHash) = 0;
+			virtual std::unique_ptr<TextAnimation> CreateAnimationByName(Character& ch,Snowing::BKDRHash) = 0;
 
 			// 当窗口被显示/隐藏时
 			virtual void SetVisible(bool) = 0;
@@ -120,10 +120,10 @@ namespace Yukimi
 
 		bool fadingOut_ = false;
 		bool visible_ = true;
-		std::vector<Charater> text_;
+		std::vector<Character> text_;
 		TextTyper typer_;
 		float currentTimeLineEnd_;
-		void appendCharater(wchar_t ch, const TextWindowFontStyle& style, float wait);
+		void appendCharacter(wchar_t ch, const TextWindowFontStyle& style, float wait);
 
 	public:
 
