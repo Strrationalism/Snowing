@@ -67,7 +67,11 @@ namespace Snowing
 			str[i] = static_cast<char>(s[i]);
 
 		str[s.size()] = L'\0';
-		return To<T>(std::string_view{ str });
+
+		if constexpr (std::is_same<T, std::string>::value)
+			return str;
+		else
+			return To<T>(std::string_view{ str });
 	}
 
 	template <typename T, typename TFrom>

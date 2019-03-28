@@ -12,7 +12,7 @@ struct FontHead
 
 struct FontCharInfo
 {
-	wchar_t charater;
+	wchar_t character;
 	uint16_t faceID;
 	uint16_t spriteID;
 };
@@ -54,7 +54,7 @@ static std::tuple<
 
 	std::map<wchar_t, std::pair<uint16_t, uint16_t>> chars;
 	for (uint16_t i = 0; i < pHead->charCount; ++i)
-		chars[pChInfos[i].charater] = std::make_pair(pChInfos[i].faceID, pChInfos[i].spriteID);
+		chars[pChInfos[i].character] = std::make_pair(pChInfos[i].faceID, pChInfos[i].spriteID);
 
 	return std::make_tuple(std::move(sheets), std::move(tex), std::move(chars));
 }

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <stack>
 #include <Object.h>
 #include <ScriptParser.h>
@@ -15,10 +15,10 @@ namespace Yukimi
 		public:
 			virtual const TextWindowFontStyle* GetDefaultFontStyle() const = 0;
 			virtual const TextWindowFontStyle* GetFontStyle(std::wstring_view name) const = 0;
-			virtual const TextWindowFontStyle* GetCharaterDefaultFontStyle(std::wstring_view name) const = 0;
+			virtual const TextWindowFontStyle* GetCharacterDefaultFontStyle(std::wstring_view name) const = 0;
 
-			virtual void OnCommand(const Script::CommandElement& command) = 0;
-			virtual void OnCharater(const std::wstring_view name) = 0;
+			virtual std::function<bool()> OnCommand(const Script::CommandElement& command) = 0;
+			virtual void OnCharacter(const std::wstring_view name) = 0;
 		};
 
 	private:
@@ -27,15 +27,19 @@ namespace Yukimi
 
 		const Script::Script* const script_;
 
-		// ĞĞ×´Ì¬£¬Ã¿ĞĞ½áÊøĞèÒªÖØÖÃ
+		// è¡ŒçŠ¶æ€ï¼Œæ¯è¡Œç»“æŸéœ€è¦é‡ç½®
 		std::vector<TextWindowFontStyle> fontStyleStack_;
 		std::stack<size_t> fontStyleStackCounts_;
-		Script::CharaterNameElement* charaterNameElement_;
+
+		Script::CharacterNameElement* characterNameElement_;
 
 
-		// Èç¹ûµ±Ç°ĞĞ½áÊøºóĞèÒªÍ£Ö¹£¬Ôò·µ»Øtrue
+
+		// å¦‚æœå½“å‰è¡Œç»“æŸåéœ€è¦åœæ­¢ï¼Œåˆ™è¿”å›true
 		bool doElement(const Script::Element&);
 		void runScriptContinuation();
+
+		bool waitingForCommand_ = false;
 		
 		size_t nextLine_ = 0;
 

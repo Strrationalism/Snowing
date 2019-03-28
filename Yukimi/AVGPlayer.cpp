@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "AVGPlayer.h"
 #include <ConditionTask.h>
 
@@ -27,11 +27,24 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 		fontStyleStackCounts_.pop();
 	}
 	else if (auto commandElement = std::get_if<CommandElement>(&e))
-		adapter_->OnCommand(*commandElement);
-	else if (auto charaterNameElement = std::get_if<CharaterNameElement>(&e))
 	{
-		fontStyleStack_.push_back(*adapter_->GetCharaterDefaultFontStyle(charaterNameElement->Name));
-		adapter_->OnCharater(charaterNameElement->Name);
+		auto condition = adapter_->OnCommand(*commandElement);
+		if (!condition())
+		{
+			waitingForCommand_ = true;
+			auto task = [this] { 
+				waitingForCommand_ = false; 
+				runScriptContinuation();
+			};
+			Emplace<Snowing::Scene::ConditionTask<std::function<bool()>,decltype(task)>>(std::move(condition),task);
+		}
+		
+	}
+	else if (auto charNameElement = std::get_if<CharacterNameElement>(&e))
+	{
+		fontStyleStack_.push_back(*adapter_->GetCharacterDefaultFontStyle(charNameElement->Name));
+		adapter_->OnCharacter(charNameElement->Name);
+
 	}
 
 	return false;
@@ -44,8 +57,11 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 	{
 		assert(nextLine_ < script_->size());
 
-		// Çå³ýÐÐ×´Ì¬
-		charaterNameElement_ = nullptr;
+		if (waitingForCommand_) break;
+
+		// æ¸…ç©ºè¡ŒçŠ¶æ€
+
+		characterNameElement_ = nullptr;
 		fontStyleStack_.clear();
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
 		while (!fontStyleStackCounts_.empty()) fontStyleStackCounts_.pop();

@@ -6,6 +6,12 @@
 
 namespace Snowing
 {
+#ifdef _DEBUG
+	template <typename T>
+	class MemPool
+	{};
+#else
+
 	template <typename PooledClass>
 	class MemPool
 	{
@@ -13,16 +19,17 @@ namespace Snowing
 
 		struct FreeList : NoCopyMove
 		{
-			std::queue<void*> freeList_;
+			std::vector<void*> freeList_;
 			size_t allocCount_ = 0;
 
 			~FreeList()
 			{
 				while (!freeList_.empty())
 				{
-					free(freeList_.front());
-					freeList_.pop();
+					free(freeList_.back());
+					freeList_.pop_back();
 				}
+				freeList_.shrink_to_fit();
 			}
 		};
 
@@ -41,8 +48,8 @@ namespace Snowing
 				return malloc(size);
 			else
 			{
-				auto p = freeList_.freeList_.front();
-				freeList_.freeList_.pop();
+				auto p = freeList_.freeList_.back();
+				freeList_.freeList_.pop_back();
 				return p;
 			}
 		}
@@ -59,7 +66,9 @@ namespace Snowing
 		void operator delete (void *p)
 		{
 			freeList_.allocCount_--;
-			freeList_.freeList_.push(p);
+			freeList_.freeList_.push_back(p);
 		}
 	};
+#endif // _DEBUG
+
 }

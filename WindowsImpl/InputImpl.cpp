@@ -123,7 +123,7 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(Snowing::Input::
 bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(char k) const
 {
 	if((k >= 'A' && k <= 'Z') || (k >= '0' && k <= '9')) return keyState(k, windowFocused_);
-	else throw std::invalid_argument(__FUNCDNAME__ "Not Supported Charater Keyboard Key");
+	else throw std::invalid_argument(__FUNCDNAME__ "Not Supported Character Keyboard Key");
 }
 std::optional<Snowing::Math::Vec2f> Snowing::PlatformImpls::WindowsImpl::InputImpl::Position(Input::MousePosition) const
 {

@@ -68,11 +68,11 @@ namespace Yukimi::Script
 		constexpr bool operator != (FontStylePopElement p) const { return false; }
 	};
 
-	struct CharaterNameElement
+	struct CharacterNameElement
 	{
 		std::wstring_view Name;
 
-		inline bool operator != (CharaterNameElement b) const { return Name != b.Name; }
+		inline bool operator != (CharacterNameElement b) const { return Name != b.Name; }
 	};
 
 	struct LabelElement
@@ -87,7 +87,7 @@ namespace Yukimi::Script
 		LabelElement,
 		CommandElement,
 		TextElement,
-		CharaterNameElement,
+		CharacterNameElement,
 		FontStylePopElement,
 		FontStyleElement>;
 

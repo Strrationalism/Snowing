@@ -60,6 +60,7 @@ struct SpritePSIn
 	float4 Color : PS_COLOR;
 	float2 TexCoord : TEXCOORD;
 	float2 FragPosition : FRAG_POS;
+	uint ImageID : SPRITEIMAGEINDEX;
 };
 
 void SpriteGSExpander(
@@ -69,6 +70,7 @@ void SpriteGSExpander(
 	SpritePSIn o;
 	o.Color = i.Color;
 	o.Position.zw = float2(0, 1);
+	o.ImageID = i.ImageID;
 	
 	float4 sprite = SpriteSheetRects[i.ImageID];
 	float2 size = i.Size * 2;
