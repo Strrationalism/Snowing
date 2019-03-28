@@ -27,13 +27,15 @@ namespace Yukimi
 
 		const Script::Script* const script_;
 
-		// ĞĞ×´Ì¬£¬Ã¿ĞĞ½áÊøĞèÒªÖØÖÃ
+		// è¡ŒçŠ¶æ€ï¼Œæ¯è¡Œç»“æŸéœ€è¦é‡ç½®
 		std::vector<TextWindowFontStyle> fontStyleStack_;
 		std::stack<size_t> fontStyleStackCounts_;
+
 		Script::CharacterNameElement* characterNameElement_;
 
 
-		// Èç¹ûµ±Ç°ĞĞ½áÊøºóĞèÒªÍ£Ö¹£¬Ôò·µ»Øtrue
+
+		// å¦‚æœå½“å‰è¡Œç»“æŸåéœ€è¦åœæ­¢ï¼Œåˆ™è¿”å›true
 		bool doElement(const Script::Element&);
 		void runScriptContinuation();
 		
