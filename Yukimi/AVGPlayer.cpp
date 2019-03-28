@@ -32,6 +32,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	{
 		fontStyleStack_.push_back(*adapter_->GetCharacterDefaultFontStyle(charNameElement->Name));
 		adapter_->OnCharacter(charNameElement->Name);
+
 	}
 
 	return false;
@@ -44,7 +45,8 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 	{
 		assert(nextLine_ < script_->size());
 
-		// �����״̬
+		// Çå³ýÐÐ×´Ì¬
+
 		characterNameElement_ = nullptr;
 		fontStyleStack_.clear();
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
