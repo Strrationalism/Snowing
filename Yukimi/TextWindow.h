@@ -91,6 +91,27 @@ namespace Yukimi
 			void SetVisible(Ch&, bool vis) override;
 		};
 
+		// 带有渐变的文字动画效果
+		class FadeFontAnimation :
+			public Yukimi::TextWindow::TextAnimation
+		{
+		private:
+			using Character = Yukimi::TextWindow::Character;
+			using State = Yukimi::TextWindow::TextAnimation::AnimationState;
+
+			State state_ = State::Ready;
+			const float fadeTime_;
+
+			bool visible_ = true;
+		public:
+			FadeFontAnimation(float fadeTime = 0.1f);
+			void Update(Character& ch) override;
+			State GetState(const Character& ch) const override;
+			void FastFadeIn(Character& ch) override;
+			void FadeOut(Character& ch) override;
+			void SetVisible(Character& ch, bool vis) override;
+		};
+
 		// 此类用于用户配置对话框系统，使用者需要继承于此类，子对象传递给TextWindow
 		class TextWindowUserAdapter
 		{

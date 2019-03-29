@@ -206,3 +206,66 @@ void Yukimi::TextWindow::BasicAnimation::SetVisible(Ch&, bool vis)
 {
 	vis_ = vis;
 }
+
+
+Yukimi::TextWindow::FadeFontAnimation::FadeFontAnimation(float fadeTime) :
+	fadeTime_{ fadeTime }
+{
+}
+
+void Yukimi::TextWindow::FadeFontAnimation::Update(Character& ch)
+{
+	if (visible_)
+	{
+		switch (state_)
+		{
+		case State::Ready:
+			ch.Sprite.Sprite.Color.w = 0;
+			if (-ch.SinceFadeInTime < fadeTime_)
+				state_ = State::FadingIn;
+			break;
+		case State::FadingIn:
+			ch.Sprite.Sprite.Color.w = (fadeTime_ - (-ch.SinceFadeInTime)) / fadeTime_;
+			if (ch.Sprite.Sprite.Color.w >= 1)
+			{
+				ch.Sprite.Sprite.Color.w = 1;
+				state_ = State::Displaying;
+			}
+			break;
+		case State::Displaying:
+			ch.Sprite.Sprite.Color.w = 1;
+			break;
+		case State::FadingOut:
+			ch.Sprite.Sprite.Color.w -= Snowing::Engine::Get().DeltaTime() * 10;
+			if (ch.Sprite.Sprite.Color.w <= 0.001f)
+				state_ = State::Killed;
+			break;
+		case State::Killed:
+			ch.Sprite.Sprite.Color.w = 0;
+			break;
+		};
+	}
+	else
+		ch.Sprite.Sprite.Color.w = 0;
+}
+
+Yukimi::TextWindow::FadeFontAnimation::State Yukimi::TextWindow::FadeFontAnimation::GetState(const Character & ch) const
+{
+	return state_;
+}
+
+void Yukimi::TextWindow::FadeFontAnimation::FastFadeIn(Character & ch)
+{
+	if (state_ == State::Ready)
+		ch.SinceFadeInTime = -fadeTime_;
+}
+
+void Yukimi::TextWindow::FadeFontAnimation::FadeOut(Character & ch)
+{
+	state_ = State::FadingOut;
+}
+
+void Yukimi::TextWindow::FadeFontAnimation::SetVisible(Character & ch, bool vis)
+{
+	visible_ = vis;
+}
