@@ -55,5 +55,7 @@ namespace Yukimi
 		void Click();
 
 		void Goto(std::wstring_view labelName);
+
+		TextWindow& GetTextWindow();
 	};
 }

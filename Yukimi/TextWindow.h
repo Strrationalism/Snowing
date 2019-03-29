@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <Coordinate2D.h>
 #include <PlatformImpls.h>
+#include <Tween.h>
 #include "TextWindowFontStyle.h"
 #include "TextTyper.h"
 
@@ -91,7 +92,7 @@ namespace Yukimi
 			void SetVisible(Ch&, bool vis) override;
 		};
 
-		// 带有渐变的文字动画效果
+		// 带有淡入淡出的文字动画效果
 		class FadeFontAnimation :
 			public Yukimi::TextWindow::TextAnimation
 		{
@@ -102,7 +103,7 @@ namespace Yukimi
 			State state_ = State::Ready;
 			const float fadeTime_;
 
-			bool visible_ = true;
+			Snowing::Scene::Tween<float> visibleAlpha_ = 1;
 		public:
 			FadeFontAnimation(float fadeTime = 0.1f);
 			void Update(Character& ch) override;

@@ -115,6 +115,11 @@ void Yukimi::AVGPlayer::Goto(std::wstring_view labelName)
 	throw std::runtime_error{ "Can not find label in story script." };
 }
 
+Yukimi::TextWindow& Yukimi::AVGPlayer::GetTextWindow()
+{
+	return textWindow_;
+}
+
 Yukimi::AVGPlayer::AVGPlayer(
 	const Yukimi::Script::Script* script, 
 	TextWindow::TextWindowUserAdapter* textWindowAdapter,
