@@ -55,8 +55,7 @@ Yukimi::TextWindow::TextWindow(TextWindowUserAdapter* userAdapter) :
 		&userAdapter->GetFont(),
 		userAdapter->GetTextWindowBox(),
 		{MagicFontSize,MagicFontSize},
-		{0.9f,180.0f},
-		&fix_
+		{0.9f,180.0f}
 	}
 {
 }

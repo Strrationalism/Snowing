@@ -137,7 +137,6 @@ namespace Yukimi
 		};
 
 	private:
-		std::map<wchar_t, Snowing::Math::Vec2f> fix_;
 		TextWindowUserAdapter* const userAdapter_;
 
 		bool fadingOut_ = false;

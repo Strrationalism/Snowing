@@ -20,8 +20,7 @@ namespace Yukimi
 			const Snowing::Graphics::Font*,
 			Snowing::Math::Vec4f box,
 			Snowing::Math::Vec2f fontSize,
-			Snowing::Math::Vec2f space,
-			const std::map<wchar_t, Snowing::Math::Vec2f>* fix);
+			Snowing::Math::Vec2f space);
 
 		void NextLine();
 		Snowing::Math::Vec2f Type(wchar_t ch,float size = 1);

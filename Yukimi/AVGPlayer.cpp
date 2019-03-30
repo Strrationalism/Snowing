@@ -84,6 +84,7 @@ void Yukimi::AVGPlayer::Click()
 			break;
 		clickLimitTimer_ = 0;
 		textWindow_.FadeClear();
+		adapter_->OnPageEnd();
 		{
 			const auto condition = [this] { 
 				return textWindow_.GetState() == Yukimi::TextWindow::State::EmptyTextWindow;

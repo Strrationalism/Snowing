@@ -9,12 +9,11 @@ TextTyper::TextTyper(
 	const Snowing::Graphics::Font* fnt,
 	Snowing::Math::Vec4f box,
 	Snowing::Math::Vec2f fontSize,
-	Snowing::Math::Vec2f space,
-	const std::map<wchar_t, Snowing::Math::Vec2f>* fix):
+	Snowing::Math::Vec2f space):
 	font_{ fnt },
 	box_{ box },
 	space_{ space },
-	positionFix_{ fix },
+	positionFix_{ &font_->PositionFix },
 	fontSize_{ fontSize }
 {
 	Reset();
