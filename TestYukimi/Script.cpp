@@ -73,10 +73,10 @@ TEST(Script, TextLine)
 		" SZZ :A[Stupid 1 2 3 4]S[Stupid2]S\n"
 		"");
 
-	SAssert(s[0][0], TextElement{ L"Szz" });
-	SAssert(s[0][1], CommandElement{ L"s",{L"123"},1 });
-	SAssert(s[0][2], TextElement{ L" Default" });
-	SAssert(s[0][3], Nop{ });
+	SAssert(s[0][1], TextElement{ L"Szz" });
+	SAssert(s[0][2], CommandElement{ L"s",{L"123"},1 });
+	SAssert(s[0][3], TextElement{ L" Default" });
+	SAssert(s[0][4], Nop{ });
 
 	SAssert(s[1][0], CharacterNameElement{ L"D" });
 	SAssert(s[1][1], TextElement{ L"Sz" });
@@ -123,12 +123,12 @@ TEST(Script, TextLine2)
 	SAssert(s[1][8], TextElement{ L"." });
 	SAssert(s[1][9], Nop{ });
 
-	SAssert(s[2][0], FontStyleElement{ {L"Stupid",L"Stupid"},2 });
-	SAssert(s[2][1], TextElement{ L"stup" });
-	SAssert(s[2][2], CommandElement{ L"s",{L"10"},1 });
-	SAssert(s[2][3], TextElement{ L"id" });
-	SAssert(s[2][4], FontStylePopElement{ });
-	SAssert(s[2][5], Nop{ });
+	SAssert(s[2][1], FontStyleElement{ {L"Stupid",L"Stupid"},2 });
+	SAssert(s[2][2], TextElement{ L"stup" });
+	SAssert(s[2][3], CommandElement{ L"s",{L"10"},1 });
+	SAssert(s[2][4], TextElement{ L"id" });
+	SAssert(s[2][5], FontStylePopElement{ });
+	SAssert(s[2][6], Nop{ });
 
 	constexpr auto p = sizeof(Line);
 }
