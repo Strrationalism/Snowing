@@ -106,3 +106,8 @@ Snowing::PlatformImpls::WindowsSteam::Steam::~Steam()
 	SetMiniDumpComment = nullptr;
 }
 
+Snowing::Library& Snowing::PlatformImpls::WindowsSteam::Steam::GetDLL()
+{
+	return lib_;
+}
+

@@ -7,6 +7,7 @@
     <ClCompile Include="Steam.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="SteamCloud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -16,6 +17,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SteamCloud.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

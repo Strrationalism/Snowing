@@ -18,6 +18,8 @@ namespace Snowing::PlatformImpls::WindowsSteam
 		Steam();
 		~Steam();
 
+		Snowing::Library& GetDLL();
+
 		Steam(const Steam&) = delete;
 		Steam(Steam&&) = delete;
 		Steam& operator=(const Steam&) = delete;
