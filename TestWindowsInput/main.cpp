@@ -17,7 +17,7 @@ int __cdecl main()
 {
 	Snowing::PlatformImpls::WindowsImpl::WindowImpl wndImpl{ L"TestWindowsInput", {320,240} };
 	Snowing::PlatformImpls::WindowsImpl::D3D::Device grap{ wndImpl.GetHWND() };
-	Snowing::Engine engine;
+	Snowing::Engine engine{ Snowing::Engine::ConstructToken{} };
 
 	assert(&engine == &Snowing::Engine::Get());
 

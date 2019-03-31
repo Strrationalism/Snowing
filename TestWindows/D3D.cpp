@@ -26,7 +26,7 @@ TEST(D3D, BasicllyRendering) {
 
 	WindowImpl window{ L"BasicllyRendering" ,WinSize };
 	D3D::Device device{ window.GetHWND(),true };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 
 	Snowing::Graphics::Effect effect{ Snowing::LoadAsset("HelloEffect") };
 	auto root = (*effect);
@@ -174,7 +174,7 @@ TEST(D3D, StreamOut)
 
 	WindowImpl window{ L"StreamOut" ,WinSize };
 	D3D::Device device{ window.GetHWND(),true,D3D::Device::FeatureLevel::Level_10_0 };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 
 	Graphics::Effect effect{ LoadAsset("StreamOutEffect") };
 	auto tech = effect.LoadTechnique("StreamOutDemoTech", ias);
