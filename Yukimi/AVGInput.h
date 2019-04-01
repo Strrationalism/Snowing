@@ -2,6 +2,8 @@
 #include <optional>
 #include <Controller.h>
 #include <InputParam.h>
+#include <NoCopyMove.h>
+#include <SingleInstance.h>
 
 namespace Yukimi
 {
