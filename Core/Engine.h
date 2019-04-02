@@ -60,6 +60,8 @@ namespace Snowing
 			}
 
 			deltaTime_ = 0;
+
+			keep_ = true;
 		}
 		
 		inline void Exit() noexcept
