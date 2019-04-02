@@ -41,6 +41,14 @@ namespace Snowing::Scene
 			return p;
 		}
 
+		template <typename TObj>
+		TObj* PushBack(std::unique_ptr<TObj>&& obj)
+		{
+			auto p = obj.get();
+			newObjs_.emplace(std::move(obj));
+			return p;
+		}
+
 		template <typename TFunc>
 		void Iter(TFunc& f)
 		{

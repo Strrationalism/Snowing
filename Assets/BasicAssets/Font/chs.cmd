@@ -1,3 +1,3 @@
 @md chs
-@SDFFont -srcfont chs-NotoSans.otf -dst chs\font -chars chs.txt
+@SDFFont -srcfont "ºÚÌå" -dst chs\font -chars chs.txt
 @pause

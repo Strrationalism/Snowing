@@ -51,7 +51,7 @@ namespace Snowing::PlatformImpls
 		{
 			WindowImpl win{ title, size };
 			D3D::Device d3d{ WindowImpl::Get().GetHWND(),windowed };
-			Engine eng;
+			Engine eng{ Engine::ConstructToken{} };
 			return std::tuple{ std::move(win), std::move(d3d), std::move(eng) };
 		};
 	}

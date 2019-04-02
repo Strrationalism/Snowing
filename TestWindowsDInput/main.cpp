@@ -7,7 +7,7 @@ int __cdecl main()
 {
 	PlatformImpls::WindowsImpl::WindowImpl wnd{ L"TestWindowsDInput",{320,240} };
 	PlatformImpls::WindowsImpl::D3D::Device grap{ wnd.GetHWND() };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 	PlatformImpls::WindowsDInput::DInputContext dinput;
 
 	auto ctrls = dinput.GetControllers(false);

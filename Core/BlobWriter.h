@@ -11,13 +11,13 @@ namespace Snowing
 
 	public:
 
-		template <typename TPOD>
-		void Write(const TPOD& data)
+		template <typename TStruct>
+		void Write(const TStruct& data)
 		{
-			static_assert(std::is_pod<TPOD>::value);
-			blob_.reserve(blob_.size() + sizeof(TPOD));
+			static_assert(std::is_standard_layout<TStruct>::value);
+			blob_.reserve(blob_.size() + sizeof(TStruct));
 			const std::uint8_t *ptr = reinterpret_cast<const uint8_t*>(&data);
-			for (size_t i = 0; i < sizeof(TPOD); ++i)
+			for (size_t i = 0; i < sizeof(TStruct); ++i)
 				blob_.push_back(ptr[i]);
 		}
 

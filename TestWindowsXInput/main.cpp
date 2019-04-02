@@ -7,7 +7,7 @@ using namespace Input;
 
 PlatformImpls::WindowsImpl::WindowImpl win{ L"TestWindowsXInput",{320,240} };	//创建窗口
 PlatformImpls::WindowsImpl::D3D::Device grap{ win.GetHWND() };
-Engine engine;															//创建引擎对象
+Engine engine{ Snowing::Engine::ConstructToken{} };								//创建引擎对象
 auto ctrls = PlatformImpls::WindowsXInput::GetConnectedControllers();	//获取已经连接的手柄列表
 
 int main()

@@ -8,7 +8,7 @@ void RunGameObject(Snowing::Scene::Object& obj,const wchar_t* testName)
 {
 	WindowImpl window{ testName ,WinSize };
 	D3D::Device device{ window.GetHWND(),true };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 	engine.RunObject(obj);
 }
 

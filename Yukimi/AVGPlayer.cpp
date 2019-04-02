@@ -84,6 +84,7 @@ void Yukimi::AVGPlayer::Click()
 			break;
 		clickLimitTimer_ = 0;
 		textWindow_.FadeClear();
+		adapter_->OnPageEnd();
 		{
 			const auto condition = [this] { 
 				return textWindow_.GetState() == Yukimi::TextWindow::State::EmptyTextWindow;
@@ -113,6 +114,11 @@ void Yukimi::AVGPlayer::Goto(std::wstring_view labelName)
 			if (labelElement->LabelName == labelName)
 				return;
 	throw std::runtime_error{ "Can not find label in story script." };
+}
+
+Yukimi::TextWindow& Yukimi::AVGPlayer::GetTextWindow()
+{
+	return textWindow_;
 }
 
 Yukimi::AVGPlayer::AVGPlayer(

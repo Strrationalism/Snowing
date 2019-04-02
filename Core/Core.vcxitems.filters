@@ -195,5 +195,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FrameFunc.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AsyncLauncher.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

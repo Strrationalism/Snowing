@@ -20,7 +20,13 @@ namespace Snowing
 		float deltaTime_ = 0;
 
 	public:
-		EngineInterface() noexcept = default;
+
+		struct ConstructToken
+		{
+
+		};
+
+		EngineInterface(ConstructToken) {};
 		EngineInterface(const EngineInterface&) = delete;
 		EngineInterface(EngineInterface&&) noexcept = default;
 		auto operator = (const EngineInterface&) = delete;

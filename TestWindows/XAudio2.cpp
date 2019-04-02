@@ -8,7 +8,7 @@ static void PlayXAudio(const wchar_t* testName,const char* name,std::chrono::mil
 {
 	WindowImpl window{ testName ,WinSize };
 	D3D::Device device{ window.GetHWND(),true };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 
 	PlatformImpls::WindowsImpl::XAudio2::XADevice audDev;
 	if (!audDev.Avaliable()) return;
@@ -46,7 +46,7 @@ TEST(XAudio2Test, MultiSound_Breakpoint_Pan)
 {
 	WindowImpl window{ L"MultiSound" ,WinSize };
 	D3D::Device device{ window.GetHWND(),true };
-	Engine engine;
+	Engine engine{ Snowing::Engine::ConstructToken{} };
 
 	PlatformImpls::WindowsImpl::XAudio2::XADevice audDev;
 	assert(&audDev.Get() == &audDev);
