@@ -12,7 +12,7 @@ namespace Snowing::Scene
 		TGroupType* targetGroup_;
 
 		bool finished_ = false;
-
+		bool canceled_ = false;
 	public:
 
 		template <typename ... TArgs>
@@ -32,12 +32,18 @@ namespace Snowing::Scene
 			{
 				if (asyncObject_.valid())
 				{
-					targetGroup_->PushBack(asyncObject_.get());
+					if(!canceled_)
+						targetGroup_->PushBack(asyncObject_.get());
 					finished_ = true;
 				}
 			}
 
 			return !finished_;
+		}
+
+		void Cancel()
+		{
+			canceled_ = true;
 		}
 	};
 }
