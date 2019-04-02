@@ -30,7 +30,7 @@ MB_OK | MB_ICONSTOP | MB_DEFBUTTON1 | MB_APPLMODAL | MB_TOPMOST;
 void Snowing::PlatformImpls::Abort(const char * log)
 {
 	MessageBoxA(
-		WindowsImpl::WindowImpl::Get().GetHWND().Get<HWND>(),
+		NULL,
 		log,
 		"Error",
 		MsgBoxType);
@@ -40,7 +40,7 @@ void Snowing::PlatformImpls::Abort(const char * log)
 void Snowing::PlatformImpls::Abort(const wchar_t * log)
 {
 	MessageBoxW(
-		WindowsImpl::WindowImpl::Get().GetHWND().Get<HWND>(),
+		NULL,
 		log,
 		L"Error",
 		MsgBoxType);
