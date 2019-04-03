@@ -76,7 +76,8 @@ namespace Snowing::Scene
 			{
 				try
 				{
-					return dynamic_cast<TObjectType*>(p.get());
+					auto ptr = dynamic_cast<TObjectType*>(p.get());
+					if (ptr) return ptr;
 				}
 				catch(std::bad_cast)
 				{ }

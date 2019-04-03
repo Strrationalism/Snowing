@@ -66,7 +66,7 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
 		while (!fontStyleStackCounts_.empty()) fontStyleStackCounts_.pop();
 
-		const auto& currentLine = (*script_)[nextLine_++];
+		const auto& currentLine = (*script_)[static_cast<unsigned int>(nextLine_++)];
 		for (const auto& element : currentLine)
 		{
 			const auto ret = doElement(element);
@@ -110,7 +110,7 @@ void Yukimi::AVGPlayer::Click()
 void Yukimi::AVGPlayer::Goto(std::wstring_view labelName)
 {
 	for (nextLine_ = 0; nextLine_ < script_->size(); ++nextLine_)
-		if (auto labelElement = std::get_if<LabelElement>(&(*script_)[nextLine_][0]))
+		if (auto labelElement = std::get_if<LabelElement>(&(*script_)[static_cast<unsigned int>(nextLine_)][0]))
 			if (labelElement->LabelName == labelName)
 				return;
 	throw std::runtime_error{ "Can not find label in story script." };
@@ -119,6 +119,38 @@ void Yukimi::AVGPlayer::Goto(std::wstring_view labelName)
 Yukimi::TextWindow& Yukimi::AVGPlayer::GetTextWindow()
 {
 	return textWindow_;
+}
+
+uint64_t Yukimi::AVGPlayer::GetContinuation() const
+{
+	return nextLine_;
+}
+
+void Yukimi::AVGPlayer::SetContinuation(uint64_t cont)
+{
+	nextLine_ = cont;
+
+	textWindow_.Clear();
+
+	auto lastTextLine = findLastTextLine(nextLine_);
+	const auto& currentLine = (*script_)[static_cast<unsigned int>(lastTextLine)];
+	for (const auto& element : currentLine)
+	{
+		const auto ret = doElement(element);
+	}
+	textWindow_.FastFadeIn();
+}
+
+uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
+{
+	while (--nextLine)
+	{
+		const auto& currentLine = (*script_)[static_cast<unsigned int>(nextLine)];
+		if (auto p = std::get_if<CharacterNameElement>(&currentLine[0]))
+			break;
+	}
+
+	return nextLine;
 }
 
 Yukimi::AVGPlayer::AVGPlayer(

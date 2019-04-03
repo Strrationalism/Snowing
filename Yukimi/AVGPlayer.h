@@ -30,7 +30,7 @@ namespace Yukimi
 
 		// 行状态，每行结束需要重置
 		std::vector<TextWindowFontStyle> fontStyleStack_;
-		std::stack<size_t> fontStyleStackCounts_;
+		std::stack<uint64_t> fontStyleStackCounts_;
 
 		Script::CharacterNameElement* characterNameElement_;
 
@@ -42,9 +42,11 @@ namespace Yukimi
 
 		bool waitingForCommand_ = false;
 		
-		size_t nextLine_ = 0;
+		uint64_t nextLine_ = 0;
 
 		float clickLimitTimer_ = 0;
+
+		uint64_t findLastTextLine(uint64_t nextLine);
 
 	public:
 		AVGPlayer(
@@ -58,5 +60,8 @@ namespace Yukimi
 		void Goto(std::wstring_view labelName);
 
 		TextWindow& GetTextWindow();
+		uint64_t GetContinuation() const;
+
+		void SetContinuation(uint64_t cont);
 	};
 }
