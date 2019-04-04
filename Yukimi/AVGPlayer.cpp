@@ -55,7 +55,7 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 	bool isSpeakLine = false;
 	while (!isSpeakLine)
 	{
-		assert(nextLine_ < script_->size());
+		if (nextLine_ >= script_->size()) return;
 
 		if (waitingForCommand_) break;
 
