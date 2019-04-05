@@ -158,6 +158,9 @@ namespace Yukimi
 		// 渐出清除
 		void FadeClear();
 
+		// 增加等待时间
+		void AppendWaitTime(float t);
+
 		// 追加文字
 		void AppendText(
 			std::wstring_view text,

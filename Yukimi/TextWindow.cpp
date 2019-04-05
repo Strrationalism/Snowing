@@ -83,6 +83,12 @@ void Yukimi::TextWindow::FadeClear()
 	}
 }
 
+void Yukimi::TextWindow::AppendWaitTime(float t)
+{
+	assert(currentTimeLineEnd_.has_value());
+	*currentTimeLineEnd_ += t;
+}
+
 
 void Yukimi::TextWindow::AppendText(std::wstring_view text, const TextWindowFontStyle& style, float wait)
 {
