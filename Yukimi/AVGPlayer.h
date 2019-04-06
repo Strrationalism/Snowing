@@ -52,7 +52,8 @@ namespace Yukimi
 		AVGPlayer(
 			const Script::Script* script,
 			TextWindow::TextWindowUserAdapter* textWindowAdapter,
-			AVGPlayerUserAdapter * avgPlayerAdapter);
+			AVGPlayerUserAdapter * avgPlayerAdapter,
+			bool runScript = true);
 
 		bool Update() override;
 		void Click();

@@ -37,5 +37,10 @@ namespace Snowing
 			assert(current_);
 			return *current_;
 		}
+
+		static bool InstanceExists()
+		{
+			return current_ != nullptr;
+		}
 	};
 }

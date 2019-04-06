@@ -3,7 +3,7 @@
 
 using namespace Yukimi;
 
-AudioChannel::AudioChannel(AudioLoader loader,Snowing::AssetName s, float fadeIn, uint32_t begin, float pan):
+AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uint32_t begin, float pan):
 	onSoundLoaded_{
 		[this] { return soundLoading_.valid(); },
 		[this,fadeIn,begin,pan] {
@@ -16,7 +16,7 @@ AudioChannel::AudioChannel(AudioLoader loader,Snowing::AssetName s, float fadeIn
 		}
 	},
 	soundLoading_{
-		std::async(std::launch::async,loader, s)
+		std::async(std::launch::async,[s = std::move(s),loader]{return loader(s.c_str()); })
 	}
 {
 }

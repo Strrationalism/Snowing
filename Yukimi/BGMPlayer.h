@@ -22,7 +22,7 @@ namespace Yukimi
 		BGMPlayer(AudioChannel::AudioLoader loader);
 
 		// ²¥·ÅBGM
-		void Play(Snowing::AssetName, float fadeTime = 0, uint32_t begin = 0);
+		void Play(std::string&& name, float fadeTime = 0, uint32_t begin = 0);
 
 		// Í£Ö¹BGM
 		void Stop(float fadeTime = 0);

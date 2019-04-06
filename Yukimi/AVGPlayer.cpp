@@ -128,21 +128,16 @@ uint64_t Yukimi::AVGPlayer::GetContinuation() const
 
 void Yukimi::AVGPlayer::SetContinuation(uint64_t cont)
 {
-	nextLine_ = cont;
+	nextLine_ = findLastTextLine(cont);
 
 	textWindow_.Clear();
 
-	auto lastTextLine = findLastTextLine(nextLine_);
-	const auto& currentLine = (*script_)[static_cast<unsigned int>(lastTextLine)];
-	for (const auto& element : currentLine)
-	{
-		const auto ret = doElement(element);
-	}
-	textWindow_.FastFadeIn();
+	runScriptContinuation();
 }
 
 uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
 {
+	if (nextLine == 0) return 0;
 	while (--nextLine)
 	{
 		const auto& currentLine = (*script_)[static_cast<unsigned int>(nextLine)];
@@ -156,12 +151,14 @@ uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
 Yukimi::AVGPlayer::AVGPlayer(
 	const Yukimi::Script::Script* script, 
 	TextWindow::TextWindowUserAdapter* textWindowAdapter,
-	AVGPlayerUserAdapter* avgPlayerAdapter):
+	AVGPlayerUserAdapter* avgPlayerAdapter,
+	bool runScript):
 	textWindow_{ textWindowAdapter },
 	script_{ script },
 	adapter_{ avgPlayerAdapter }
 {
-	runScriptContinuation();
+	if(runScript)
+		runScriptContinuation();
 }
 
 bool Yukimi::AVGPlayer::Update()

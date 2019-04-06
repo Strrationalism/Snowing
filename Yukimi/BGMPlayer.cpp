@@ -16,10 +16,10 @@ void BGMPlayer::stopAllChannels(float fadeTime)
 	});
 }
 
-void BGMPlayer::Play(AssetName bgm, float fadeTime, uint32_t begin)
+void BGMPlayer::Play(std::string&& bgm, float fadeTime, uint32_t begin)
 {
 	stopAllChannels(fadeTime);
-	currentChannel_ = Emplace<AudioChannel>(loader_,bgm, fadeTime, begin);
+	currentChannel_ = Emplace<AudioChannel>(loader_, std::move(bgm), fadeTime, begin);
 }
 
 void BGMPlayer::FadeTo(AssetName a, float fadeTime)
