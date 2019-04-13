@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "WindowImpl.h"
 #include "PlatformImpls.h"
+#include <mutex>
 
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
@@ -10,6 +11,8 @@ static constexpr auto dwStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 #include <iostream>
 void Snowing::PlatformImpls::Log(const wchar_t * log)
 {
+	static std::mutex logLock;
+	std::unique_lock l{ logLock };
 	std::wcout << log << std::endl;
 	OutputDebugStringW(log);
 	OutputDebugStringW(L"\n");
@@ -17,6 +20,8 @@ void Snowing::PlatformImpls::Log(const wchar_t * log)
 
 void Snowing::PlatformImpls::Log(const char * log)
 {
+	static std::mutex logLock;
+	std::unique_lock l{ logLock };
 	std::cout << log << std::endl;
 	OutputDebugStringA(log);
 	OutputDebugStringA("\n");
