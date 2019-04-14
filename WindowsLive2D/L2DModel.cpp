@@ -108,7 +108,10 @@ bool Live2D::Model::Update()
 		const auto device = Snowing::PlatformImpls::WindowsImpl::D3D::Device::Get().GetHandler().Cast<IUnknown*, ID3D11Device*>();
 		const auto context = ctx_->GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>();
 
-		
+		// 备份状态
+		UINT vpCount = D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE;
+		D3D11_VIEWPORT vps[D3D11_VIEWPORT_AND_SCISSORRECT_OBJECT_COUNT_PER_PIPELINE] = { 0 };
+		context->RSGetViewports(&vpCount, vps);
 		
 		// 获取当前RenderTarget的大小
 		ID3D11Resource* rtTex = nullptr;
@@ -132,6 +135,9 @@ bool Live2D::Model::Update()
 		renderer->StartFrame(device, context, desc.Width, desc.Height);
 		renderer->DrawModel();
 		renderer->EndFrame(device);
+
+		// 恢复状态
+		context->RSSetViewports(vpCount, vps);
 	});
 
 	return true;
