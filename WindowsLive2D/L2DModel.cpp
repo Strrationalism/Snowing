@@ -114,7 +114,9 @@ bool Live2D::Model::Update()
 		ctx_->SetRenderTarget(rt);
 
 		// »æÖÆLive2DÄÚÈÝ
-		renderer->StartFrame(device, context, desc.x, desc.y);
+		renderer->StartFrame(device, context,
+			static_cast<Csm::csmUint32>(desc.x), 
+			static_cast<Csm::csmUint32>(desc.y));
 		renderer->DrawModel();
 		renderer->EndFrame(device);
 	});
