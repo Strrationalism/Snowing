@@ -54,5 +54,6 @@ namespace Live2D
 
 		const Snowing::Platforms::Handler& GetMotionManager() const;
 		const Snowing::Platforms::Handler& GetExpressionManager() const;
+		Snowing::Math::Vec2f GetCanvasSize() const;
 	};
 }
