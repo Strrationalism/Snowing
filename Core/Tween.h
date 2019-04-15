@@ -14,20 +14,18 @@ namespace Snowing::Scene
 		using FX = float(*)(float);
 
 		constexpr auto Once = [](float x) { return x; };
-		constexpr auto Twice = [](float x) { return x * x; };
-		constexpr auto Cubic = [](float x) { return x * x * x; };
-		constexpr auto Quad = [](float x) { return x * x * x * x; };
+		constexpr auto Twice = [](float x) { return -x * x + 2*x; };
+		constexpr auto Circle = [](float x) { return std::sqrtf(1 - (x - 1) * (x - 1)); };
+		constexpr auto CircleSqrt = [](float x) { return std::sqrtf(std::sqrtf(1 - (x - 1) * (x - 1))); };
 		constexpr auto Sin = [](float x) { return std::sinf(x * Math::Constants::Pi<float> / 2); };
-		constexpr auto Sqrt = [](float x) { return std::sqrtf(x); };
 
 		constexpr inline FX GetFX(std::string_view sv)
 		{
 			if (sv == "Once") return Once;
 			else if (sv == "Twice") return Twice;
-			else if (sv == "Cubic") return Cubic;
-			else if (sv == "Quad") return Quad;
+			else if (sv == "Circle") return Circle;
 			else if (sv == "Sin") return Sin;
-			else if (sv == "Sqrt") return Sqrt;
+			else if (sv == "CircleSqrt") return CircleSqrt;
 			else throw std::invalid_argument{ "Unknown FX name." };
 		}
 	}
