@@ -11,7 +11,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	if (auto textElement = std::get_if<TextElement>(&e))
 	{
 		auto fontStyle = TextWindowFontStyle::Combine(fontStyleStack_.data(), fontStyleStack_.size());
-		textWindow_.AppendText(textElement->Text, fontStyle, 0.05f);
+		textWindow_.AppendText(textElement->Text, fontStyle, 0.025f);
 		return true;
 	}
 	else if (auto fontStyleElement = std::get_if<FontStyleElement>(&e))
