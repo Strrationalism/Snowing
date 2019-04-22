@@ -7,6 +7,10 @@ using namespace Snowing::PlatformImpls::WindowsImpl;
 
 static constexpr auto dwStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
+
+#pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+
 #ifdef _DEBUG
 #include <iostream>
 void Snowing::PlatformImpls::Log(const wchar_t * log)
