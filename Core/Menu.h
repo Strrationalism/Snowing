@@ -26,7 +26,7 @@ namespace Snowing::Scene::UI
 			return selected_;
 		}
 
-		std::optional<TMenuItem*> GetSelectedObject() const
+		std::optional<TMenuItem*> GetSelectedObject()
 		{
 			if (selected_.has_value())
 				return (*this)[selected_.value()];

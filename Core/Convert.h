@@ -103,3 +103,12 @@ namespace Snowing
 
 
 }
+
+namespace std
+{
+	template <typename T,typename TString>
+	std::basic_string<T> operator + (TString&& str, const std::basic_string_view<T>& str2)
+	{
+		return std::forward<TString>(str).append(str2.data(),str2.size());
+	}
+}

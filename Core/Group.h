@@ -15,6 +15,16 @@ namespace Snowing::Scene
 		std::vector<std::unique_ptr<TBaseObject>> objs_;
 		std::queue<std::unique_ptr<TBaseObject>> newObjs_;
 	public:
+
+		void PrepareNewObjects()
+		{
+			while (!newObjs_.empty())
+			{
+				objs_.emplace_back(std::move(newObjs_.front()));
+				newObjs_.pop();
+			}
+		}
+
 		bool Update() override
 		{
 			objs_.erase(
@@ -24,11 +34,7 @@ namespace Snowing::Scene
 					[](auto& p) { return !p->Update(); }),
 				objs_.end());
 
-			while (!newObjs_.empty())
-			{
-				objs_.emplace_back(std::move(newObjs_.front()));
-				newObjs_.pop();
-			}
+			PrepareNewObjects();
 
 			return !objs_.empty();
 		}
@@ -52,13 +58,24 @@ namespace Snowing::Scene
 		template <typename TFunc>
 		void Iter(TFunc& f)
 		{
+			PrepareNewObjects();
 			for (auto& p : objs_)
 				f(*p);
+		}
+
+		template <typename TFunc>
+		void Sort(TFunc& f)
+		{
+			PrepareNewObjects();
+			std::sort(objs_.begin(), objs_.end(), [&f](auto& p) {
+				return f(*p);
+			});
 		}
 
 		template <typename TObjectType, typename TFunc>
 		void IterType(TFunc& f)
 		{
+			PrepareNewObjects();
 			Iter([this,&f](TBaseObject& obj) {
 				try
 				{
@@ -72,6 +89,7 @@ namespace Snowing::Scene
 		template <typename TObjectType>
 		TObjectType * FindFirst()
 		{
+			PrepareNewObjects();
 			for(auto& p : objs_)
 			{
 				try
@@ -88,29 +106,33 @@ namespace Snowing::Scene
 		void Clear()
 		{
 			objs_.clear();
+			while (!newObjs_.empty())
+				newObjs_.pop();
 		}
 
 		size_t Count() const
 		{
-			return objs_.size();
-		}
-
-		size_t CountWithNewObjects() const
-		{
 			return objs_.size() + newObjs_.size();
 		}
 
-		TBaseObject* operator [] (size_t i) const
+		TBaseObject* operator [] (size_t i)
 		{
+			PrepareNewObjects();
 			return objs_[i].get();
 		}
 
-		bool Exist(TBaseObject* pObject) const
+		bool ExistIgnoreNewObjects(TBaseObject* pObject) const
 		{
 			return std::any_of(objs_.begin(), objs_.end(), [pObject](const auto& pObjectInList)
 			{
 				return pObject == pObjectInList.get();
 			});
+		}
+
+		bool Exist(TBaseObject* pObject)
+		{
+			PrepareNewObjects();
+			return ExistIgnoreNewObjects(pObject);
 		}
 	};
 
