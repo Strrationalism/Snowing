@@ -12,7 +12,17 @@ namespace Snowing::Scene
 	class[[nodiscard]] Group : public Object
 	{
 	private:
-		std::vector<std::unique_ptr<TBaseObject>> objs_;
+		struct ObjectWrapper
+		{
+			bool living = true;
+			std::unique_ptr<TBaseObject> object;
+
+			ObjectWrapper(std::unique_ptr<TBaseObject>&& obj) :
+				object{ std::move(obj) }
+			{};
+		};
+
+		std::vector<ObjectWrapper> objs_;
 		std::queue<std::unique_ptr<TBaseObject>> newObjs_;
 	public:
 
@@ -27,11 +37,16 @@ namespace Snowing::Scene
 
 		bool Update() override
 		{
+			for (auto& p : objs_)
+				p.living = p.object->Update();
+
+			const auto eraseBegin = std::remove_if(
+				objs_.begin(),
+				objs_.end(),
+				[](const auto & p) { return !p.living; });
+
 			objs_.erase(
-				std::remove_if(
-					objs_.begin(),
-					objs_.end(),
-					[](auto& p) { return !p->Update(); }),
+				eraseBegin,
 				objs_.end());
 
 			PrepareNewObjects();
@@ -42,9 +57,10 @@ namespace Snowing::Scene
 		template <typename TObj = TBaseObject,typename ... TArgs>
 		TObj* Emplace(TArgs&&... args)
 		{
-			auto p = new TObj{ std::forward<TArgs>(args)... };
-			newObjs_.emplace(std::unique_ptr<TObj>(p));
-			return p;
+			auto p = std::make_unique<TObj>(std::forward<TArgs>(args)...);
+			auto ptr = p.get();
+			newObjs_.emplace(std::move(p));
+			return ptr;
 		}
 
 		template <typename TObj>
@@ -60,7 +76,7 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 			for (auto& p : objs_)
-				f(*p);
+				f(*p.object);
 		}
 
 		template <typename TFunc>
@@ -68,7 +84,7 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 			std::sort(objs_.begin(), objs_.end(), [&f](auto& p,auto& q) {
-				return f(*p,*q);
+				return f(*p.object,*q.object);
 			});
 		}
 
@@ -93,7 +109,7 @@ namespace Snowing::Scene
 			{
 				try
 				{
-					auto ptr = dynamic_cast<TObjectType*>(p.get());
+					auto ptr = dynamic_cast<TObjectType*>(p.object.get());
 					if (ptr) return ptr;
 				}
 				catch(std::bad_cast)
@@ -124,14 +140,14 @@ namespace Snowing::Scene
 		TBaseObject* operator [] (size_t i)
 		{
 			PrepareNewObjects();
-			return objs_[i].get();
+			return objs_[i].object.get();
 		}
 
 		bool ExistIgnoreNewObjects(TBaseObject* pObject) const
 		{
 			return std::any_of(objs_.begin(), objs_.end(), [pObject](const auto& pObjectInList)
 			{
-				return pObject == pObjectInList.get();
+				return pObject == pObjectInList.object.get();
 			});
 		}
 
