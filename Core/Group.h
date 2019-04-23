@@ -67,8 +67,8 @@ namespace Snowing::Scene
 		void Sort(TFunc& f)
 		{
 			PrepareNewObjects();
-			std::sort(objs_.begin(), objs_.end(), [&f](auto& p) {
-				return f(*p);
+			std::sort(objs_.begin(), objs_.end(), [&f](auto& p,auto& q) {
+				return f(*p,*q);
 			});
 		}
 
@@ -87,9 +87,8 @@ namespace Snowing::Scene
 		}
 		
 		template <typename TObjectType>
-		TObjectType * FindFirst()
+		TObjectType * FindFirstIgnoreNewObjects() const
 		{
-			PrepareNewObjects();
 			for(auto& p : objs_)
 			{
 				try
@@ -101,6 +100,13 @@ namespace Snowing::Scene
 				{ }
 			}
 			return nullptr;
+		}
+
+		template <typename TObjectType>
+		TObjectType* FindFirst()
+		{
+			PrepareNewObjects();
+			return FindFirstIgnoreNewObjects<TObjectType>();
 		}
 
 		void Clear()
