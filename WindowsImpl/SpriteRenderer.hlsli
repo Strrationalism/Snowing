@@ -34,8 +34,8 @@ float4 CoordinateSystemCenter;	//Snowing::Graphics::CoordinateCenter
 SamplerState SpriteSampler
 {
 	Filter = MIN_MAG_MIP_LINEAR;
-	AddressU = Wrap;
-	AddressV = Wrap;
+	AddressU = Clamp;
+	AddressV = Clamp;
 };
 
 SpriteGSIn SpriteVSFunc(SpriteVSIn i)
