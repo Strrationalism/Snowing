@@ -60,6 +60,12 @@ namespace Snowing::Scene
 		}
 
 		[[nodiscard]]
+		const TVariable& Value() const
+		{
+			return variable_;
+		}
+
+		[[nodiscard]]
 		TVariable* operator -> ()
 		{
 			return &variable_;
