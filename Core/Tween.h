@@ -71,6 +71,12 @@ namespace Snowing::Scene
 			return &variable_;
 		}
 
+		[[nodiscard]]
+		bool Tweening() const
+		{
+			return tween_.has_value() || mustUpdateTrue_;
+		}
+
 		void Start(const TVariable& target, float time, TweenFX::FX fx = TweenFX::Once)
 		{
 			assert(fx);
