@@ -74,14 +74,21 @@ namespace Snowing::Scene
 		void Start(const TVariable& target, float time, TweenFX::FX fx = TweenFX::Once)
 		{
 			assert(fx);
-			tween_ = TweenData
+			if (time <= 0)
 			{
-				std::forward<TVariable>(variable_),
-				target,
-				time,
-				0,
-				fx
-			};
+				variable_ = target;
+			}
+			else
+			{
+				tween_ = TweenData
+				{
+					std::forward<TVariable>(variable_),
+					target,
+					time,
+					0,
+					fx
+				};
+			}
 		}
 
 		void Stop()
