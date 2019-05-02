@@ -69,3 +69,14 @@ std::optional<const Snowing::Scene::Metronome<>*> Yukimi::BGMPlayer::GetMetronom
 		return currentChannel_->GetMetronome();
 	else return std::nullopt;
 }
+
+void Yukimi::BGMPlayer::Restart()
+{
+	Iter([this](AudioChannel & channel) {
+		if (currentChannel_ == &channel)
+		{
+			auto b = channel.MoveOutBlob();
+			currentChannel_ = Emplace<AudioChannel>(std::move(b), 0.0f, 0, 0.0f);
+		}
+	});
+}
