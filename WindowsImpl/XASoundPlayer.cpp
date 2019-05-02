@@ -4,10 +4,14 @@
 #include <xaudio2.h>
 #include "COMHelper.h"
 
+#pragma pack(1)
 struct SoundHead
 {
 	uint32_t headSize;
 	uint32_t loopSize;
+
+	bool bpmUsable;
+	float bpm;
 };
 
 
@@ -42,10 +46,15 @@ Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::~XASoundPlayer()
 
 void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Play(const Blob * blob,uint32_t begin)
 {
+	const auto head = blob->Get<SoundHead*>(0);
+	if (head->bpmUsable)
+		bpm_ = head->bpm;
+	else
+		bpm_.reset();
 	if (XADevice::Get().Avaliable())
 	{
 		const auto sv = xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>();
-		const auto head = blob->Get<SoundHead*>(0);
+		
 
 		XAUDIO2_BUFFER buf;
 		buf.AudioBytes = head->headSize + head->loopSize;
@@ -71,6 +80,7 @@ void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Play(const Blo
 
 void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Stop()
 {
+	bpm_.reset();
 	if (XADevice::Get().Avaliable())
 	{
 		xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>()->Stop();
@@ -82,7 +92,6 @@ uint32_t Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetPositio
 {
 	if (XADevice::Get().Avaliable())
 	{
-		//TODO:´ý²âÊÔµÄÊµÏÖ
 		if (!playingBlob_) return 0;
 		const auto dataHead = playingBlob_->Get<SoundHead*>(0);
 		const auto headSamples = dataHead->headSize / 4;
@@ -206,5 +215,15 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 	}
 	else
 		return 0;
+}
+
+std::optional<float> Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetBpm() const
+{
+	if(GetPlaying())
+		return bpm_;
+	else
+	{
+		return std::nullopt;
+	}
 }
 

@@ -2,6 +2,7 @@
 #include "Blob.h"
 #include <cstdint>
 #include <cassert>
+#include <optional>
 
 namespace Snowing::Audio
 {
@@ -82,6 +83,12 @@ namespace Snowing::Audio
 			SetSpeed(1);
 			SetPan(0);
 			SetVolume(1);
+		}
+
+		// ªÒ»°BPM
+		std::optional<float> GetBpm() const
+		{
+			return impl_.GetBpm();
 		}
 	};
 }
