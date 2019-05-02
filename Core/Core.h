@@ -44,6 +44,7 @@
 #include "ConditionTask.h"
 #include "FrameFunc.h"
 #include "AsyncLauncher.h"
+#include "Metronome.h"
 
 // Utils
 #include "BKDRHash.h"
