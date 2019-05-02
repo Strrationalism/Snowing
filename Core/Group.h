@@ -143,7 +143,7 @@ namespace Snowing::Scene
 			return objs_[i].object.get();
 		}
 
-		bool ExistIgnoreNewObjects(TBaseObject* pObject) const
+		bool ExistIgnoreNewObjects(const TBaseObject* pObject) const
 		{
 			return std::any_of(objs_.begin(), objs_.end(), [pObject](const auto& pObjectInList)
 			{
@@ -151,7 +151,7 @@ namespace Snowing::Scene
 			});
 		}
 
-		bool Exist(TBaseObject* pObject)
+		bool Exist(const TBaseObject* pObject)
 		{
 			PrepareNewObjects();
 			return ExistIgnoreNewObjects(pObject);

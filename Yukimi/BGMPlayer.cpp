@@ -66,7 +66,11 @@ void BGMPlayer::Stop(float fadeTime)
 std::optional<const Snowing::Scene::Metronome<>*> Yukimi::BGMPlayer::GetMetronome() const
 {
 	if (currentChannel_)
+	{
+		if (!ExistIgnoreNewObjects(currentChannel_))
+			return std::nullopt;
 		return currentChannel_->GetMetronome();
+	}
 	else return std::nullopt;
 }
 
