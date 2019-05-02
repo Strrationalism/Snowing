@@ -22,6 +22,7 @@ namespace Snowing::Scene
 		Time prevTime_ = { 0,0 };
 
 		TSoundPlayer* soundPlayer_ = nullptr;
+		int offsetBeat_ = 0;
 
 	public:
 
@@ -38,20 +39,21 @@ namespace Snowing::Scene
 			prevTime_.Remainder = 0;
 		}
 
-		void Reset(TSoundPlayer* player,float bpm, size_t beatPerBar)
+		void Reset(TSoundPlayer* player,float bpm, size_t beatPerBar, int offsetBeat)
 		{
 			soundPlayer_ = player;
 			bpm_ = bpm;
 			beatPerBar_ = beatPerBar;
+			offsetBeat_ = offsetBeat;
 			Reset();
 		}
 
 		Time GetTime() const
 		{
 			const long double beatsld = 
-				(bpm_ * static_cast<long double(soundPlayer_->GetPosition())) / 
+				((bpm_ * static_cast<long double(soundPlayer_->GetPosition())) / 
 				static_cast<long double>(Hz) / 
-				60.0l;
+				60.0l) + static_cast<long double>(beatsld);
 			const size_t beats = static_cast<size_t>(beatsld);
 			return {
 				beats / beatPerBar_,
@@ -70,9 +72,9 @@ namespace Snowing::Scene
 			return true;
 		}
 
-		Metronome(TSoundPlayer* player,float bpm, size_t beatPerBar)
+		Metronome(TSoundPlayer* player,float bpm, size_t beatPerBar,int offsetBeat = 0)
 		{
-			Reset(player,bpm, beatPerBar);
+			Reset(player,bpm, beatPerBar, offsetBeat);
 		}
 	};
 }
