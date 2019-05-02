@@ -36,6 +36,9 @@ namespace Yukimi
 		// 从暂停中恢复
 		void Resume(float fadeTime = 0);
 
+		// 获取节拍器
+		std::optional<const Snowing::Scene::Metronome<>*> GetMetronome() const;
+
 		bool Update() override;
 	};
 }

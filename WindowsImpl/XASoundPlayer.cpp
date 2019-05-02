@@ -10,8 +10,7 @@ struct SoundHead
 	uint32_t headSize;
 	uint32_t loopSize;
 
-	bool bpmUsable;
-	float bpm;
+	Snowing::Audio::Metadata metadata;
 };
 
 
@@ -47,10 +46,7 @@ Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::~XASoundPlayer()
 void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Play(const Blob * blob,uint32_t begin)
 {
 	const auto head = blob->Get<SoundHead*>(0);
-	if (head->bpmUsable)
-		bpm_ = head->bpm;
-	else
-		bpm_.reset();
+	metadata_ = head->metadata;
 	if (XADevice::Get().Avaliable())
 	{
 		const auto sv = xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>();
@@ -80,7 +76,7 @@ void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Play(const Blo
 
 void Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::Stop()
 {
-	bpm_.reset();
+	metadata_ = Snowing::Audio::Metadata{};
 	if (XADevice::Get().Avaliable())
 	{
 		xaVoice_.Cast<IXAudio2Voice*, IXAudio2SourceVoice*>()->Stop();
@@ -217,13 +213,8 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 		return 0;
 }
 
-std::optional<float> Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetBpm() const
+Snowing::Audio::Metadata Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetMetadata() const
 {
-	if(GetPlaying())
-		return bpm_;
-	else
-	{
-		return std::nullopt;
-	}
+	return metadata_;
 }
 

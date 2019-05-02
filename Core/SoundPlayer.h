@@ -6,6 +6,13 @@
 
 namespace Snowing::Audio
 {
+	struct alignas(4) Metadata
+	{
+		float Bpm = 120;
+		uint32_t BeatsPerBar = 4;
+		int32_t BeatOffset = 0;
+	};
+
 	template <typename TImpl>
 	class[[nodiscard]] SoundPlayerInterface final
 	{
@@ -85,10 +92,10 @@ namespace Snowing::Audio
 			SetVolume(1);
 		}
 
-		// 获取BPM
-		std::optional<float> GetBpm() const
+		// 获取元数据
+		Metadata GetMetadata() const
 		{
-			return impl_.GetBpm();
+			return impl_.GetMetadata();
 		}
 	};
 }

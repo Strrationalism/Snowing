@@ -4,7 +4,7 @@
 
 namespace Snowing::Scene
 {
-	template <typename TSoundPlayer,size_t Hz = 44100>
+	template <typename TSoundPlayer = Snowing::Audio::SoundPlayer,size_t Hz = 44100>
 	class Metronome final : public Snowing::Scene::Object
 	{
 	public:
@@ -51,9 +51,9 @@ namespace Snowing::Scene
 		Time GetTime() const
 		{
 			const long double beatsld = 
-				((bpm_ * static_cast<long double(soundPlayer_->GetPosition())) / 
+				((bpm_ * static_cast<long double>(soundPlayer_->GetPosition())) /
 				static_cast<long double>(Hz) / 
-				60.0l) + static_cast<long double>(beatsld);
+				60.0l) + static_cast<long double>(offsetBeat_);
 			const size_t beats = static_cast<size_t>(beatsld);
 			return {
 				beats / beatPerBar_,

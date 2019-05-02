@@ -7,7 +7,9 @@ open WAVFileReader
 
 [<Struct>]
 type private Options = {
-    Bpm : float32 voption
+    Bpm : float32
+    BeatsPerBar : uint32
+    BeatsOffset : int32
 }
 
 let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
@@ -48,8 +50,9 @@ let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) 
     use out = new BinaryWriter(outf)
     out.Write (headPCM.Length |> uint32)
     out.Write (loopPCM.Length |> uint32)
-    out.Write (options.Bpm.IsSome)
-    out.Write (if options.Bpm.IsSome then options.Bpm.Value else 120.0f)
+    out.Write (options.Bpm)
+    out.Write (options.BeatsPerBar)
+    out.Write (options.BeatsOffset)
     out.Write headPCM
     out.Write loopPCM
     out.Close()
@@ -60,12 +63,16 @@ let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) 
 
 let private GetOptions argumentStrList =
     let defaultOption = {
-        Bpm = ValueNone
+        Bpm = 120.0f
+        BeatsPerBar = 4u
+        BeatsOffset = 0
     }
 
     let optionFolder option (str:string) = 
         match str with
-        | str when str.EndsWith "BPM" -> {option with Bpm = str.[..str.Length-4] |> float32 |> ValueSome }
+        | str when str.EndsWith "BPM" -> {option with Bpm = str.[..str.Length-4] |> float32 }
+        | str when str.EndsWith "BeatPerBar" -> {option with BeatsPerBar = str.[..str.Length - 11] |> uint32 }
+        | str when str.StartsWith "BeatOffset:" -> {option with BeatsOffset = str.[12..] |> int32 }
         | "" -> option
         | _ -> failwith "Unsuppoted argument."
         
