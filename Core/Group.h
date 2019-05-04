@@ -12,23 +12,44 @@ namespace Snowing::Scene
 	class[[nodiscard]] Group : public Object
 	{
 	private:
-		std::vector<std::unique_ptr<TBaseObject>> objs_;
+		struct ObjectWrapper
+		{
+			bool living = true;
+			std::unique_ptr<TBaseObject> object;
+
+			ObjectWrapper(std::unique_ptr<TBaseObject>&& obj) :
+				object{ std::move(obj) }
+			{};
+		};
+
+		std::vector<ObjectWrapper> objs_;
 		std::queue<std::unique_ptr<TBaseObject>> newObjs_;
 	public:
-		bool Update() override
-		{
-			objs_.erase(
-				std::remove_if(
-					objs_.begin(),
-					objs_.end(),
-					[](auto& p) { return !p->Update(); }),
-				objs_.end());
 
+		void PrepareNewObjects()
+		{
 			while (!newObjs_.empty())
 			{
 				objs_.emplace_back(std::move(newObjs_.front()));
 				newObjs_.pop();
 			}
+		}
+
+		bool Update() override
+		{
+			for (auto& p : objs_)
+				p.living = p.object->Update();
+
+			const auto eraseBegin = std::remove_if(
+				objs_.begin(),
+				objs_.end(),
+				[](const auto & p) { return !p.living; });
+
+			objs_.erase(
+				eraseBegin,
+				objs_.end());
+
+			PrepareNewObjects();
 
 			return !objs_.empty();
 		}
@@ -36,9 +57,10 @@ namespace Snowing::Scene
 		template <typename TObj = TBaseObject,typename ... TArgs>
 		TObj* Emplace(TArgs&&... args)
 		{
-			auto p = new TObj{ std::forward<TArgs>(args)... };
-			newObjs_.emplace(std::unique_ptr<TObj>(p));
-			return p;
+			auto p = std::make_unique<TObj>(std::forward<TArgs>(args)...);
+			auto ptr = p.get();
+			newObjs_.emplace(std::move(p));
+			return ptr;
 		}
 
 		template <typename TObj>
@@ -52,13 +74,24 @@ namespace Snowing::Scene
 		template <typename TFunc>
 		void Iter(TFunc& f)
 		{
+			PrepareNewObjects();
 			for (auto& p : objs_)
-				f(*p);
+				f(*p.object);
+		}
+
+		template <typename TFunc>
+		void Sort(TFunc& f)
+		{
+			PrepareNewObjects();
+			std::sort(objs_.begin(), objs_.end(), [&f](auto& p,auto& q) {
+				return f(*p.object,*q.object);
+			});
 		}
 
 		template <typename TObjectType, typename TFunc>
 		void IterType(TFunc& f)
 		{
+			PrepareNewObjects();
 			Iter([this,&f](TBaseObject& obj) {
 				try
 				{
@@ -70,13 +103,14 @@ namespace Snowing::Scene
 		}
 		
 		template <typename TObjectType>
-		TObjectType * FindFirst()
+		TObjectType * FindFirstIgnoreNewObjects() const
 		{
 			for(auto& p : objs_)
 			{
 				try
 				{
-					return dynamic_cast<TObjectType*>(p.get());
+					auto ptr = dynamic_cast<TObjectType*>(p.object.get());
+					if (ptr) return ptr;
 				}
 				catch(std::bad_cast)
 				{ }
@@ -84,32 +118,43 @@ namespace Snowing::Scene
 			return nullptr;
 		}
 
+		template <typename TObjectType>
+		TObjectType* FindFirst()
+		{
+			PrepareNewObjects();
+			return FindFirstIgnoreNewObjects<TObjectType>();
+		}
+
 		void Clear()
 		{
 			objs_.clear();
+			while (!newObjs_.empty())
+				newObjs_.pop();
 		}
 
 		size_t Count() const
 		{
-			return objs_.size();
-		}
-
-		size_t CountWithNewObjects() const
-		{
 			return objs_.size() + newObjs_.size();
 		}
 
-		TBaseObject* operator [] (size_t i) const
+		TBaseObject* operator [] (size_t i)
 		{
-			return objs_[i].get();
+			PrepareNewObjects();
+			return objs_[i].object.get();
 		}
 
-		bool Exist(TBaseObject* pObject) const
+		bool ExistIgnoreNewObjects(const TBaseObject* pObject) const
 		{
 			return std::any_of(objs_.begin(), objs_.end(), [pObject](const auto& pObjectInList)
 			{
-				return pObject == pObjectInList.get();
+				return pObject == pObjectInList.object.get();
 			});
+		}
+
+		bool Exist(const TBaseObject* pObject)
+		{
+			PrepareNewObjects();
+			return ExistIgnoreNewObjects(pObject);
 		}
 	};
 

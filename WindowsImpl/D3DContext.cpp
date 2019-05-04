@@ -54,6 +54,8 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::Draw(size_t count, size_
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetRenderTarget(Graphics::RenderTarget ** rt, int size)
 {
+	assert(size > 0);
+	rt_ = *rt;
 	static std::vector<ID3D11RenderTargetView*> rtCache;
 	static std::vector<D3D11_VIEWPORT> vpCache;
 	vpCache.clear();
@@ -94,6 +96,11 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetStreamOutBuffer(Graph
 	}
 	else
 		ctx->SOSetTargets(0, nullptr, nullptr);
+}
+
+Snowing::Graphics::RenderTarget* Snowing::PlatformImpls::WindowsImpl::D3D::Context::GetRenderTarget()
+{
+	return rt_;
 }
 
 const Handler & Snowing::PlatformImpls::WindowsImpl::D3D::Context::GetHandler() const

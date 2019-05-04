@@ -16,7 +16,7 @@ namespace Snowing::Graphics
 			impl_{ std::move(impl) }
 		{}
 
-		RenderTargetInterface(Math::Vec2<int> size) :
+		RenderTargetInterface(Math::Vec2<size_t> size) :
 			impl_{ size }
 		{}
 

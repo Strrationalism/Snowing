@@ -14,6 +14,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::XAudio2
 
 		std::uint32_t beginSample_ = 0;
 
+		Snowing::Audio::Metadata metadata_;
+
 	public:
 		XASoundPlayer();
 		~XASoundPlayer();
@@ -29,6 +31,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::XAudio2
 
 		float GetVolume() const;
 		float GetRealtimeVolume() const;
+
+		Snowing::Audio::Metadata GetMetadata() const;
 	};
 }
 

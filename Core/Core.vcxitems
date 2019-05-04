@@ -29,6 +29,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuKeyController.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MenuPositionController.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NoCopyMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AsyncLauncher.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h" />

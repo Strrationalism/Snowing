@@ -16,10 +16,10 @@ void BGMPlayer::stopAllChannels(float fadeTime)
 	});
 }
 
-void BGMPlayer::Play(AssetName bgm, float fadeTime, uint32_t begin)
+void BGMPlayer::Play(std::string&& bgm, float fadeTime, uint32_t begin)
 {
 	stopAllChannels(fadeTime);
-	currentChannel_ = Emplace<AudioChannel>(loader_,bgm, fadeTime, begin);
+	currentChannel_ = Emplace<AudioChannel>(loader_, std::move(bgm), fadeTime, begin);
 }
 
 void BGMPlayer::FadeTo(AssetName a, float fadeTime)
@@ -60,5 +60,27 @@ void BGMPlayer::Stop(float fadeTime)
 	currentChannel_ = nullptr;
 	Iter([fadeTime](AudioChannel & channel) {
 			channel.Stop(fadeTime);
+	});
+}
+
+std::optional<const Snowing::Scene::Metronome<>*> Yukimi::BGMPlayer::GetMetronome() const
+{
+	if (currentChannel_)
+	{
+		if (!ExistIgnoreNewObjects(currentChannel_))
+			return std::nullopt;
+		return currentChannel_->GetMetronome();
+	}
+	else return std::nullopt;
+}
+
+void Yukimi::BGMPlayer::Restart()
+{
+	Iter([this](AudioChannel & channel) {
+		if (currentChannel_ == &channel)
+		{
+			auto b = channel.MoveOutBlob();
+			currentChannel_ = Emplace<AudioChannel>(std::move(b), 0.0f, 0, 0.0f);
+		}
 	});
 }

@@ -7,13 +7,13 @@
 namespace Snowing
 {
 #ifdef _DEBUG
-	template <typename T>
-	class MemPool
+	template <size_t Size>
+	class SizedMemPool
 	{};
 #else
 
-	template <typename PooledClass>
-	class MemPool
+	template <size_t Size>
+	class SizedMemPool final
 	{
 	private:
 
@@ -36,16 +36,20 @@ namespace Snowing
 		static inline FreeList freeList_;
 
 	public:
-		void * operator new (size_t size, const std::nothrow_t&) noexcept
+		SizedMemPool() = delete;
+		SizedMemPool(const SizedMemPool&) = delete;
+		SizedMemPool(SizedMemPool&&) = delete;
+
+		static void * New(size_t size, const std::nothrow_t&) noexcept
 		{
-			static_assert(std::is_final<PooledClass>::value, "PooledClass must is a final class.");
-			constexpr static size_t S = sizeof(PooledClass);
-  			assert(size == S);
+			constexpr static size_t S = Size;
+			if (size != S)
+				throw std::exception{ "Unknown mempool error." };
 
 			freeList_.allocCount_++;
 
 			if (freeList_.freeList_.empty())
-				return malloc(size);
+				return malloc(S);
 			else
 			{
 				auto p = freeList_.freeList_.back();
@@ -54,7 +58,7 @@ namespace Snowing
 			}
 		}
 
-		void * operator new (size_t size)
+		static void * New(size_t size)
 		{
 			auto p = operator new(size, std::nothrow_t{});
 			if (p)
@@ -63,12 +67,36 @@ namespace Snowing
 				throw std::bad_alloc{};
 		}
 
-		void operator delete (void *p)
+		static void Delete(void *p)
 		{
 			freeList_.allocCount_--;
 			freeList_.freeList_.push_back(p);
 		}
 	};
 #endif // _DEBUG
+
+	template <typename T>
+	class MemPool 
+	{
+	public:
+		void* New(size_t size, const std::nothrow_t& t) noexcept
+		{
+			static_assert(std::is_final<T>::value, "T must is a final class.");
+			SizedMemPool<sizeof(T)>::New(size, t);
+		}
+
+		void* New(size_t size) noexcept
+		{
+			static_assert(std::is_final<T>::value, "T must is a final class.");
+			SizedMemPool<sizeof(T)>::New(size);
+		}
+
+		void Delete(void* p)
+		{
+			static_assert(std::is_final<T>::value, "T must is a final class.");
+			SizedMemPool<sizeof(T)>::Delete(p);
+		}
+		
+	};
 
 }

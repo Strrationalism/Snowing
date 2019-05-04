@@ -74,6 +74,22 @@ namespace Snowing::Graphics
 			impl_.SetRenderTarget(&rt, 1);
 		}
 
+		auto GetRenderTarget()
+		{
+			auto r = impl_.GetRenderTarget();
+			Platforms::AssertInterface<RenderTargetInterface>(*r);
+			return r;
+		}
+
+		template <typename TRenderTarget,typename TFunc>
+		void DrawToRenderTarget(TRenderTarget& rt,TFunc& func)
+		{
+			auto rtorg = GetRenderTarget();
+			SetRenderTarget(&rt);
+			func();
+			SetRenderTarget(rtorg);
+		}
+
 		[[nodiscard]]
 		const auto& GetImpl() const
 		{

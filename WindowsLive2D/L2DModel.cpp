@@ -108,28 +108,15 @@ bool Live2D::Model::Update()
 		const auto device = Snowing::PlatformImpls::WindowsImpl::D3D::Device::Get().GetHandler().Cast<IUnknown*, ID3D11Device*>();
 		const auto context = ctx_->GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>();
 
-		
-		
-		// 获取当前RenderTarget的大小
-		ID3D11Resource* rtTex = nullptr;
-		ID3D11RenderTargetView* renderTarget[] = { nullptr,nullptr };
-		context->OMGetRenderTargets(2,renderTarget,nullptr);
-		assert(renderTarget[0]);
-		assert(renderTarget[1] == nullptr);
-		renderTarget[0]->GetResource(&rtTex);
-		assert(rtTex);
-
-		D3D11_TEXTURE2D_DESC desc;
-
+		const auto rt = ctx_->GetRenderTarget();
+		const auto desc = rt->GetTexture().Size();
 		context->ClearState();
-		context->OMSetRenderTargets(1, &renderTarget[0], nullptr);
-
-		static_cast<ID3D11Texture2D*>(rtTex)->GetDesc(&desc);
-		rtTex->Release();
-		renderTarget[0]->Release();
+		ctx_->SetRenderTarget(rt);
 
 		// 绘制Live2D内容
-		renderer->StartFrame(device, context, desc.Width, desc.Height);
+		renderer->StartFrame(device, context,
+			static_cast<Csm::csmUint32>(desc.x), 
+			static_cast<Csm::csmUint32>(desc.y));
 		renderer->DrawModel();
 		renderer->EndFrame(device);
 	});
@@ -187,4 +174,11 @@ const Snowing::Platforms::Handler& Live2D::Model::GetMotionManager() const
 const Snowing::Platforms::Handler& Live2D::Model::GetExpressionManager() const
 {
 	return expressionManager_;
+}
+
+Snowing::Math::Vec2f Live2D::Model::GetCanvasSize() const
+{
+	auto h = model_.Get<Csm::CubismModel*>()->GetCanvasHeight();
+	auto w = model_.Get<Csm::CubismModel*>()->GetCanvasWidth();
+	return { w,h };
 }

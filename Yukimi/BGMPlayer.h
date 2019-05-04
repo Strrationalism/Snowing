@@ -22,7 +22,10 @@ namespace Yukimi
 		BGMPlayer(AudioChannel::AudioLoader loader);
 
 		// 播放BGM
-		void Play(Snowing::AssetName, float fadeTime = 0, uint32_t begin = 0);
+		void Play(std::string&& name, float fadeTime = 0, uint32_t begin = 0);
+
+		// 重头开始播放这首曲子，需要当前播放进程可以自然结束。
+		void Restart();
 
 		// 停止BGM
 		void Stop(float fadeTime = 0);
@@ -35,6 +38,9 @@ namespace Yukimi
 
 		// 从暂停中恢复
 		void Resume(float fadeTime = 0);
+
+		// 获取节拍器
+		std::optional<const Snowing::Scene::Metronome<>*> GetMetronome() const;
 
 		bool Update() override;
 	};

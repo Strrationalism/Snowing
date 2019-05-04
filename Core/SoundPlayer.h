@@ -2,9 +2,17 @@
 #include "Blob.h"
 #include <cstdint>
 #include <cassert>
+#include <optional>
 
 namespace Snowing::Audio
 {
+	struct alignas(4) Metadata
+	{
+		float Bpm = 120;
+		uint32_t BeatsPerBar = 4;
+		int32_t BeatOffset = 0;
+	};
+
 	template <typename TImpl>
 	class[[nodiscard]] SoundPlayerInterface final
 	{
@@ -82,6 +90,12 @@ namespace Snowing::Audio
 			SetSpeed(1);
 			SetPan(0);
 			SetVolume(1);
+		}
+
+		// 获取元数据
+		Metadata GetMetadata() const
+		{
+			return impl_.GetMetadata();
 		}
 	};
 }

@@ -45,7 +45,16 @@ namespace Snowing
 	template <typename T>
 	T To(std::string_view s)
 	{
-		if constexpr (std::is_same<T, Snowing::BKDRHash>::value)
+		if constexpr (
+			std::is_same<std::wstring, T>::value)
+		{
+			std::wstring str;
+			str.reserve(s.size());
+			for (auto ch : s)
+				str += static_cast<wchar_t>(ch);
+			return str;
+		}
+		else if constexpr (std::is_same<T, Snowing::BKDRHash>::value)
 			return s;
 		else
 		{
@@ -54,6 +63,12 @@ namespace Snowing
 			std::from_chars(s.data(), s.data() + s.size(), t);
 			return t;
 		}
+	}
+
+	template <typename T>
+	T To(std::string s)
+	{
+		return To<T>(std::string_view(s));
 	}
 
 	template <typename T>
@@ -74,6 +89,12 @@ namespace Snowing
 			return To<T>(std::string_view{ str });
 	}
 
+	template <typename T>
+	T To(std::wstring s)
+	{
+		return To<T>(std::wstring_view(s));
+	}
+
 	template <typename T, typename TFrom>
 	constexpr T To(T s)
 	{
@@ -81,4 +102,13 @@ namespace Snowing
 	}
 
 
+}
+
+namespace std
+{
+	template <typename T,typename TString>
+	std::basic_string<T> operator + (TString&& str, const std::basic_string_view<T>& str2)
+	{
+		return std::forward<TString>(str).append(str2.data(),str2.size());
+	}
 }

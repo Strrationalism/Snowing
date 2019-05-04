@@ -54,7 +54,7 @@ void CVPlayer::VolumeUp()
 
 float CVPlayer::GetRealtimeVolume() const
 {
-	if (Exist(activeChannel_))
+	if (ExistIgnoreNewObjects(activeChannel_))
 		return activeChannel_->GetRealtimeVolume();
 	else
 		return 0.0f;

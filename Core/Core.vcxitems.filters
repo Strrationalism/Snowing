@@ -198,5 +198,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AsyncLauncher.h">
       <Filter>Scene</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

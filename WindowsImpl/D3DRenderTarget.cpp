@@ -22,7 +22,7 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D Snowing::PlatformImpls::W
 	return std::move(tex);
 }
 
-static Snowing::Math::Vec2<uint16_t> ConvVec(Snowing::Math::Vec2<int> i)
+static Snowing::Math::Vec2<uint16_t> ConvVec(Snowing::Math::Vec2<size_t> i)
 {
 	return 
 	{
@@ -38,7 +38,7 @@ constexpr static Snowing::Graphics::BufferBindMode RenderTargetMode =
 	true
 };
 
-Snowing::PlatformImpls::WindowsImpl::D3D::D3DRenderTarget::D3DRenderTarget(Math::Vec2<int> size):
+Snowing::PlatformImpls::WindowsImpl::D3D::D3DRenderTarget::D3DRenderTarget(Math::Vec2<size_t> size):
 	tex_{D3DTexture2D{
 		TextureFormat::R8G8B8A8_UNORM,
 		ConvVec(size),RenderTargetMode,

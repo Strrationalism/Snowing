@@ -4,7 +4,15 @@ open Job
 open System.IO
 open WAVFileReader
 
-let private PackSound scriptPath srcHead srcLoop (dst:string) =
+
+[<Struct>]
+type private Options = {
+    Bpm : float32
+    BeatsPerBar : uint32
+    BeatsOffset : int32
+}
+
+let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
     if File.Exists dst then
         failwith ("Sound file " + dst + " is already exists.")
 
@@ -42,18 +50,43 @@ let private PackSound scriptPath srcHead srcLoop (dst:string) =
     use out = new BinaryWriter(outf)
     out.Write (headPCM.Length |> uint32)
     out.Write (loopPCM.Length |> uint32)
+    out.Write (options.Bpm)
+    out.Write (options.BeatsPerBar)
+    out.Write (options.BeatsOffset)
     out.Write headPCM
     out.Write loopPCM
     out.Close()
     outf.Close()
     ()
 
+
+
+let private GetOptions argumentStrList =
+    let defaultOption = {
+        Bpm = 120.0f
+        BeatsPerBar = 4u
+        BeatsOffset = 0
+    }
+
+    let optionFolder option (str:string) = 
+        match str.Trim() with
+        | str when str.EndsWith "BPM" -> {option with Bpm = str.[..str.Length-4].Trim() |> float32 }
+        | str when str.EndsWith "BeatPerBar" -> {option with BeatsPerBar = str.[..str.Length - 11].Trim() |> uint32 }
+        | str when str.StartsWith "BeatOffset:" -> {option with BeatsOffset = str.[11..].Trim() |> int32 }
+        | "" -> option
+        | _ -> failwith "Unsuppoted argument."
+        
+
+    argumentStrList
+    |> List.fold optionFolder defaultOption
+
 let Proc = {
-    Proc = (fun job -> 
-        PackSound 
+    Proc = (fun job ->
+        PackSound
             job.ScriptDir.FullName
             job.Input.[0]
             job.Input.[1]
+            (GetOptions job.Arguments)
             job.OutputPath)
     InputType = Files
     Command = "PackSound" 

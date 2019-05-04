@@ -20,6 +20,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 	{
 	private:
 		Handler context_;
+
+		Graphics::RenderTarget* rt_;
 	public:
 		Context(Handler&&);
 		Context(Context&&) = default;
@@ -30,6 +32,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		void Draw(size_t count,size_t offset) const;
 		void SetRenderTarget(Graphics::RenderTarget** rt, int size);
 		void SetStreamOutBuffer(Graphics::Buffer** buf, int bufSize);
+		Graphics::RenderTarget* GetRenderTarget();
 
 		const Handler& GetHandler() const;
 	};
