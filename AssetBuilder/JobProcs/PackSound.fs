@@ -69,10 +69,10 @@ let private GetOptions argumentStrList =
     }
 
     let optionFolder option (str:string) = 
-        match str with
-        | str when str.EndsWith "BPM" -> {option with Bpm = str.[..str.Length-4] |> float32 }
-        | str when str.EndsWith "BeatPerBar" -> {option with BeatsPerBar = str.[..str.Length - 11] |> uint32 }
-        | str when str.StartsWith "BeatOffset:" -> {option with BeatsOffset = str.[12..] |> int32 }
+        match str.Trim() with
+        | str when str.EndsWith "BPM" -> {option with Bpm = str.[..str.Length-4].Trim() |> float32 }
+        | str when str.EndsWith "BeatPerBar" -> {option with BeatsPerBar = str.[..str.Length - 11].Trim() |> uint32 }
+        | str when str.StartsWith "BeatOffset:" -> {option with BeatsOffset = str.[11..].Trim() |> int32 }
         | "" -> option
         | _ -> failwith "Unsuppoted argument."
         
