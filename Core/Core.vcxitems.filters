@@ -143,9 +143,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h">
       <Filter>Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Reinit.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Convert.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\Repos\VainRiser\Snowing\Core\Utils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

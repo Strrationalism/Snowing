@@ -5,7 +5,7 @@ using namespace Yukimi;
 
 AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uint32_t begin, float pan):
 	onSoundLoaded_{
-		[this] { return soundLoading_.valid(); },
+		[this] { return Snowing::FutureReady(soundLoading_); },
 		[this,fadeIn,begin,pan] {
 			sound_ = soundLoading_.get();
 			fadeVolume_ = 0;
@@ -79,7 +79,7 @@ float AudioChannel::GetRealtimeVolume() const
 Yukimi::AudioChannel::AudioChannel(Snowing::Blob&& soundBlob, float fadeIn, uint32_t begin, float pan):
 	sound_{ std::move(soundBlob) },
 	onSoundLoaded_{
-		[this] { return soundLoading_.valid(); },
+		[this] { return  Snowing::FutureReady(soundLoading_); },
 		[this,fadeIn,begin,pan] {
 			sound_ = soundLoading_.get();
 			fadeVolume_ = 0;

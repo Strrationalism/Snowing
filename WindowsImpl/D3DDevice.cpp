@@ -2,7 +2,7 @@
 #include "D3DDevice.h"
 #include <dxgi.h>
 #include <d3d11.h>
-#include <Reinit.h>
+#include <Utils.h>
 #include "COMHelper.h"
 #include "WindowImpl.h"
 
