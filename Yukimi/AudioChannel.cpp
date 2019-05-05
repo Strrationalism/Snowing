@@ -2,7 +2,6 @@
 #include "AudioChannel.h"
 
 using namespace Yukimi;
-
 AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uint32_t begin, float pan):
 	onSoundLoaded_{
 		[this] { return Snowing::FutureReady(soundLoading_); },
@@ -40,6 +39,10 @@ bool AudioChannel::Update()
 	fadeVolume_.Update();
 	mainVolume_.Update();
 	player_.SetVolume(*mainVolume_ * std::clamp(*fadeVolume_,0.0f,1.0f));
+
+	// 如果声音正在加载，则保持生存
+	if (soundLoading_.valid())
+		return true;
 
 	if (metronome_.has_value())
 		metronome_->Update();
