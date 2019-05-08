@@ -23,7 +23,7 @@ namespace Snowing
 
 		static void Delete(void* p)
 		{
-			return ::operator delete(size);
+			return ::operator delete(p);
 		}
 	};
 
