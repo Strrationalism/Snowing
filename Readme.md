@@ -1,7 +1,6 @@
 # Snowing
 
 弦语蝶梦 第二代游戏引擎 Snowing   
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)   
 
 [![Build status](https://ci.appveyor.com/api/projects/status/xsg86whgh0d00lma?svg=true)](https://ci.appveyor.com/project/SmallLuma/snowing)
 [![Build status](https://dev.azure.com/StrrationalismTeam/Snowing/_apis/build/status/Snowing-CI)](https://dev.azure.com/StrrationalismTeam/Snowing/_build/latest?definitionId=1)
