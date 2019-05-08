@@ -9,7 +9,24 @@ namespace Snowing
 #ifdef _DEBUG
 	template <size_t Size>
 	class SizedMemPool
-	{};
+	{
+	public:
+		static void* New(size_t size, const std::nothrow_t& t) noexcept
+		{
+			return ::operator new(size, t);
+		}
+
+		static void* New(size_t size)
+		{
+			return ::operator new(size);
+		}
+
+		static void Delete(void* p)
+		{
+			return ::operator delete(p);
+		}
+	};
+
 #else
 
 	template <size_t Size>
@@ -79,22 +96,22 @@ namespace Snowing
 	class MemPool 
 	{
 	public:
-		void* New(size_t size, const std::nothrow_t& t) noexcept
+		void* operator new(size_t size, const std::nothrow_t& t) noexcept
 		{
 			static_assert(std::is_final<T>::value, "T must is a final class.");
-			SizedMemPool<sizeof(T)>::New(size, t);
+			return SizedMemPool<sizeof(T)>::New(size, t);
 		}
 
-		void* New(size_t size) noexcept
+		void* operator new(size_t size) noexcept
 		{
 			static_assert(std::is_final<T>::value, "T must is a final class.");
-			SizedMemPool<sizeof(T)>::New(size);
+			return SizedMemPool<sizeof(T)>::New(size);
 		}
 
-		void Delete(void* p)
+		void operator delete(void* p)
 		{
 			static_assert(std::is_final<T>::value, "T must is a final class.");
-			SizedMemPool<sizeof(T)>::Delete(p);
+			return SizedMemPool<sizeof(T)>::Delete(p);
 		}
 		
 	};
