@@ -40,7 +40,6 @@ namespace Yukimi
 
 		// 如果当前行结束后需要停止，则返回true
 		bool doElement(const Script::Element&);
-		void runScriptContinuation();
 
 		bool waitingForCommand_ = false;
 		
@@ -54,8 +53,7 @@ namespace Yukimi
 		AVGPlayer(
 			const Script::Script* script,
 			TextWindow::TextWindowUserAdapter* textWindowAdapter,
-			AVGPlayerUserAdapter * avgPlayerAdapter,
-			bool runScript = true);
+			AVGPlayerUserAdapter * avgPlayerAdapter);
 
 		bool Update() override;
 		void Click();
@@ -66,5 +64,7 @@ namespace Yukimi
 		uint64_t GetContinuation() const;
 
 		void SetContinuation(uint64_t cont);
+
+		void RunScriptContinuation();
 	};
 }

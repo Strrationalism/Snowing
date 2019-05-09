@@ -34,7 +34,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 			waitingForCommand_ = true;
 			auto task = [this] { 
 				waitingForCommand_ = false; 
-				runScriptContinuation();
+				RunScriptContinuation();
 			};
 			Emplace<Snowing::Scene::ConditionTask<std::function<bool()>,decltype(task)>>(std::move(condition),task);
 		}
@@ -50,7 +50,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	return false;
 }
 
-void Yukimi::AVGPlayer::runScriptContinuation()
+void Yukimi::AVGPlayer::RunScriptContinuation()
 {
 	bool isSpeakLine = false;
 	while (!isSpeakLine)
@@ -91,7 +91,7 @@ void Yukimi::AVGPlayer::Click()
 				return textWindow_.GetState() == Yukimi::TextWindow::State::EmptyTextWindow;
 			};
 
-			const auto task = [this] { runScriptContinuation(); };
+			const auto task = [this] { RunScriptContinuation(); };
 
 			Emplace<Snowing::Scene::ConditionTask<decltype(condition), decltype(task)>>(condition, task);
 		}
@@ -132,8 +132,6 @@ void Yukimi::AVGPlayer::SetContinuation(uint64_t cont)
 	nextLine_ = findLastTextLine(cont);
 
 	textWindow_.Clear();
-
-	runScriptContinuation();
 }
 
 uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
@@ -152,14 +150,11 @@ uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
 Yukimi::AVGPlayer::AVGPlayer(
 	const Yukimi::Script::Script* script, 
 	TextWindow::TextWindowUserAdapter* textWindowAdapter,
-	AVGPlayerUserAdapter* avgPlayerAdapter,
-	bool runScript):
+	AVGPlayerUserAdapter* avgPlayerAdapter):
 	textWindow_{ textWindowAdapter },
 	script_{ script },
 	adapter_{ avgPlayerAdapter }
 {
-	if(runScript)
-		runScriptContinuation();
 }
 
 bool Yukimi::AVGPlayer::Update()
