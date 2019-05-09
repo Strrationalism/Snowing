@@ -66,7 +66,8 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
 		while (!fontStyleStackCounts_.empty()) fontStyleStackCounts_.pop();
 
-		const auto& currentLine = (*script_)[static_cast<unsigned int>(nextLine_++)];
+		auto currentLine = (*script_)[static_cast<unsigned int>(nextLine_++)];
+		adapter_->ScriptPostProcess(currentLine);
 		for (const auto& element : currentLine)
 		{
 			const auto ret = doElement(element);

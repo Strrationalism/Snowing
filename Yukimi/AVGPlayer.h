@@ -20,6 +20,8 @@ namespace Yukimi
 			virtual std::function<bool()> OnCommand(const Script::CommandElement& command) = 0;
 			virtual void OnCharacter(const std::wstring_view name) = 0;
 			virtual void OnPageEnd() = 0;
+
+			virtual void ScriptPostProcess(Yukimi::Script::Line& line) = 0;
 		};
 
 	private:
