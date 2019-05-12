@@ -15,6 +15,23 @@ type RequestedTextureFormat =
 | R8
 | DDS of string
 
+let Is4MulBitmap (bitmap:Bitmap) =
+    bitmap.Width % 4 = 0 && bitmap.Height % 4 = 0
+
+let WrapBitmapTo4 (bitmap:Bitmap) =
+    let wrapTo4 x =
+        (4 - (x % 4)) % 4 + x
+
+    let newSize =
+        (wrapTo4 bitmap.Size.Width,wrapTo4 bitmap.Size.Height)
+    let newBitmap = new Bitmap(fst newSize,snd newSize)
+    for y in 0..bitmap.Height-1 do
+        for x in 0..bitmap.Width-1 do
+            let px = bitmap.GetPixel(x,y)
+            newBitmap.SetPixel(x,y,px)
+    newBitmap
+
+
 let ParseArgument (job : Job) =
     match job.Arguments.Head with
     | "RGBA32" -> RGBA32
@@ -107,18 +124,38 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
         dstWriter.Write px
 
     | DDS (ddsFormat) -> 
-        use bitmap = new Bitmap(srcPath)
-        let texconv = AppContext.BaseDirectory + "\\texconv.exe"
+        let orgBitmap = new Bitmap(srcPath)
+        let is4MulBitmap = Is4MulBitmap orgBitmap
+        use bitmap = 
+            if is4MulBitmap then orgBitmap
+            else 
+                let ret = orgBitmap |> WrapBitmapTo4
+                orgBitmap.Dispose()
+                ret
+
         let tmpout = FileInfo(job.OutputPath).DirectoryName
-        sprintf "\"%s\" -ft DDS -f %s -o \"%s\"" (FileInfo(srcPath).FullName) ddsFormat tmpout
+        let texconv = AppContext.BaseDirectory + "\\texconv.exe"
+
+        let incPng =
+            if is4MulBitmap then
+                FileInfo(srcPath).FullName
+            else
+                let path = job.OutputPath + ".png"
+                bitmap.Save path
+                path
+
+        sprintf "\"%s\" -ft DDS -f %s -o \"%s\"" incPng ddsFormat tmpout
         |> Utils.StartWait texconv
+
+        if not is4MulBitmap then
+            File.Delete incPng
+       
         let head = {
             Format = TextureFormat.DDS
             Width = uint16 bitmap.Width
             Height = uint16 bitmap.Height
             SpriteSheet = spriteSheet
         }
-        bitmap.Dispose()
         SaveTextureHead head dstWriter
         let ddsPath = 
             let baseFileName = 
