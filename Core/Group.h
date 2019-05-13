@@ -156,6 +156,25 @@ namespace Snowing::Scene
 			PrepareNewObjects();
 			return ExistIgnoreNewObjects(pObject);
 		}
+
+		template <typename TCond>
+		TBaseObject* FindFirstIgnoreNewObjects(TCond& cond)
+		{
+			for (auto& p : objs_)
+			{
+				if (cond(*p.object))
+					return p.object.get();
+			}
+
+			return nullptr;
+		}
+
+		template <typename TCond>
+		TBaseObject* FindFirst(TCond& cond)
+		{
+			PrepareNewObjects();
+			return FindFirstIgnoreNewObjects(cond);
+		}
 	};
 
 	template <typename TBaseObject = Object>
