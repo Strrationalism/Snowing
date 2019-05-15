@@ -7,6 +7,8 @@ using namespace Snowing::PlatformImpls::WindowsImpl;
 
 static constexpr auto dwStyle = WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU;
 
+#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
+#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
 
 #pragma comment(linker,"/manifestdependency:\"type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
@@ -64,10 +66,30 @@ static void hwndDeleter(void* hwnd)
 	UnregisterClass(className, GetModuleHandle(nullptr));
 }
 
+///////// 这里有一堆用于处理窗口移动的屎
+// 当这个变量不存在时，不在移动中
+// 当这个变量存在时，记录了鼠标位置到窗口左上角的距离
+static std::optional<Snowing::Math::Vec2<int>> movingMousePositionToLTCorner;
+
 static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 {
 	switch (w & 0xFFF0)
 	{
+	case SC_MOVE:
+	{
+		RECT r;
+		if (!GetWindowRect(wnd, &r))
+			throw std::runtime_error{ "Can not get window rect for move." };
+		POINT mousePos;
+		if (!GetCursorPos(&mousePos))
+			throw std::runtime_error{ "Can not get mouse position for move." };
+
+		movingMousePositionToLTCorner.emplace(Snowing::Math::Vec2<int>{
+			mousePos.x - r.left,
+			mousePos.y - r.top
+		});
+		break;
+	}
 	case SC_KEYMENU:
 	case SC_MOUSEMENU:
 		break;
@@ -82,13 +104,14 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	auto currentWindow = &WindowImpl::Get();
 	switch (msg)
 	{
+	case WM_MOVE:
+	case WM_MOVING:
 	case WM_NCRBUTTONDOWN:
 		break;
 
 	case WM_SYSCOMMAND:
 		ProcesSysCommand(wnd, msg, w, l);
 		break;
-
 
 	case WM_CLOSE:
 		if (currentWindow)
@@ -191,6 +214,32 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 
 bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
 {
+	// 处理窗口移动的屎的开始
+	if (movingMousePositionToLTCorner.has_value())
+	{
+		// 如果鼠标松开则退出窗口移动模式
+		if ((GetAsyncKeyState(VK_LBUTTON) & 0x8001) == 0)
+			movingMousePositionToLTCorner.reset();
+		else
+		{
+
+			POINT mousePoint;
+			if (!GetCursorPos(&mousePoint))
+				throw std::runtime_error{ "Can not get mouse point for move." };
+			RECT r;
+			if (!GetWindowRect(hwnd_.Get<HWND>(), &r))
+				throw std::runtime_error{ "Can not get window rect for move." };
+			MoveWindow(
+				hwnd_.Get<HWND>(),
+				mousePoint.x - movingMousePositionToLTCorner->x,
+				mousePoint.y - movingMousePositionToLTCorner->y,
+				r.right - r.left,
+				r.bottom - r.top,
+				FALSE);
+		}
+	}
+	// 处理窗口移动的屎的结束
+
 	MSG msg = { 0 };
 
 	while(PeekMessage(&msg, hwnd_.Get<HWND>(), 0, 0, PM_REMOVE))
