@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "WindowImpl.h"
 #include "PlatformImpls.h"
 #include <mutex>
