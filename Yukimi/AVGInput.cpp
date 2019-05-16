@@ -104,7 +104,7 @@ void Yukimi::AVGInput::Vibration(Snowing::Input::VibrationStop s)
 		p->Vibration(s);
 }
 
-std::optional<Snowing::Math::Vec2f> Yukimi::AVGInput::Position(Snowing::Input::MousePosition m)
+std::optional<Snowing::Math::Vec2f> Yukimi::AVGInput::Position(Snowing::Input::MousePosition m) const
 {
 	return Snowing::Input::Input::Position(m);
 }
