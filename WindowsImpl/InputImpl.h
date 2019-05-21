@@ -42,7 +42,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		bool KeyPressed(Input::TouchScreen) const = delete;
 
 		std::optional<Math::Vec2f> Position(Input::MousePosition) const;
-		std::optional<Math::Vec2f> Position(Input::TouchScreen::AnyPoint) const = delete;
+		std::optional<Math::Vec2f> Position(Input::TouchScreen::AnyPoint) const;
 		std::optional<Math::Vec2f> Position(Input::TouchScreen) const = delete;
 		size_t GetMaxTouchInputCount() const;
 

@@ -184,6 +184,14 @@ std::optional<Snowing::Math::Vec2f> Snowing::PlatformImpls::WindowsImpl::InputIm
 	return mousePosition_;
 }
 
+std::optional<Snowing::Math::Vec2f> Snowing::PlatformImpls::WindowsImpl::InputImpl::Position(Input::TouchScreen::AnyPoint) const
+{
+	if (touchPoints_.empty())
+		return std::nullopt;
+	else
+		return touchPoints_.front().pos;
+}
+
 size_t Snowing::PlatformImpls::WindowsImpl::InputImpl::GetMaxTouchInputCount() const
 {
 	return touchInputCount_;

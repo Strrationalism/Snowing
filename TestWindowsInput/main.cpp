@@ -104,6 +104,11 @@ int __cdecl main()
 			cout << "Window Focused!" << endl;
 		else if (WinFocused.JustRelease())
 			cout << "Window Unfocused!" << endl;
+
+		const auto touchPosition =
+			Snowing::Input::Input::Get().Position(Snowing::Input::TouchScreen::AnyPoint{});
+		if (touchPosition.has_value())
+			std::cout << "Touch Position:" << touchPosition->x << ' ' << touchPosition->y << std::endl;
 	});
 	return 0;
 }
