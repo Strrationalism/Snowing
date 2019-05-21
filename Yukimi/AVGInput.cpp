@@ -20,6 +20,7 @@ bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(AVGKeys k) const
 		break;
 	case AVGKeys::Click:
 		if (Input::KeyPressed(MouseKey::Left)) return true;
+		if (Input::KeyPressed(TouchScreen::AnyPoint{})) return true;
 		break;
 	case AVGKeys::HideTextWindow:
 		if (Input::KeyPressed(MouseKey::Middle)) return true;
