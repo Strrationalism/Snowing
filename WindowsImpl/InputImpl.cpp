@@ -6,6 +6,14 @@ using namespace Snowing::Input;
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
 
+Snowing::PlatformImpls::WindowsImpl::InputImpl::InputImpl():
+	touchInputCount_{ static_cast<size_t>(GetSystemMetrics(SM_MAXIMUMTOUCHES)) }
+{
+	static_assert(std::is_pod<TOUCHINPUT>::value);
+	touchInputCache_.reserve(sizeof(TOUCHINPUT) * touchInputCount_);
+	touchPoints_.reserve(touchInputCount_);
+}
+
 void Snowing::PlatformImpls::WindowsImpl::InputImpl::FocusWindow(bool b)
 {
 	windowFocused_ = b;
@@ -16,6 +24,48 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::PushMessage(const Handler p
 	const MSG* msg = pointerToWindowsMsg.Get<MSG*>();
 	switch (msg->message)
 	{
+
+	case WM_TOUCH:
+	{
+		const UINT inputMsgCount = LOWORD(msg->wParam);
+		if (inputMsgCount)
+		{
+			touchInputCache_.resize(inputMsgCount);
+			const auto cache = reinterpret_cast<PTOUCHINPUT>(touchInputCache_.data());
+			if (GetTouchInputInfo((HTOUCHINPUT)msg->lParam,inputMsgCount, cache,sizeof(TOUCHINPUT)))
+			{
+				if (!CloseTouchInputHandle((HTOUCHINPUT)msg->lParam))
+					throw std::exception{ __FUNCDNAME__ " Cannot close touch input handle." };
+			}
+			else
+			{
+				throw std::runtime_error{ std::string{__FUNCDNAME__ " Cannot get touch input info. ID:"} + std::to_string(GetLastError()) };
+			}
+
+			for (UINT i = 0; i < inputMsgCount; ++i)
+			{
+				const auto& m = cache[i];
+				if (m.dwFlags & TOUCHEVENTF_DOWN)
+				{
+					touchPoints_.push_back({ m.dwID,Snowing::Math::Vec2f{m.x / 100.0f,m.y / 100.0f} });
+				}
+				else if (m.dwFlags & TOUCHEVENTF_MOVE)
+				{
+					// TODO:not impl.
+				}
+				else if (m.dwFlags & TOUCHEVENTF_UP)
+				{
+					const auto nend = std::remove_if(touchPoints_.begin(), touchPoints_.end(), 
+						[id = m.dwID](const TouchPointInfo & p)
+					{
+						return p.orginalID == id;
+					});
+					touchPoints_.erase(nend, touchPoints_.end());
+				}
+			}
+		}
+		break;
+	}
 	
 	case WM_MOUSEWHEEL:
 	{
@@ -125,9 +175,18 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(char k) const
 	if((k >= 'A' && k <= 'Z') || (k >= '0' && k <= '9')) return keyState(k, windowFocused_);
 	else throw std::invalid_argument(__FUNCDNAME__ "Not Supported Character Keyboard Key");
 }
+bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(Input::TouchScreen::AnyPoint) const
+{
+	return !touchPoints_.empty();
+}
 std::optional<Snowing::Math::Vec2f> Snowing::PlatformImpls::WindowsImpl::InputImpl::Position(Input::MousePosition) const
 {
 	return mousePosition_;
+}
+
+size_t Snowing::PlatformImpls::WindowsImpl::InputImpl::GetMaxTouchInputCount() const
+{
+	return touchInputCount_;
 }
 float Snowing::PlatformImpls::WindowsImpl::InputImpl::Trigger(Snowing::Input::MouseWheel) const
 {

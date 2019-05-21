@@ -37,8 +37,17 @@ namespace Snowing::Input
 	{};
 
 	//窗口被Focus消息，作为Window的KeyPressed参数
-	struct WindowFocused
+	struct WindowFocused final
 	{};
+
+	//触摸屏参数
+	struct TouchScreen final
+	{
+		constexpr static Math::Coordinate2DRect CoordinateSystem = 
+			MousePosition::CoordinateSystem;
+		struct AnyPoint final {};
+		size_t TouchID;
+	};
 
 	//键盘消息，作为Input的KeyPressed参数
 	enum class KeyboardKey : int

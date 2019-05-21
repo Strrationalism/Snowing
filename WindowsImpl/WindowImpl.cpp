@@ -60,6 +60,7 @@ void Snowing::PlatformImpls::Abort(const wchar_t * log)
 
 static void hwndDeleter(void* hwnd)
 {
+	UnregisterTouchWindow((HWND)hwnd);
 	wchar_t className[256];
 	GetClassName((HWND)hwnd, className, 256);
 	DestroyWindow((HWND)hwnd);
@@ -205,6 +206,12 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		winRect.right - winRect.left, winRect.bottom - winRect.top,
 		NULL, NULL,
 		instance, NULL);
+
+	// 注册为触摸窗口
+	if(!RegisterTouchWindow(hwnd,0))
+		MessageBox(hwnd,
+			L"Cannot register application window for touch input", L"Error", MB_OK);
+
 
 	// TestHandler
 	Handler hnd(hwnd, hwndDeleter);
