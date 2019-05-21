@@ -14,9 +14,6 @@ namespace Snowing::Scene::UI
 		std::tuple<TPositionArgs...> deviceArgs_;
 		const Math::Coordinate2DCenter menuCoord_, deviceCoord_;
 
-		decltype(std::declval<TPositionDevice>().Position(std::declval<TPositionArgs>()...))
-			lastDevicePosition_;
-
 		void select(const std::optional<size_t>& index)
 		{
 			auto p = menu_.GetSelectedIndex();
@@ -52,36 +49,32 @@ namespace Snowing::Scene::UI
 					[this](TPositionArgs... args) {return device_.Position(args...); }, 
 					deviceArgs_);
 
-			if (lastDevicePosition_ != p)
+			const auto prevSelect = menu_.GetSelectedIndex();
+
+			if (!p.has_value() && prevSelect.has_value())
+				select(std::nullopt);
+			else if(p.has_value())
 			{
-				lastDevicePosition_ = p;
+				const auto position =
+					Math::ConvertPosition2DCoordinate(
+						p.value(),
+						deviceCoord_, menuCoord_);
 
-				if (!p.has_value())
-					select(std::nullopt);
-				else
+				std::optional<size_t> selected;
+				for (size_t i = 0; i < menu_.Count(); ++i)
 				{
-					const auto position =
-						Math::ConvertPosition2DCoordinate(
-							p.value(),
-							deviceCoord_, menuCoord_);
-
-					bool selected = false;
-					for (size_t i = 0; i < menu_.Count(); ++i)
+					const auto& menuItem = menu_[i];
+					if (IsPositionInBox(position, menuItem->GetBox()))
 					{
-						const auto& menuItem = menu_[i];
-						if (IsPositionInBox(position, menuItem->GetBox()))
-						{
-							select(i);
-							selected = true;
-							break;
-						}
+						selected = i;
+						break;
 					}
-
-					if (!selected)
-						select(std::nullopt);
 				}
-			}
 
+				if (selected != prevSelect)
+					select(selected);
+			}
+			
 			return true;
 		}
 	};
