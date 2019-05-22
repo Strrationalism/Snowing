@@ -346,7 +346,8 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
 {
 	RECT r;
-	GetClientRect(hwnd_.Get<HWND>(), &r);
+	if (!GetClientRect(hwnd_.Get<HWND>(), &r))
+		throw std::exception{ __FUNCDNAME__ "Faild to call GetClientRect." };
 	return { r.right - r.left,r.bottom - r.top };
 }
 

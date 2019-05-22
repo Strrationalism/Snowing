@@ -13,7 +13,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		struct TouchPointInfo final
 		{
 			size_t orginalID;
-			Snowing::Math::Vec2f pos;
+			std::optional<Snowing::Math::Vec2f> pos;
 		};
 
 		const size_t touchInputCount_;

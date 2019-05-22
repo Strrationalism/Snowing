@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "InputImpl.h"
-
+#include "Box2D.h"
+#include "WindowImpl.h"
 
 using namespace Snowing::Input;
 using namespace Snowing::PlatformImpls::WindowsImpl;
@@ -42,16 +43,45 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::PushMessage(const Handler p
 				throw std::runtime_error{ std::string{__FUNCDNAME__ " Cannot get touch input info. ID:"} + std::to_string(GetLastError()) };
 			}
 
+			const auto convertTouch = [hwnd = msg->hwnd](LONG x, LONG y) -> std::optional<Snowing::Math::Vec2f>
+			{
+				POINT p{ TOUCH_COORD_TO_PIXEL(x),TOUCH_COORD_TO_PIXEL(y) };
+				if (!ScreenToClient(hwnd, &p))
+					throw std::exception{ __FUNCDNAME__ "Failed to call ScreenToClient." };
+
+				const auto screenSize = WindowImpl::Get().GetSize();
+
+				const Snowing::Math::Vec2f posInPixel
+				{
+					static_cast<float>(p.x),
+					static_cast<float>(p.y)
+				};
+
+				const Snowing::Math::Vec2f ret = posInPixel / screenSize;
+
+				if (Snowing::Math::IsPositionInBox(ret, Snowing::Math::Vec4f{ 0.0f,0.0f,1.0f,1.0f }))
+					return ret;
+				else
+					return std::nullopt;
+			};
+
 			for (UINT i = 0; i < inputMsgCount; ++i)
 			{
 				const auto& m = cache[i];
 				if (m.dwFlags & TOUCHEVENTF_DOWN)
 				{
-					touchPoints_.push_back({ m.dwID,Snowing::Math::Vec2f{m.x / 100.0f,m.y / 100.0f} });
+					touchPoints_.push_back({ m.dwID,convertTouch(m.x,m.y)});
 				}
 				else if (m.dwFlags & TOUCHEVENTF_MOVE)
 				{
-					// TODO:not impl.
+					for (auto& p : touchPoints_)
+					{
+						if (p.orginalID == m.dwID)
+						{
+							p.pos = convertTouch(m.x, m.y);
+							break;
+						}
+					}
 				}
 				else if (m.dwFlags & TOUCHEVENTF_UP)
 				{

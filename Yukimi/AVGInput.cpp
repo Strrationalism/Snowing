@@ -107,5 +107,10 @@ void Yukimi::AVGInput::Vibration(Snowing::Input::VibrationStop s)
 
 std::optional<Snowing::Math::Vec2f> Yukimi::AVGInput::Position(Snowing::Input::MousePosition m) const
 {
-	return Snowing::Input::Input::Position(m);
+	static_assert(Snowing::Input::TouchScreen::CoordinateSystem == Snowing::Input::MousePosition::CoordinateSystem);
+	const auto touch = Snowing::Input::Input::Position(Snowing::Input::TouchScreen::AnyPoint{});
+	if (touch.has_value())
+		return touch;
+	else
+		return Snowing::Input::Input::Position(m);
 }
