@@ -71,7 +71,7 @@ namespace Snowing::Scene::UI
 					}
 				}
 
-				if (selected != prevSelect)
+				if (selected != prevSelect && selected.has_value())
 					select(selected);
 			}
 			
