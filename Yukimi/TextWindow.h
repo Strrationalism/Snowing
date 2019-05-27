@@ -46,6 +46,8 @@ namespace Yukimi
 		{
 		public:
 
+			virtual ~TextAnimation() = default;
+
 			// 动画状态
 			enum class AnimationState
 			{
