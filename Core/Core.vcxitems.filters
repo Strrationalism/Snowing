@@ -201,5 +201,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PixelFormat.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

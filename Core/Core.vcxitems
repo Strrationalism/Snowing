@@ -32,6 +32,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NoCopyMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AsyncLauncher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PixelFormat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PropParser.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />

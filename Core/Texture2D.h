@@ -1,8 +1,7 @@
 #pragma once
 #include "Vec2.h"
-#include "Vec4.h"
-#include "BKDRHash.h"
-#include "Platforms.h"
+#include "PixelFormat.h"
+#include "GraphicBuffer.h"
 
 namespace Snowing::Graphics
 {
@@ -17,6 +16,16 @@ namespace Snowing::Graphics
 			impl_{ std::move(impl) }
 		{}
 
+		Texture2DInterface(
+			PixelFormat fmt,
+			Snowing::Math::Vec2<size_t> size, 
+			Graphics::BufferBindMode mode,
+			void* pixels = nullptr, 
+			BufferUsage usage = BufferUsage::Immutable,
+			BufferCPUAccessFlag cpuAccess = BufferCPUAccessFlag::NoAccess) :
+			impl_ {fmt,size,pixels,usage,cpuAccess}
+		{}
+
 		[[nodiscard]]
 		Math::Vec2<size_t> Size() const
 		{
@@ -27,6 +36,12 @@ namespace Snowing::Graphics
 		const TImpl& GetImpl() const
 		{
 			return impl_;
+		}
+
+		template <typename TContext, typename TFunc>
+		void Access(TContext& ctx, Snowing::Graphics::AccessType accessType, TFunc& func)
+		{
+			impl_.Access(ctx, accessType, func);
 		}
 	};
 }

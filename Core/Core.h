@@ -21,6 +21,7 @@
 #include "Window.h"
 #include "Graphics.h"
 #include "GraphicContext.h"
+#include "PixelFormat.h"
 #include "RenderTarget.h"
 #include "Texture2D.h"
 #include "Effect.h"

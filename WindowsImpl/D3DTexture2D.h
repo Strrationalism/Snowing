@@ -4,6 +4,7 @@
 #include "GraphicBuffer.h"
 #include <Blob.h>
 #include <optional>
+#include "Vec4.h"
 
 namespace Snowing::PlatformImpls::WindowsImpl::D3D
 {
@@ -11,7 +12,8 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 	{
 		R8G8B8A8_UNORM = 0,
 		R8_UNORM = 1,
-		DDS = 2
+		DDS = 2,
+		B5G6R5_UNORM = 3
 	};
 
 	size_t FormatPixleSize(TextureFormat f);
@@ -27,7 +29,15 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 
 	public:
 		D3DTexture2D(
-			TextureFormat,
+			Graphics::PixelFormat fmt,
+			Math::Vec2<std::uint16_t> size,
+			Graphics::BufferBindMode mode,
+			void* pixels = nullptr,
+			BufferUsage usage = BufferUsage::Immutable,
+			CPUAccessFlag cpuAccessFlag = CPUAccessFlag::NoAccess);
+
+		D3DTexture2D(
+			TextureFormat fmt,
 			Math::Vec2<std::uint16_t> size,
 			Graphics::BufferBindMode mode,
 			void* pixels = nullptr,

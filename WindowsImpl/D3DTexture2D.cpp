@@ -6,10 +6,17 @@
 #include "D3DDevice.h"
 #include "DDSTextureLoader.h"
 
+using namespace Snowing;
 using namespace Snowing::Graphics;
 using namespace Snowing::PlatformImpls::WindowsImpl;
 using namespace D3D;
 
+
+D3DTexture2D::D3DTexture2D(PixelFormat fmt, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode,
+	void* pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
+	D3DTexture2D(PixFormat2TexFormat(fmt),size,mode,pixels,usage,cpuAccessFlag)
+{
+}
 
 Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureFormat f, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode, void * pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
 	tex_{
