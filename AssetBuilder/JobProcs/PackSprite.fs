@@ -19,8 +19,8 @@ let CallTextureMerger inputDir outputFilePair =
             failwith "Can not find TextureMerger"
     sprintf "-p \"%s\" -o \"%s.json\"" inputDir outputFilePair
     |> StartWait textureMerger
-    WaitForFile 5 (outputFilePair + ".json")
-    WaitForFile 5 (outputFilePair + ".png")
+    WaitForFile 60 (outputFilePair + ".json")
+    WaitForFile 60 (outputFilePair + ".png")
 
 let private PackSprite (job:Job) =
     CallTextureMerger (job.ScriptDir.FullName + "\\" + job.Input.Head) job.OutputPath
@@ -64,8 +64,10 @@ let private PackSprite (job:Job) =
     File.Delete (job.OutputPath + ".png")
     ()
 
+let private spriteLock = obj()
+
 let Proc = {
-    Proc = PackSprite
+    Proc = (fun job -> lock spriteLock (fun () -> PackSprite job))
     InputType = Directory
     Command = "PackSprite"
     FinishLogEnabled = true
