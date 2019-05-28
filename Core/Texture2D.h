@@ -23,7 +23,7 @@ namespace Snowing::Graphics
 			void* pixels = nullptr, 
 			BufferUsage usage = BufferUsage::Immutable,
 			BufferCPUAccessFlag cpuAccess = BufferCPUAccessFlag::NoAccess) :
-			impl_ {fmt,size,pixels,usage,cpuAccess}
+			impl_ {fmt,size,mode,pixels,usage,cpuAccess}
 		{}
 
 		[[nodiscard]]
@@ -42,6 +42,12 @@ namespace Snowing::Graphics
 		void Access(TContext& ctx, Snowing::Graphics::AccessType accessType, TFunc& func)
 		{
 			impl_.Access(ctx, accessType, func);
+		}
+
+		template <typename TContext,typename TDst>
+		void CopyTo(TContext& context,TDst& dst) const
+		{
+			impl_.CopyTo(context, dst);
 		}
 	};
 }

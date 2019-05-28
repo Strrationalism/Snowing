@@ -41,7 +41,8 @@ constexpr static Snowing::Graphics::BufferBindMode RenderTargetMode =
 Snowing::PlatformImpls::WindowsImpl::D3D::D3DRenderTarget::D3DRenderTarget(Math::Vec2<size_t> size, Graphics::PixelFormat fmt, Graphics::BufferCPUAccessFlag cpuAccess):
 	tex_{D3DTexture2D{
 		fmt,
-		ConvVec(size),RenderTargetMode,
+		size,
+		RenderTargetMode,
 		nullptr,
 		Snowing::Graphics::BufferUsage::Default,
 		cpuAccess}}
