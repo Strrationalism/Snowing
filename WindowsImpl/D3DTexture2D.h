@@ -49,7 +49,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 			Graphics::PixelFormat fmt,
 			Math::Vec2<size_t> size,
 			Graphics::BufferBindMode mode,
-			void* pixels = nullptr,
+			const void* pixels = nullptr,
 			BufferUsage usage = BufferUsage::Immutable,
 			CPUAccessFlag cpuAccessFlag = CPUAccessFlag::NoAccess);
 
@@ -57,7 +57,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 			TextureFormat fmt,
 			Math::Vec2<std::uint16_t> size,
 			Graphics::BufferBindMode mode,
-			void* pixels = nullptr,
+			const void* pixels = nullptr,
 			BufferUsage usage = BufferUsage::Immutable,
 			CPUAccessFlag cpuAccessFlag = CPUAccessFlag::NoAccess);
 

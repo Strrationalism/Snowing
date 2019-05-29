@@ -57,12 +57,12 @@ void D3DTexture2D::unmap(Snowing::Graphics::Context& ctx)
 }
 
 Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(PixelFormat fmt, Math::Vec2<size_t> size, Graphics::BufferBindMode mode,
-	void* pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
+	const void* pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
 	D3DTexture2D(PixFormat2TexFormat(fmt), { static_cast<uint16_t>(size.x),static_cast<uint16_t>(size.y) }, mode, pixels, usage, cpuAccessFlag)
 {
 }
 
-Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureFormat f, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode, void * pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
+Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureFormat f, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode, const void * pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
 	tex_{
 		std::invoke([=]() {
 
@@ -71,8 +71,8 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureForm
 		{
 			case Snowing::PlatformImpls::WindowsImpl::D3D::TextureFormat::DDS:
 			{
-				auto size = static_cast<size_t>(*(uint32_t*)pixels);
-				auto pDDS = static_cast<uint8_t*>(pixels) + sizeof(uint32_t);
+				auto size = static_cast<size_t>(*(const uint32_t*)pixels);
+				auto pDDS = static_cast<const uint8_t*>(pixels) + sizeof(uint32_t);
 				ID3D11Resource *tex;
 				ID3D11ShaderResourceView *shaderRes;
 				COMHelper::AssertHResult("Can not create texture from DDS.",

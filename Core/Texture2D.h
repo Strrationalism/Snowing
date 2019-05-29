@@ -20,7 +20,7 @@ namespace Snowing::Graphics
 			PixelFormat fmt,
 			Snowing::Math::Vec2<size_t> size, 
 			Graphics::BufferBindMode mode,
-			void* pixels = nullptr, 
+			const void* pixels = nullptr, 
 			BufferUsage usage = BufferUsage::Immutable,
 			BufferCPUAccessFlag cpuAccess = BufferCPUAccessFlag::NoAccess) :
 			impl_ {fmt,size,mode,pixels,usage,cpuAccess}
