@@ -198,7 +198,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h">
       <Filter>Scene</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Reinit.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)PixelFormat.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
