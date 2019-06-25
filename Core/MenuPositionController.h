@@ -26,6 +26,8 @@ namespace Snowing::Scene::UI
 			}
 		}
 
+		std::optional<Math::Vec2f> prevPosition_;
+
 	public:
 
 		template <typename... TPositionArgs,typename TCoordA,typename TCoordB>
@@ -71,9 +73,11 @@ namespace Snowing::Scene::UI
 					}
 				}
 
-				if (selected != prevSelect && selected.has_value())
+				if (selected != prevSelect && p != prevPosition_)
 					select(selected);
 			}
+
+			prevPosition_ = p;
 			
 			return true;
 		}
