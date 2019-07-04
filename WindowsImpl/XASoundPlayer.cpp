@@ -190,24 +190,37 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 		const size_t currentSampleID = GetPosition();
 		constexpr size_t sampleNeed = 4096;
 
-		const auto beginSample = std::clamp(size_t(currentSampleID - sampleNeed / 2), size_t(0u), sampleCount);
-		const auto endSample = std::clamp(size_t(currentSampleID + sampleNeed / 2), size_t(0u), sampleCount);
+		const auto beginSample = std::clamp(size_t(currentSampleID - sampleNeed), size_t(0u), sampleCount);
+		const auto endSample = std::clamp(size_t(currentSampleID), size_t(0u), sampleCount);
 
-		float volume = 0;
+		int32_t dbNow = 0;
 		for (size_t currentSampleID = beginSample; currentSampleID < endSample; ++currentSampleID)
 		{
 			const size_t bytePosition = currentSampleID * (format.wBitsPerSample / 8) * format.nChannels;
-			const auto pSample = blob->Get<uint16_t*>(bytePosition);
+			const auto pSample = blob->Get<int16_t*>(bytePosition);
 
+			int32_t sample = 0;
 			for (size_t channel = 0; channel < format.nChannels; ++channel)
+				sample += std::abs(pSample[channel]);
+			sample /= format.nChannels;
+
+			dbNow = max(sample, dbNow);
+
+			const auto pow2 = [](const double v) 
 			{
-				const float vol = static_cast<float>(pSample[channel]) / 65535.0f;
-				volume += vol;
+				const auto magic = 10;
+				return v * v / magic; 
+				//这里的magic用来削弱衰减速度的，我试过1,10,100，总之效果都还可以
+				//司马坑 2019-7-4
+			};
+			if (dbNow != sample) 
+			{
+				dbNow -= pow2(dbNow - sample) / format.nSamplesPerSec;
 			}
 		}
+		const auto maxValue = 1 << (format.wBitsPerSample - 1);
 
-
-		return volume / (endSample - beginSample) / format.nChannels;
+		return 1.0 * dbNow / (maxValue - 1);
 	}
 	else
 		return 0;
