@@ -61,6 +61,18 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
         | "Include" -> 
             scriptInfo.DirectoryName + "\\" + (Array.head i)
             |> ParseBuildScript baseOutputPath
+        | "Batch" ->
+            System.IO.Directory.EnumerateFiles(scriptInfo.DirectoryName,i.[0],System.IO.SearchOption.AllDirectories)
+            |> Seq.cast
+            |> Seq.map (fun (x:string) -> x.[1+scriptInfo.DirectoryName.Length..])
+            |> Seq.map (fun path -> 
+                let fileName = 
+                    let n =
+                        System.IO.FileInfo(path).Name
+                    o + "\\" + n.[.. -1 + n.IndexOf '.'] + "." + args.[1]
+                makeJob args.[0] args.[2..] [|path|] fileName)
+            |> Seq.toArray
+
         | _ when JobProcs.JobProcs.FindProcByCommand cmd |> Option.isSome ->
             let j = makeJob cmd args i o
             match j.Processor.Command with
