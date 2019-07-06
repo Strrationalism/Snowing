@@ -85,7 +85,10 @@ let Proc = {
         PackSound
             job.ScriptDir.FullName
             job.Input.[0]
-            job.Input.[1]
+            (List.tryItem 1 job.Input
+            |> function
+            | Some x -> x
+            | Option.None -> "")
             (GetOptions job.Arguments)
             job.OutputPath)
     InputType = Files
