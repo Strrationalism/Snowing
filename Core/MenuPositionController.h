@@ -53,9 +53,7 @@ namespace Snowing::Scene::UI
 
 			const auto prevSelect = menu_.GetSelectedIndex();
 
-			if (!p.has_value() && prevSelect.has_value())
-				select(std::nullopt);
-			else if(p.has_value())
+			if(p.has_value())
 			{
 				const auto position =
 					Math::ConvertPosition2DCoordinate(
