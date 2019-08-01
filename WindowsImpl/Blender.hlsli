@@ -31,13 +31,13 @@ float4 NormalAlphaBlendFunc(float4 src, float4 dst)
 BlendState AddtiveAlphaBlend
 {
 	//dstRGB = (srcRGB * srcA) + dstRGB
-	//dstA = dstA
+	//dstA = srcA + dstA
 	AlphaToCoverageEnable = false;
 	BlendEnable[0] = true;
 	SrcBlend[0] = SRC_ALPHA;
 	DestBlend[0] = ONE;
 	BlendOp[0] = ADD;
-	SrcBlendAlpha[0] = ZERO;
+	SrcBlendAlpha[0] = ONE;
 	DestBlendAlpha[0] = ONE;
 	BlendOpAlpha[0] = ADD;
 	RenderTargetWriteMask[0] = 0x0F;
