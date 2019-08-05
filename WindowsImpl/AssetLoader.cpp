@@ -9,7 +9,9 @@ Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
 
 	if (in.fail())
 	{
-		in.open(std::string{ "../data/" } +fileName, std::ios::binary);
+		char filePath[128];
+		sprintf_s(filePath, "../data/%s", fileName);
+		in.open(filePath, std::ios::binary);
 		if (in.fail())
 			throw std::runtime_error{ "Can not find file!" };
 	}
