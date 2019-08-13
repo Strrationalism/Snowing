@@ -37,6 +37,8 @@ namespace Snowing::Scene
 
 		bool Update() override
 		{
+			PrepareNewObjects();
+
 			for (auto& p : objs_)
 				p.living = p.object->Update();
 
@@ -48,8 +50,6 @@ namespace Snowing::Scene
 			objs_.erase(
 				eraseBegin,
 				objs_.end());
-
-			PrepareNewObjects();
 
 			return !objs_.empty();
 		}
