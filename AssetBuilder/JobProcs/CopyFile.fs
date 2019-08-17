@@ -5,7 +5,7 @@ open Job
 
 let Proc = {
     Proc = (fun job -> 
-        File.Copy (job.ScriptDir + "\\" + job.Input.Head,job.OutputPath))
+        File.Copy (job.ScriptDir.FullName + "\\" + job.Input.Head,job.OutputPath))
     InputType = InputType.File
     Command = "CopyFile"
     FinishLogEnabled = true

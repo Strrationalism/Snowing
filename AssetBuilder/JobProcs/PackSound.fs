@@ -83,7 +83,7 @@ let private GetOptions argumentStrList =
 let Proc = {
     Proc = (fun job ->
         PackSound
-            job.ScriptDir
+            job.ScriptDir.FullName
             job.Input.[0]
             (List.tryItem 1 job.Input
             |> function

@@ -38,7 +38,7 @@ let private ParseFontIndex txtPath =
     |> dict
 
 let private ConvertFont (job:Job) =
-    let fontIndex = ParseFontIndex (job.ScriptDir + "\\" + job.Input.Head + "\\font.txt")
+    let fontIndex = ParseFontIndex (job.ScriptDir.FullName + "\\" + job.Input.Head + "\\font.txt")
     let biggestFaceID = fontIndex.Keys |> Seq.max
 
     [|0us..biggestFaceID|]
@@ -46,7 +46,7 @@ let private ConvertFont (job:Job) =
         let chars = fontIndex.[faceID]
         let ctxJob = {
             Processor = JobProcs.ConvertTexture.Proc
-            Input = [job.ScriptDir + "\\" + job.Input.Head + "\\font" + string faceID + ".bmp"]
+            Input = [job.ScriptDir.FullName + "\\" + job.Input.Head + "\\font" + string faceID + ".bmp"]
             OutputPath = string faceID + ".tmp.png"
             Arguments = job.Arguments
             ScriptDir = job.ScriptDir

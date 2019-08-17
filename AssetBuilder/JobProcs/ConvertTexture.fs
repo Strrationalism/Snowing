@@ -112,7 +112,7 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
 
     let srcPath =
         match inputFullName with
-        | false -> job.ScriptDir + "\\" + job.Input.Head
+        | false -> job.ScriptDir.FullName + "\\" + job.Input.Head
         | true -> job.Input.Head
 
     match reqFormat with

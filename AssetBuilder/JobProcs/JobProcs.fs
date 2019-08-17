@@ -30,11 +30,11 @@ let AddCustumProc (cusJob:Job) =
             let args = 
                 let a1 =
                     "\"" + job.OutputPath + "\"" ::
-                    List.map (fun x -> "\"" + job.ScriptDir + "\\" + x + "\"") job.Input
+                    List.map (fun x -> "\"" + job.ScriptDir.FullName + "\\" + x + "\"") job.Input
                 List.concat (seq {yield a1;yield job.Arguments})
             
             let arg = List.reduce (fun x y -> x + " " + y) args
-            Utils.StartWait (job.ScriptDir + "\\" + cusJob.Input.Head) arg
+            Utils.StartWait (job.ScriptDir.FullName + "\\" + cusJob.Input.Head) arg
             Utils.WaitForFile 10 job.OutputPath
 
         let newProc = {
