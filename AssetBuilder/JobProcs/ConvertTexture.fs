@@ -98,7 +98,8 @@ let DumpPixels (format:TextureFormat) (path:string) : uint16*uint16*byte[] =
         binWriter.Close ()
         memStream.Close ()
         bitmap.Width |> uint16,bitmap.Height |> uint16,pixels
-    with _ ->
+    with ex ->
+        printfn "%A" ex
         printfn "dump pixels:%s" path
         exit 0
 
