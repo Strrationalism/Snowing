@@ -71,32 +71,36 @@ let SaveTextureHead head (stream:BinaryWriter) =
         stream.Write (float32 x.h / float32 head.Height))
 
 let DumpPixels (format:TextureFormat) (path:string) : uint16*uint16*byte[] =
-    let pixelSize =
-        match format with
-        | TextureFormat.R8G8B8A8_UNORM -> 4uy
-        | TextureFormat.R8_UNORM -> 1uy
-        | _ -> raise (System.ArgumentException())
-
-    use bitmap = new Bitmap(path)
-    let pixels = Array.init ((pixelSize |> int) * bitmap.Width * bitmap.Height) (fun _ -> 0uy)
-    use memStream = new MemoryStream(pixels)
-    use binWriter = new BinaryWriter(memStream)
-    for y in 0..bitmap.Height-1 do
-        for x in 0..bitmap.Width-1 do
-            let px = bitmap.GetPixel(x,y)
+    try
+        let pixelSize =
             match format with
-            | TextureFormat.R8G8B8A8_UNORM ->
-                binWriter.Write px.R
-                binWriter.Write px.G
-                binWriter.Write px.B
-                binWriter.Write px.A
-            | TextureFormat.R8_UNORM ->
-                binWriter.Write px.R
+            | TextureFormat.R8G8B8A8_UNORM -> 4uy
+            | TextureFormat.R8_UNORM -> 1uy
             | _ -> raise (System.ArgumentException())
-    binWriter.Flush ()
-    binWriter.Close ()
-    memStream.Close ()
-    bitmap.Width |> uint16,bitmap.Height |> uint16,pixels
+
+        use bitmap = new Bitmap(path)
+        let pixels = Array.init ((pixelSize |> int) * bitmap.Width * bitmap.Height) (fun _ -> 0uy)
+        use memStream = new MemoryStream(pixels)
+        use binWriter = new BinaryWriter(memStream)
+        for y in 0..bitmap.Height-1 do
+            for x in 0..bitmap.Width-1 do
+                let px = bitmap.GetPixel(x,y)
+                match format with
+                | TextureFormat.R8G8B8A8_UNORM ->
+                    binWriter.Write px.R
+                    binWriter.Write px.G
+                    binWriter.Write px.B
+                    binWriter.Write px.A
+                | TextureFormat.R8_UNORM ->
+                    binWriter.Write px.R
+                | _ -> raise (System.ArgumentException())
+        binWriter.Flush ()
+        binWriter.Close ()
+        memStream.Close ()
+        bitmap.Width |> uint16,bitmap.Height |> uint16,pixels
+    with _ ->
+        printfn "dump pixels:%s" path
+        exit 0
 
 let ConvertTexture spriteSheet inputFullName (job:Job) =
     let reqFormat = ParseArgument job

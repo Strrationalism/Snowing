@@ -8,9 +8,13 @@ open System
 let StartWait exe arg =
     use prc = new Process()
     prc.StartInfo.FileName <- exe
+    prc.StartInfo.RedirectStandardError <- true
+    prc.StartInfo.RedirectStandardOutput <- true
+    prc.StartInfo.UseShellExecute <- false
     prc.StartInfo.WorkingDirectory <- (FileInfo exe).DirectoryName
     prc.StartInfo.Arguments <- arg
     prc.StartInfo.WindowStyle <- ProcessWindowStyle.Hidden
+    prc.StartInfo.CreateNoWindow <- true
     if prc.Start() |> not then
         failwith ("Can not start " + exe)
     prc.WaitForExit ()
@@ -22,7 +26,13 @@ let StartWait exe arg =
             Environment.NewLine + 
             exe + " " + arg + 
             Environment.NewLine +
-            prc.StandardOutput.ReadToEnd())
+            "stdout:" + 
+            Environment.NewLine +
+            prc.StandardOutput.ReadToEnd() +
+            Environment.NewLine +
+            "stderr:" + 
+            Environment.NewLine +
+            prc.StandardError.ReadToEnd())
 
 let WaitForFile maxTimes path =
     for _ in 0..maxTimes do
