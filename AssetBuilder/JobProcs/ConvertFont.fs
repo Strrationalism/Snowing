@@ -47,7 +47,7 @@ let private ConvertFont (job:Job) =
         let ctxJob = {
             Processor = JobProcs.ConvertTexture.Proc
             Input = [job.ScriptDir.FullName + "\\" + job.Input.Head + "\\font" + string faceID + ".bmp"]
-            OutputPath = job.OutputPath + "-" + string faceID + ".tmp.png"
+            OutputPath = string faceID + ".tmp.png"
             Arguments = job.Arguments
             ScriptDir = job.ScriptDir
         }
@@ -76,7 +76,7 @@ let private ConvertFont (job:Job) =
     use faceInfosStream = new MemoryStream(faceInfoChunks)
     use faceInfosWriter = new BinaryWriter(faceInfosStream)
     for faceID in 0us..biggestFaceID do
-        let tmpFilePath = job.OutputPath + "-" + string faceID + ".tmp.png"
+        let tmpFilePath = string faceID + ".tmp.png"
         let bytes = File.ReadAllBytes tmpFilePath
         File.Delete tmpFilePath
 
