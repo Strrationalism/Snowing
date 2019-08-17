@@ -7,12 +7,17 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
     let scriptInfo =
         System.IO.FileInfo scriptFilePath
 
+    let scriptDir = 
+        match scriptFilePath.LastIndexOf '\\' with
+        | -1 -> "."
+        | x -> scriptFilePath.[..x-1]
+
     let makeJob command args input output : Job.Job = {
         Processor = JobProcs.FindProcByCommand command |> Option.get
         Input = input |> Array.toList
         OutputPath = baseOutputPath + "\\" + output
         Arguments = args |> Array.toList
-        ScriptDir = scriptInfo.Directory }
+        ScriptDir = scriptDir}
 
     scriptFilePath
     |> System.IO.File.ReadAllLines

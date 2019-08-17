@@ -23,7 +23,7 @@ let CallTextureMerger inputDir outputFilePair =
     WaitForFile 60 (outputFilePair + ".png")
 
 let private PackSprite (job:Job) =
-    CallTextureMerger (job.ScriptDir.FullName + "\\" + job.Input.Head) job.OutputPath
+    CallTextureMerger (job.ScriptDir + "\\" + job.Input.Head) job.OutputPath
     let frames =
         using (new JsonTextReader(File.OpenText(job.OutputPath + ".json"))) (fun x ->
             let token = JToken.ReadFrom x

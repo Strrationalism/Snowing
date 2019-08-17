@@ -21,7 +21,7 @@ and Job = {
     Input : string list
     OutputPath : string
     Arguments : string list 
-    ScriptDir : DirectoryInfo
+    ScriptDir : string
 }
 
 
