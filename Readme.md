@@ -27,6 +27,7 @@
 - TestYukimi - AVG游戏组件库的单元测试
 - WindowsLive2D - Windows下的Live2D集成
 - TestWindowsLive2D - Windows下的Live2D集成的测试
+- Fyee - 动态BGM系统
 
 ### 范例
 - BGMPlayer - BGM播放器
@@ -34,6 +35,7 @@
 - Particle - 2D粒子范例
 - TextRendering - 2D文本范例
 - XInputControllerVibration - XInput控制器震动特效范例
+- FyeeDemo - Fyee动态BGM系统的Demo
 
 ### FAQ
 
