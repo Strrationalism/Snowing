@@ -74,22 +74,22 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\$(ProjectName)$(Configuration)$(PlatformShortName)\</OutDir>
     <IntDir>$(SolutionDir)build\objs\$(ProjectName)$(Configuration)$(PlatformShortName)\</IntDir>
-    <IncludePath>$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir);$(ProjectDir)..\WindowsImpl;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -188,6 +188,9 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\TextRendering\FontShader.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
