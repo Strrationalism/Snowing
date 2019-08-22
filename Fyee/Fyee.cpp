@@ -12,9 +12,17 @@ Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t positio
 
 bool Fyee::BGMPlayer::PlayingTrack::Update()
 {
+	fadeOutVolume_.Update();
+	player_.SetVolume(std::clamp(fadeOutVolume_.Value(),0.0f,1.0f));
 	metronome_.Update();
-	return player_.GetPlaying();
+	return player_.GetPlaying() || fadeOutVolume_.Value() <= 0.0f;
 }
+
+void Fyee::BGMPlayer::PlayingTrack::FadeOutAndStop(float time)
+{
+	fadeOutVolume_.Start(-0.001f, time);
+}
+
 
 Fyee::BGMPlayer::PlayingTrack* Fyee::BGMPlayer::getPlayingTrack()
 {
@@ -74,6 +82,7 @@ bool Fyee::BGMPlayer::Update()
 
 void Fyee::BGMPlayer::updateScheduledBreakLoop()
 {
+	// BreakOnNextLoop
 	if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_))
 	{
 		const auto playingTrack = getPlayingTrack();
@@ -89,6 +98,46 @@ void Fyee::BGMPlayer::updateScheduledBreakLoop()
 			playQueue_.front().loop = false;
 
 			breakSchedule_ = NoSchedule{};
+		}
+	}
+
+	// BreakWhenJumpTime
+	else if (auto args = std::get_if<BreakWhenJumpTime>(&breakSchedule_))
+	{
+		const auto cur = getPlayingTrack();
+		bool isTime = false;
+		switch (args->whenJump)
+		{
+		case BreakTime::Now:
+			isTime = true;
+			break;
+		case BreakTime::NextBeat:
+			if (cur)
+			{
+				if (cur->metronome_.IsBeat())
+					isTime = true;
+			}
+			else
+				isTime = true;
+			break;
+		case BreakTime::NextBar:
+			if (cur)
+			{
+				if (cur->metronome_.IsBeat() && cur->metronome_.GetTime().Beat == 0)
+					isTime = true;
+			}
+			else
+				isTime = true;
+			break;	
+		};
+
+		if(isTime)
+		{
+			if (cur) cur->FadeOutAndStop(args->fadeOutTime);
+			mainlyTrack_ = nullptr;
+			breakSchedule_ = NoSchedule{};
+			playQueue_.pop_front();
+			updateCurrentPlayingTrack();
 		}
 	}
 }

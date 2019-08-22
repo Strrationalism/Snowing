@@ -24,9 +24,13 @@ namespace Fyee
 			Snowing::Audio::SoundPlayer player_;
 			Metronome metronome_;
 
+			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
+
 		public:
 			PlayingTrack(const TrackInfo&,uint32_t position = 0);
 			bool Update() override;
+
+			void FadeOutAndStop(float time);
 		};
 
 	private:

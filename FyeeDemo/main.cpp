@@ -97,30 +97,36 @@ int main()
 
 		auto firstMenu = scene.Emplace<Scene::Debug::DebugMenu>(&fontTech, &fnt);
 
-		firstMenu->AddMenuItem(L"现在切换", [firstMenu,&scene,&fnt,&fontTech]
+		firstMenu->AddMenuItem(L"现在切换", [firstMenu,&scene,&fnt,&fontTech,fyee]
 		{
 			firstMenu->Kill();
 
-			NextMenu(scene, fnt, fontTech);
+			fyee->ClearQueueTail();
+			fyee->AddToPlayQueue(GetMelody1(scene, fnt, fontTech));
+			fyee->ScheduleBreakLoop(Fyee::BGMPlayer::BreakWhenJumpTime{ BGMPlayer::BreakTime::Now,0.5f });
 		});
 
-		firstMenu->AddMenuItem(L"从下个Step开始切换", [firstMenu, &scene, &fnt, &fontTech]
+		firstMenu->AddMenuItem(L"从下个Beat开始切换", [firstMenu, &scene, &fnt, &fontTech,fyee]
 		{
 			firstMenu->Kill();
 
-			NextMenu(scene, fnt, fontTech);
+			fyee->ClearQueueTail();
+			fyee->AddToPlayQueue(GetMelody1(scene, fnt, fontTech));
+			fyee->ScheduleBreakLoop(Fyee::BGMPlayer::BreakWhenJumpTime{ BGMPlayer::BreakTime::NextBeat,0.5f });
 		});
 
-		firstMenu->AddMenuItem(L"从下一Beat开始切换", [firstMenu, &scene, &fnt, &fontTech]
+		firstMenu->AddMenuItem(L"从下一Bar开始切换", [firstMenu, &scene, &fnt, &fontTech,fyee]
 		{
 			firstMenu->Kill();
-
-			NextMenu(scene, fnt, fontTech);
+			fyee->ClearQueueTail();
+			fyee->AddToPlayQueue(GetMelody1(scene, fnt, fontTech));
+			fyee->ScheduleBreakLoop(Fyee::BGMPlayer::BreakWhenJumpTime{ BGMPlayer::BreakTime::NextBar,0.5f});
 		});
 
 		firstMenu->AddMenuItem(L"从下一次循环开始切换", [firstMenu, &scene, &fnt, &fontTech,fyee]
 		{
 			firstMenu->Kill();
+			fyee->ClearQueueTail();
 			fyee->AddToPlayQueue(GetMelody1(scene, fnt, fontTech));
 			fyee->ScheduleBreakLoop(Fyee::BGMPlayer::BreakOnNextLoop{});
 			
