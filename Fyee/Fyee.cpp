@@ -38,7 +38,7 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 	if(update)
 	{
 		if (!playQueue_.front().loop && playingTrack)
-			playQueue_.pop();
+			playQueue_.pop_front();
 
 		if(playQueue_.empty())
 		{
@@ -56,9 +56,45 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 	}
 }
 
+void Fyee::BGMPlayer::ClearQueueTail()
+{
+	while (playQueue_.size() > 1)
+		playQueue_.pop_back();
+}
+
+
+
 bool Fyee::BGMPlayer::Update()
 {
+	updateScheduledBreakLoop();
 	const bool hasObject = playground_.Update();
 	updateCurrentPlayingTrack();
 	return !(!hasObject && playQueue_.empty());
+}
+
+void Fyee::BGMPlayer::updateScheduledBreakLoop()
+{
+	if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_))
+	{
+		const auto playingTrack = getPlayingTrack();
+
+		bool update = false;
+		if (playingTrack == nullptr)
+			update = true;
+		else if (playingTrack->metronome_.GetTime() >= playQueue_.front().length)
+			update = true;
+
+		if (update)
+		{
+			playQueue_.front().loop = false;
+
+			breakSchedule_ = NoSchedule{};
+		}
+	}
+}
+
+
+void Fyee::BGMPlayer::ScheduleBreakLoop(BreakLoopSchedule schedule)
+{
+	breakSchedule_ = schedule;
 }

@@ -30,7 +30,7 @@ namespace Fyee
 		};
 
 	private:
-		std::queue<TrackInfo> playQueue_;	// 头部总是“正在播放的track”
+		std::deque<TrackInfo> playQueue_;	// 头部总是“正在播放的track”
 
 		Snowing::Scene::Group<PlayingTrack> playground_;
 		const PlayingTrack* mainlyTrack_ = nullptr;
@@ -39,13 +39,40 @@ namespace Fyee
 		void updateCurrentPlayingTrack();
 
 	public:
+		// schedule break loop
+		enum class BreakTime
+		{
+			Now,
+			NextBar,
+			NextBeat
+		};
+
+		struct NoSchedule{};
+		struct BreakOnNextLoop{};
+		struct BreakWhenJumpTime
+		{
+			BreakTime whenJump;
+			float fadeOutTime;
+		};
+		using BreakLoopSchedule = std::variant<NoSchedule, BreakOnNextLoop, BreakWhenJumpTime>;
+
+	private:
+		BreakLoopSchedule breakSchedule_;
+		void updateScheduledBreakLoop();
+
+	public:
 		template <typename TrackInfo>
 		void AddToPlayQueue(TrackInfo&& track)
 		{
-			playQueue_.emplace(std::forward<TrackInfo>(track));
+			playQueue_.emplace_back(std::forward<TrackInfo>(track));
 			updateCurrentPlayingTrack();
 		}
 
 		bool Update() override;
+
+		// 清除所有待播放的Track，只保留正在播放的Track
+		void ClearQueueTail();
+
+		void ScheduleBreakLoop(BreakLoopSchedule schedule);
 	};
 }

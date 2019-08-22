@@ -26,9 +26,9 @@ const TrackInfo Loop1
 	[] { Snowing::Log("Loop1"); }
 };
 
-void NextMenu(Scene::Group<>& scene, const Graphics::Font& font,Graphics::EffectTech& tech)
+void NextMenu(Scene::Group<>& scene, const Graphics::Font& font, Graphics::EffectTech& tech)
 {
-	auto menu = scene.Emplace<Scene::Debug::DebugMenu>(&tech ,&font);
+	auto menu = scene.Emplace<Scene::Debug::DebugMenu>(&tech, &font);
 	menu->AddMenuItem(L"切换到版本A", []
 	{
 	});
@@ -39,6 +39,23 @@ void NextMenu(Scene::Group<>& scene, const Graphics::Font& font,Graphics::Effect
 		menu->Kill();
 	});
 }
+
+TrackInfo GetMelody1(Scene::Group<>& scene, const Graphics::Font& font, Graphics::EffectTech& tech)
+{
+	return
+	{
+		&Melody1Blob,
+		{ 8,0 },
+		true,
+		[&] { 
+			Snowing::Log("Melody1");
+			NextMenu(scene,font,tech); 
+		}
+	};
+}
+
+
+
 
 int main()
 {
@@ -99,6 +116,14 @@ int main()
 			firstMenu->Kill();
 
 			NextMenu(scene, fnt, fontTech);
+		});
+
+		firstMenu->AddMenuItem(L"从下一次循环开始切换", [firstMenu, &scene, &fnt, &fontTech,fyee]
+		{
+			firstMenu->Kill();
+			fyee->AddToPlayQueue(GetMelody1(scene, fnt, fontTech));
+			fyee->ScheduleBreakLoop(Fyee::BGMPlayer::BreakOnNextLoop{});
+			
 		});
 	});
 
