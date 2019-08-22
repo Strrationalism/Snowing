@@ -1,9 +1,11 @@
 #include "pch.h"
 #include "Fyee.h"
 
-Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t position):
-	metronome_{&player_,180,0,0}
+Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t position,float fadingVolume):
+	metronome_{&player_,180,0,0},
+	fadeOutVolume_{fadingVolume}
 {
+	player_.SetVolume(fadingVolume);
 	player_.Play(t.soundBlob, position);
 	const auto metadata = player_.GetMetadata();
 	metronome_.Reset(&player_, metadata.Bpm, metadata.BeatsPerBar, metadata.BeatOffset);
@@ -15,7 +17,7 @@ bool Fyee::BGMPlayer::PlayingTrack::Update()
 	fadeOutVolume_.Update();
 	player_.SetVolume(std::clamp(fadeOutVolume_.Value(),0.0f,1.0f));
 	metronome_.Update();
-	return player_.GetPlaying() || fadeOutVolume_.Value() <= 0.0f;
+	return player_.GetPlaying() || fadeOutVolume_.Value() < 0.0f;
 }
 
 void Fyee::BGMPlayer::PlayingTrack::FadeOutAndStop(float time)
@@ -45,8 +47,11 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 
 	if(update)
 	{
-		if (!playQueue_.front().loop && playingTrack)
-			playQueue_.pop_front();
+		if (!playQueue_.empty())
+		{
+			if (!playQueue_.front().loop && playingTrack)
+				playQueue_.pop_front();
+		}
 
 		if(playQueue_.empty())
 		{
@@ -146,4 +151,22 @@ void Fyee::BGMPlayer::updateScheduledBreakLoop()
 void Fyee::BGMPlayer::ScheduleBreakLoop(BreakLoopSchedule schedule)
 {
 	breakSchedule_ = schedule;
+}
+
+Fyee::BeatTime Fyee::BGMPlayer::GetTime()
+{
+	const auto cur = getPlayingTrack();
+	if (cur)
+		return cur->metronome_.GetTime();
+	else
+		return {};
+}
+
+bool Fyee::BGMPlayer::IsBeatFrame()
+{
+	const auto cur = getPlayingTrack();
+	if (cur)
+		return cur->metronome_.IsBeat();
+	else
+		return false;
 }

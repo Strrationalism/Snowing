@@ -27,7 +27,7 @@ namespace Fyee
 			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
 
 		public:
-			PlayingTrack(const TrackInfo&,uint32_t position = 0);
+			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1);
 			bool Update() override;
 
 			void FadeOutAndStop(float time);
@@ -56,7 +56,7 @@ namespace Fyee
 		struct BreakWhenJumpTime
 		{
 			BreakTime whenJump;
-			float fadeOutTime;
+			float fadeOutTime = 0.1f;
 		};
 		using BreakLoopSchedule = std::variant<NoSchedule, BreakOnNextLoop, BreakWhenJumpTime>;
 
@@ -78,5 +78,30 @@ namespace Fyee
 		void ClearQueueTail();
 
 		void ScheduleBreakLoop(BreakLoopSchedule schedule);
+
+		template <typename TrackInfo>
+		void EditionFading(TrackInfo&& anotherEdition,float fadeOutTime = 0.5f)
+		{
+			assert(!playQueue_.empty());
+
+			playQueue_.front() = std::forward<TrackInfo>(anotherEdition);
+
+			playQueue_.front().onPlayStarted();
+			playQueue_.front().onPlayStarted = [] {};
+
+			const auto cur = getPlayingTrack();
+			uint32_t position = 0;
+			if (cur) 
+			{
+				cur->FadeOutAndStop(fadeOutTime);
+				position = cur->player_.GetPosition();
+			}
+			auto p = playground_.Emplace<>(playQueue_.front(), position, 0.0f);
+			p->fadeOutVolume_.Start(1, fadeOutTime);
+			mainlyTrack_ = p;
+		}
+
+		BeatTime GetTime();
+		bool IsBeatFrame();
 	};
 }

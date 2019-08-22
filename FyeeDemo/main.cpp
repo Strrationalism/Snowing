@@ -26,17 +26,68 @@ const TrackInfo Loop1
 	[] { Snowing::Log("Loop1"); }
 };
 
+const TrackInfo Melody1
+{
+	&Melody1Blob,
+	{ 8,0 },
+		true,
+		[&] {
+		Snowing::Log("Melody1");
+	}
+};
+
+const TrackInfo Melody2
+{
+	&Melody2Blob,
+	{ 8,0 },
+		true,
+		[&] {
+		Snowing::Log("Melody2");
+	}
+};
+
+const TrackInfo Ending
+{
+	&EndingBlob,
+	{ 1,0 },
+	false,
+	[&] {
+		Snowing::Log("Ending");
+	}
+};
+
+
+
 void NextMenu(Scene::Group<>& scene, const Graphics::Font& font, Graphics::EffectTech& tech)
 {
 	auto menu = scene.Emplace<Scene::Debug::DebugMenu>(&tech, &font);
-	menu->AddMenuItem(L"切换到版本A", []
+	menu->AddMenuItem(L"切换到版本A", [&scene]
 	{
+		scene.IterType<Fyee::BGMPlayer>([](Fyee::BGMPlayer& player)
+		{
+			player.EditionFading(Melody1);
+		});
 	});
 
-	menu->AddMenuItem(L"切换到版本B", [] {});
-	menu->AddMenuItem(L"跳转到结尾", [menu]
+	menu->AddMenuItem(L"切换到版本B", [&scene]
+	{
+		scene.IterType<Fyee::BGMPlayer>([](Fyee::BGMPlayer& player)
+		{
+			player.EditionFading(Melody2);
+		});
+	});
+
+	menu->AddMenuItem(L"跳转到结尾", [menu,&scene]
 	{
 		menu->Kill();
+
+		scene.IterType<Fyee::BGMPlayer>([](Fyee::BGMPlayer& player)
+		{
+			player.ClearQueueTail();
+			player.AddToPlayQueue(Ending);
+			player.ScheduleBreakLoop(Fyee::BGMPlayer::BreakWhenJumpTime{ BGMPlayer::BreakTime::NextBar,0.5f });
+		});
+
 	});
 }
 
@@ -61,7 +112,7 @@ int main()
 {
 	auto engine =
 		Snowing::PlatformImpls::WindowsImpl::MakeEngine(
-			L"HelloWorld",	
+			L"Fyee Demo",	
 			{ 400,300 },	
 			true);
 	PlatformImpls::WindowsImpl::XAudio2::XADevice xaDevice;
@@ -93,6 +144,23 @@ int main()
 		fyee = scene.Emplace<Fyee::BGMPlayer>();
 		fyee->AddToPlayQueue(Head);
 		fyee->AddToPlayQueue(Loop1);
+
+		scene.Emplace<Scene::Debug::DebugDisplay>(
+			&fontTech,	
+			&fnt,		
+			L"节拍器",
+			[&scene]
+			{
+				const auto p = scene.FindFirst<Fyee::BGMPlayer>();
+				if (p)
+				{
+					const auto time = p->GetTime();
+					return std::to_wstring(time.Bar) + L":" + std::to_wstring(time.Beat);
+				}
+				else return std::wstring(L"");
+			}
+		);
+
 
 
 		auto firstMenu = scene.Emplace<Scene::Debug::DebugMenu>(&fontTech, &fnt);
