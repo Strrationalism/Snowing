@@ -51,7 +51,7 @@ namespace Snowing::Scene
 				eraseBegin,
 				objs_.end());
 
-			return !objs_.empty();
+			return !objs_.empty() || !newObjs_.empty();
 		}
 
 		template <typename TObj = TBaseObject,typename ... TArgs>
