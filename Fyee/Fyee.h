@@ -15,7 +15,7 @@ namespace Fyee
 		std::function<void()> onPlayStarted;
 	};
 
-	class BGMPlayer final : public Snowing::Scene::Object
+	class BGMPlayer : public Snowing::Scene::Object
 	{
 	private:
 		class PlayingTrack final : public Snowing::Scene::Object
