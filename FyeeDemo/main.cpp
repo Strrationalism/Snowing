@@ -1,18 +1,19 @@
 #define USE_XAUDIO2
 #include <Snowing.h>
 #include <Fyee.h>
+#include <memory.h>
 using namespace Snowing;
 using namespace Fyee;
 
-const auto HeadBlob = Snowing::LoadAsset("Fyee/Head.snd");
-const auto Loop1Blob = Snowing::LoadAsset("Fyee/Loop1.snd");
-const auto Melody1Blob = Snowing::LoadAsset("Fyee/Melody1.snd");
-const auto Melody2Blob = Snowing::LoadAsset("Fyee/Melody2.snd");
-const auto EndingBlob = Snowing::LoadAsset("Fyee/Ending.snd");
+const auto HeadBlob = std::make_shared<Snowing::Blob>(Snowing::LoadAsset("Fyee/Head.snd"));
+const auto Loop1Blob = std::make_shared<Snowing::Blob>(Snowing::LoadAsset("Fyee/Loop1.snd"));
+const auto Melody1Blob = std::make_shared<Snowing::Blob>(Snowing::LoadAsset("Fyee/Melody1.snd"));
+const auto Melody2Blob = std::make_shared<Snowing::Blob>(Snowing::LoadAsset("Fyee/Melody2.snd"));
+const auto EndingBlob = std::make_shared<Snowing::Blob>(Snowing::LoadAsset("Fyee/Ending.snd"));
 
 const TrackInfo Head
 {
-	&HeadBlob,
+	HeadBlob,
 	{0,2},
 	false,
 	[] { Snowing::Log("Head"); }
@@ -20,7 +21,7 @@ const TrackInfo Head
 
 const TrackInfo Loop1
 {
-	&Loop1Blob,
+	Loop1Blob,
 	{2,0},
 	true,
 	[] { Snowing::Log("Loop1"); }
@@ -28,7 +29,7 @@ const TrackInfo Loop1
 
 const TrackInfo Melody1
 {
-	&Melody1Blob,
+	Melody1Blob,
 	{ 8,0 },
 		true,
 		[&] {
@@ -38,7 +39,7 @@ const TrackInfo Melody1
 
 const TrackInfo Melody2
 {
-	&Melody2Blob,
+	Melody2Blob,
 	{ 8,0 },
 		true,
 		[&] {
@@ -48,7 +49,7 @@ const TrackInfo Melody2
 
 const TrackInfo Ending
 {
-	&EndingBlob,
+	EndingBlob,
 	{ 1,0 },
 	false,
 	[&] {
@@ -95,7 +96,7 @@ TrackInfo GetMelody1(Scene::Group<>& scene, const Graphics::Font& font, Graphics
 {
 	return
 	{
-		&Melody1Blob,
+		Melody1Blob,
 		{ 8,0 },
 		true,
 		[&] { 

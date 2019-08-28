@@ -3,10 +3,11 @@
 
 Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t position,float fadingVolume):
 	metronome_{&player_,180,0,0},
-	fadeOutVolume_{fadingVolume}
+	fadeOutVolume_{fadingVolume},
+	blob_{t.soundBlob}
 {
 	player_.SetVolume(fadingVolume);
-	player_.Play(t.soundBlob, position);
+	player_.Play(blob_.get(), position);
 	const auto metadata = player_.GetMetadata();
 	metronome_.Reset(&player_, metadata.Bpm, metadata.BeatsPerBar, metadata.BeatOffset);
 }

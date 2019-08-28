@@ -1,6 +1,7 @@
 #pragma once
 #include <queue>
 #include <Snowing.h>
+#include <memory>
 
 namespace Fyee
 {
@@ -9,7 +10,7 @@ namespace Fyee
 
 	struct TrackInfo final
 	{
-		const Snowing::Blob* soundBlob = nullptr;
+		std::shared_ptr<Snowing::Blob> soundBlob;
 		BeatTime length;
 		bool loop;
 		std::function<void()> onPlayStarted;
@@ -25,6 +26,8 @@ namespace Fyee
 			Metronome metronome_;
 
 			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
+
+			std::shared_ptr<Snowing::Blob> blob_;
 
 		public:
 			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1);
