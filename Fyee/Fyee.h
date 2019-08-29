@@ -19,7 +19,7 @@ namespace Fyee
 	class BGMPlayer : public Snowing::Scene::Object
 	{
 	private:
-		class PlayingTrack final : public Snowing::Scene::Object
+		class PlayingTrack final : public Snowing::Scene::Object,public Snowing::MemPool<PlayingTrack>
 		{
 		public:
 			Snowing::Audio::SoundPlayer player_;

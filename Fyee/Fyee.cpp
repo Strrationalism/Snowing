@@ -38,7 +38,9 @@ Fyee::BGMPlayer::PlayingTrack* Fyee::BGMPlayer::getPlayingTrack()
 
 void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 {
-	const auto playingTrack = getPlayingTrack();
+	auto playingTrack = getPlayingTrack();
+
+	if (playQueue_.empty()) playingTrack = nullptr;
 
 	bool update = false;
 	if (playingTrack == nullptr)
@@ -88,6 +90,12 @@ bool Fyee::BGMPlayer::Update()
 
 void Fyee::BGMPlayer::updateScheduledBreakLoop()
 {
+	if(playQueue_.empty())
+	{
+		breakSchedule_ = NoSchedule{};
+		return;
+	}
+
 	// BreakOnNextLoop
 	if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_))
 	{
