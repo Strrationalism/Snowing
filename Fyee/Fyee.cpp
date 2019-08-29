@@ -75,9 +75,14 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 		}
 		else
 		{
-			mainlyTrack_ =
-				playground_.Emplace(playQueue_.front());
 
+			PlayingTrack* track;
+				mainlyTrack_ = track =
+				playground_.Emplace(playQueue_.front(),0, playQueue_.front().fadeInTime > 0.01f ? 0.0f : 1.0f);
+
+			track->fadeOutVolume_.Start(1.0, playQueue_.front().fadeInTime);
+
+			playQueue_.front().fadeInTime = 0;
 			if(playQueue_.front().onPlayStarted)
 				playQueue_.front().onPlayStarted();
 			playQueue_.front().onPlayStarted = [] {};

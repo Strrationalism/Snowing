@@ -14,6 +14,8 @@ namespace Fyee
 		BeatTime length;
 		bool loop;
 		std::function<void()> onPlayStarted;
+
+		float fadeInTime = 0.0f;
 	};
 
 	class BGMPlayer : public Snowing::Scene::Object
@@ -70,7 +72,7 @@ namespace Fyee
 
 	public:
 		template <typename TrackInfo>
-		void AddToPlayQueue(TrackInfo&& track)
+		void AddToPlayQueue(TrackInfo&& track,float fadeTime = 0.0f)
 		{
 			playQueue_.emplace_back(std::forward<TrackInfo>(track));
 			updateCurrentPlayingTrack();
