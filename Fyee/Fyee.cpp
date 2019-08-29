@@ -45,8 +45,23 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 	bool update = false;
 	if (playingTrack == nullptr)
 		update = true;
-	else if (playingTrack->metronome_.GetTime() >= playQueue_.front().length)
-		update = true;
+	else
+	{
+		const auto metadata = playingTrack->player_.GetMetadata();
+		const auto offset = metadata.BeatsPerBar - metadata.BeatOffset;
+		auto t = playingTrack->metronome_.GetTime();
+		auto t2 = t;
+		t.Beat += offset;
+		if(t.Beat >= metadata.BeatsPerBar)
+		{
+			t.Beat -= metadata.BeatsPerBar;
+			t.Bar++;
+		}
+		if (t >= playQueue_.front().length)
+			update = true;
+
+		Snowing::Log(t.Beat,t2.Beat);
+	}
 
 	if(update)
 	{
@@ -160,6 +175,15 @@ void Fyee::BGMPlayer::updateScheduledBreakLoop()
 void Fyee::BGMPlayer::ScheduleBreakLoop(BreakLoopSchedule schedule)
 {
 	breakSchedule_ = schedule;
+}
+
+const Snowing::Blob* Fyee::BGMPlayer::GetPlaying() 
+{
+	const auto playingTrack = getPlayingTrack();
+	if (playingTrack)
+		return playingTrack->blob_.get();
+	else
+		return nullptr;
 }
 
 Fyee::BeatTime Fyee::BGMPlayer::GetTime()

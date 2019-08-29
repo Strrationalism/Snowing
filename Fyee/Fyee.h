@@ -22,12 +22,13 @@ namespace Fyee
 		class PlayingTrack final : public Snowing::Scene::Object,public Snowing::MemPool<PlayingTrack>
 		{
 		public:
+			std::shared_ptr<Snowing::Blob> blob_;
 			Snowing::Audio::SoundPlayer player_;
 			Metronome metronome_;
 
 			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
 
-			std::shared_ptr<Snowing::Blob> blob_;
+			
 
 		public:
 			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1);
@@ -81,6 +82,8 @@ namespace Fyee
 		void ClearQueueTail();
 
 		void ScheduleBreakLoop(BreakLoopSchedule schedule);
+
+		const Snowing::Blob* GetPlaying();
 
 		template <typename TrackInfo>
 		void EditionFading(TrackInfo&& anotherEdition,float fadeOutTime = 0.5f)
