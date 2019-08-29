@@ -66,7 +66,7 @@ namespace Fyee
 
 	private:
 		BreakLoopSchedule breakSchedule_;
-		void updateScheduledBreakLoop();
+		
 
 	public:
 		template <typename TrackInfo>
@@ -75,7 +75,7 @@ namespace Fyee
 			playQueue_.emplace_back(std::forward<TrackInfo>(track));
 			updateCurrentPlayingTrack();
 		}
-
+		void UpdateScheduledBreakLoop();
 		bool Update() override;
 
 		// 清除所有待播放的Track，只保留正在播放的Track
@@ -84,6 +84,9 @@ namespace Fyee
 		void ScheduleBreakLoop(BreakLoopSchedule schedule);
 
 		const Snowing::Blob* GetPlaying();
+
+		size_t GetQueuedTrackCount() const;
+		const Snowing::Blob* GetQueuedTrackBlob(size_t index) const;
 
 		template <typename TrackInfo>
 		void EditionFading(TrackInfo&& anotherEdition,float fadeOutTime = 0.5f)

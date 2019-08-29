@@ -59,8 +59,6 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 		}
 		if (t >= playQueue_.front().length)
 			update = true;
-
-		Snowing::Log(t.Beat,t2.Beat);
 	}
 
 	if(update)
@@ -97,13 +95,13 @@ void Fyee::BGMPlayer::ClearQueueTail()
 
 bool Fyee::BGMPlayer::Update()
 {
-	updateScheduledBreakLoop();
+	UpdateScheduledBreakLoop();
 	const bool hasObject = playground_.Update();
 	updateCurrentPlayingTrack();
 	return !(!hasObject && playQueue_.empty());
 }
 
-void Fyee::BGMPlayer::updateScheduledBreakLoop()
+void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 {
 	if(playQueue_.empty())
 	{
@@ -184,6 +182,16 @@ const Snowing::Blob* Fyee::BGMPlayer::GetPlaying()
 		return playingTrack->blob_.get();
 	else
 		return nullptr;
+}
+
+size_t Fyee::BGMPlayer::GetQueuedTrackCount() const
+{
+	return playQueue_.size();
+}
+
+const Snowing::Blob* Fyee::BGMPlayer::GetQueuedTrackBlob(size_t index) const
+{
+	return playQueue_.at(index).soundBlob.get();
 }
 
 Fyee::BeatTime Fyee::BGMPlayer::GetTime()
