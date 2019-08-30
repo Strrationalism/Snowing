@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "BGMPlayer.h"
 #include "AudioChannel.h"
 #include "SEPlayer.h"
 #include "CVPlayer.h"
@@ -47,56 +46,6 @@ TEST(Audio, AudioChannel)
 			scene.IterType<AudioChannel>([](auto & player) {
 				player.Stop(0.5f);
 			});
-		});
-	});
-
-
-	scene.Emplace<Scene::VirtualTask>(3.5f, [&] {
-		Engine::Get().Exit();
-	});
-
-	Engine::Get().RunObject(scene);
-}
-
-TEST(Audio, BGMPlayer)
-{
-	auto engine =
-		PlatformImpls::WindowsImpl::MakeEngine(L"Audio.BGMPlayer", { 400,300 }, true);
-
-	PlatformImpls::WindowsImpl::XAudio2::XADevice x;
-
-	Font font = LoadFont(LoadAsset("Font-chs.fnt"));
-	Graphics::Effect eff{ LoadAsset("FontRendering.cso") };
-	Graphics::EffectTech tech1 = eff.LoadTechnique("Font", Sprite::DataLayout);
-
-	Scene::Group<> scene;
-	scene.Emplace<BGMPlayer>(AudioLoader);
-	scene.Emplace<Scene::RenderTargetCleaner>(
-		&Graphics::Device::MainContext(), &Graphics::Device::MainRenderTarget());
-	scene.Emplace<Scene::Debug::DebugDisplay>(
-		&tech1, &font, L"Time", Scene::Debug::DebugDisplay::FrameTimeGetter);
-	scene.Emplace<Scene::Debug::DebugDisplay>(
-		&tech1, &font, L"FPS", Scene::Debug::DebugDisplay::FPSGetter);
-	scene.Emplace<Scene::Debug::DebugDisplay>(
-		&tech1, &font, L"Scene Objs", [&scene] { return std::to_wstring(scene.Count()); });
-
-	scene.Emplace<Scene::VirtualTask>(0.5f, [&] {
-		BGMPlayer::Get().Play("Dir/Sound/ExBoss.snd", 0.5f, 1000000u);
-
-		scene.Emplace<Scene::VirtualTask>(1.0f, [&] {
-			BGMPlayer::Get().FadeTo("Dir/Sound/ExBoss.snd", 0.5f);
-		});
-
-		scene.Emplace<Scene::VirtualTask>(1.5f, [&] {
-			BGMPlayer::Get().Pause(0.5f);
-		});
-
-		scene.Emplace<Scene::VirtualTask>(2.0f, [&] {
-			BGMPlayer::Get().Resume(0.5f);
-		});
-
-		scene.Emplace<Scene::VirtualTask>(2.5f, [&] {
-			BGMPlayer::Get().Stop(0.5f);
 		});
 	});
 

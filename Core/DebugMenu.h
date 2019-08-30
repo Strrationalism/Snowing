@@ -81,6 +81,8 @@ namespace Snowing::Scene::Debug
 		Scene::UI::Menu<DebugMenuItem> menu_;
 		Scene::UI::MenuKeyController<DebugMenuItem> menuCtrl_{ &menu_ };
 
+		bool killed_ = false;
+
 	public:
 		DebugMenuInterface(
 			TTech *tech,
@@ -95,6 +97,11 @@ namespace Snowing::Scene::Debug
 			font_{ *font }
 		{ }
 		~DebugMenuInterface() = default;
+
+		void Kill()
+		{
+			killed_ = true;
+		}
 
 		bool Update() override
 		{
@@ -130,7 +137,7 @@ namespace Snowing::Scene::Debug
 					menu_.GetSelectedObject().value()->OK();
 			}
 
-			return true;
+			return !killed_;
 		}
 
 
