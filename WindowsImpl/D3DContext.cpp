@@ -54,22 +54,21 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::Draw(size_t count, size_
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetRenderTarget(Graphics::RenderTarget ** rt, int size)
 {
+	assert(size < 8);
 	assert(size > 0);
 	rt_ = *rt;
-	static std::vector<ID3D11RenderTargetView*> rtCache;
-	static std::vector<D3D11_VIEWPORT> vpCache;
-	vpCache.clear();
-	rtCache.clear();
+	std::array<ID3D11RenderTargetView*,8> rtCache;
+	std::array<D3D11_VIEWPORT,8> vpCache;
 
 	for (int i = 0; i < size; ++i)
 	{
-		rtCache.emplace_back(static_cast<ID3D11RenderTargetView*>(rt[i]->GetImpl().GetHandler().Get<IUnknown*>()));
+		rtCache[i] = (static_cast<ID3D11RenderTargetView*>(rt[i]->GetImpl().GetHandler().Get<IUnknown*>()));
 		D3D11_VIEWPORT vp = { 0 };
 		vp.MaxDepth = 1.0f;
 		const auto sizeTex = rt[i]->GetTexture().Size();
-		vp.Width = (float)sizeTex.x;
-		vp.Height = (float)sizeTex.y;
-		vpCache.push_back(vp);
+		vp.Width = static_cast<float>(sizeTex.x);
+		vp.Height = static_cast<float>(sizeTex.y);
+		vpCache[i] = vp;
 	}
 
 	const auto ctx = static_cast<ID3D11DeviceContext*>(context_.Get<IUnknown*>());
@@ -82,15 +81,14 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetStreamOutBuffer(Graph
 	const auto ctx = static_cast<ID3D11DeviceContext*>(context_.Get<IUnknown*>());
 	if (buf)
 	{
-		assert(bufSize < 32);
-		static std::vector<ID3D11Buffer*> bufs;
-		constexpr UINT offsets[32] = { 0 };
-		bufs.clear();
+		assert(bufSize < 4);
+		std::array<ID3D11Buffer*,4> bufs;
+		constexpr UINT offsets[4] = { 0 };
 
 		for (int i = 0; i < bufSize; ++i)
 		{
 			auto p = buf[i]->GetImpl().GetHandler().Cast<IUnknown*, ID3D11Buffer*>();
-			bufs.push_back(p);
+			bufs[i] = p;
 		}
 		ctx->SOSetTargets(bufSize, bufs.data(), offsets);
 	}
