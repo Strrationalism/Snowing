@@ -31,6 +31,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		{
 		case Graphics::PixelFormat::R8G8B8A8: return DXGI_FORMAT_R8G8B8A8_UNORM; break;
 		case Graphics::PixelFormat::B5G6R5: return DXGI_FORMAT_B5G6R5_UNORM; break;
+		case Graphics::PixelFormat::R8: return DXGI_FORMAT_R8_UNORM; break;
 		default: throw std::invalid_argument{ "Unknown pixel format." };
 		}
 	}
@@ -41,6 +42,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		{
 		case Graphics::PixelFormat::R8G8B8A8: return TextureFormat::R8G8B8A8_UNORM; break;
 		case Graphics::PixelFormat::B5G6R5: return TextureFormat::B5G6R5_UNORM; break;
+		case Graphics::PixelFormat::R8: return TextureFormat::R8_UNORM; break;
 		default: throw std::invalid_argument{ "Unknown pixel format." };;
 		}
 	}
