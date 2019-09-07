@@ -41,6 +41,11 @@ namespace Snowing::Graphics
 			impl_.SetAsTexture2D(t);
 		}
 
+		void SetAsTexture2D(nullptr_t)
+		{
+			impl_.SetAsTexture2D(nullptr);
+		}
+
 		template <typename TBuf>
 		void SetAsConstantBuffer(const TBuf* b)
 		{

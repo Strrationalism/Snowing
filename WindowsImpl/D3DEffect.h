@@ -18,6 +18,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		void SetAsVec4(Math::Vec4f);
 		void SetAsConstantBuffer(const Graphics::Buffer* b);
 		void SetAsTexture2D(const Graphics::Texture2D* tex);
+		void SetAsTexture2D(nullptr_t);
 	};
 }
 
