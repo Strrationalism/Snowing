@@ -40,7 +40,7 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 		std::invoke([this,ratio,asset,model = model_.Get<Csm::CubismModel*>()] {
 			Csm::Rendering::CubismRenderer* renderer = Csm::Rendering::CubismRenderer::Create();
 			renderer->Initialize(model);
-			auto p = dynamic_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer);
+			auto p = static_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer);
 
 			for (Csm::csmUint32 i = 0; i < asset->GetTextures().size(); ++i)
 				if (asset->GetTextures()[i].has_value())

@@ -93,12 +93,8 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 			Iter([this,&f](TBaseObject& obj) {
-				try
-				{
-					f(dynamic_cast<TObjectType&>(obj));
-				}
-				catch(std::bad_cast)
-				{ }
+				auto* casted = dynamic_cast<TObjectType*>(&obj);
+				if (casted) f(*casted);
 			});
 		}
 		
@@ -107,13 +103,8 @@ namespace Snowing::Scene
 		{
 			for(auto& p : objs_)
 			{
-				try
-				{
-					auto ptr = dynamic_cast<TObjectType*>(p.object.get());
-					if (ptr) return ptr;
-				}
-				catch(std::bad_cast)
-				{ }
+				auto ptr = dynamic_cast<TObjectType*>(p.object.get());
+				if (ptr) return ptr;
 			}
 			return nullptr;
 		}
