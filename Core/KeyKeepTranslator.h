@@ -42,7 +42,7 @@ namespace Snowing::Input
 		[[nodiscard]]
 		bool KeyPressed() const override
 		{
-			const auto k = [this](KeyArgs a...)
+			const auto k = [this](KeyArgs... a)
 			{
 				return input_.KeyPressed(a...);
 			};
