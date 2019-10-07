@@ -97,7 +97,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	bool succ = false;
 	for (auto type : types)
 	{
-		const auto hr = D3D11CreateDeviceAndSwapChain(
+		auto hr = D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			type,
 			nullptr,
@@ -116,6 +116,30 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 			succ = true;
 			break;
 		}
+#ifdef _DEBUG
+		else 
+		{
+			hr = D3D11CreateDeviceAndSwapChain(
+				nullptr,
+				type,
+				nullptr,
+				0,
+				usingFeatureLevels,
+				usingFeatureLevelCount,
+				D3D11_SDK_VERSION,
+				&sd,
+				&swapChain,
+				&device,
+				nullptr,
+				&context);
+
+			if (SUCCEEDED(hr))
+			{
+				succ = true;
+				break;
+			}
+		}
+#endif
 	}
 
 	if (!succ)
