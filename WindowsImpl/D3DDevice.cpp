@@ -13,8 +13,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 {
 	const auto hwnd = hWnd.Get<HWND>();
 
-	if (windowed)
-		ShowWindow(hwnd, SW_SHOW);
+	ShowWindow(hwnd, SW_SHOW);
 
 	RECT winRect;
 	if (windowed)
