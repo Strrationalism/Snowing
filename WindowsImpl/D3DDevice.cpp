@@ -16,16 +16,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	ShowWindow(hwnd, SW_SHOW);
 
 	RECT winRect;
-	if (windowed)
-	{
-		if (!GetClientRect(hwnd, &winRect))
-			throw std::runtime_error("Get client rect failed");
-	}
-	else
-	{
-		if (!GetClientRect(GetDesktopWindow(), &winRect))
-			throw std::runtime_error("Get client rect failed.");
-	}
+	if (!GetClientRect(hwnd, &winRect))
+		throw std::runtime_error("Get client rect failed");
 
 	DXGI_SWAP_CHAIN_DESC sd = { 0 };
 	sd.BufferCount = 1;
@@ -219,4 +211,12 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Update()
 const Handler & Snowing::PlatformImpls::WindowsImpl::D3D::Device::GetHandler() const
 {
 	return device_;
+}
+
+Snowing::Math::Vec2<int> Snowing::Graphics::GetScreenSize()
+{
+	return {
+		GetSystemMetrics(SM_CXSCREEN),
+		GetSystemMetrics(SM_CYSCREEN)
+	};
 }

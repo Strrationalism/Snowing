@@ -50,4 +50,5 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 namespace Snowing::Graphics
 {
 	using Device = GraphicsInterface<PlatformImpls::WindowsImpl::D3D::Device>;
+	Snowing::Math::Vec2<int> GetScreenSize();
 }
