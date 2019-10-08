@@ -57,7 +57,7 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetRenderTarget(Graphics
 	assert(size < 8);
 	assert(size > 0);
 	rt_ = *rt;
-	std::array<ID3D11RenderTargetView*,8> rtCache;
+	std::array<ID3D11RenderTargetView*,8> rtCache{0};
 	std::array<D3D11_VIEWPORT,8> vpCache;
 
 	for (int i = 0; i < size; ++i)
@@ -72,7 +72,7 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetRenderTarget(Graphics
 	}
 
 	const auto ctx = static_cast<ID3D11DeviceContext*>(context_.Get<IUnknown*>());
-	ctx->OMSetRenderTargets(size, rtCache.data(),nullptr);
+	ctx->OMSetRenderTargets(8, rtCache.data(),nullptr);
 	ctx->RSSetViewports(size, vpCache.data());
 }
 
