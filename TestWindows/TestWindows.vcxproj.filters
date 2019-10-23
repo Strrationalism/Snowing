@@ -18,13 +18,13 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <CopyFileToFolders Include="FontFix.csv" />
     <CopyFileToFolders Include="Sprite.ctx" />
     <CopyFileToFolders Include="VibratorEffect.csv" />
     <CopyFileToFolders Include="CSVTest.csv" />
     <CopyFileToFolders Include="PropTest.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

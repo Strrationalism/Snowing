@@ -8,7 +8,7 @@
 #define USE_XAUDIO2
 #define GTEST_HAS_TR1_TUPLE 0
 #define GTEST_HAS_STD_TUPLE_ 1
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
 #include <Snowing.h>
 #include <PlatformImpls.h>
