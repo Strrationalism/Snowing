@@ -135,7 +135,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	}
 
 	if (!succ)
-		throw std::runtime_error{ "D3D Device create failed." };
+		throw std::runtime_error{ "D3D Device create failed:" + std::to_string(succ) };
 
 	const_cast<Handler&>(swapChain_) =
 	{ static_cast<IUnknown*>(swapChain),COMHelper::COMIUnknownDeleter };
