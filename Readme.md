@@ -39,8 +39,14 @@
 
 ### FAQ
 
-##### 我使用Visual Studio 2017来编译该项目时，需要安装哪些组件
-可以使用Visual Studio 2017安装程序的“导入配置”，导入[Snowing_VS2017_Install_Config.vsconfig](Snowing_VS2017_Install_Config.vsconfig)，来安装所有需要的组件。
+##### 对Windows 7兼容性
+已经向Windows 7 SP1妥协，可支持到Windows 7 SP1，但是更低版本的Windows不再支持。
+
+##### 当我发布游戏时是否需要向玩家提供一些运行库
+需要，运行库被放在了redist文件夹下。
+对于Win7、Win8用户，如果你导入了Live2D支持，则需要确保用户安装了KB4019990补丁，以确保用户拥有D3DCompiler_47.dll。
+在某些情况下，你还需要让用户安装Visual C++ 2019可再发行组件包，见redist文件夹。
+你可以在Steamworks进行配置，让Steam自动为你的玩家安装Visual C++ 2019可再发行组件包。
 
 ##### 关于git-lfs
 Clone此项目需要确保安装[git-lfs](https://git-lfs.github.com/)，并已经执行以下命令：
@@ -57,7 +63,8 @@ AssetsBuilder 目标路径
 X可以为任意盘符，该工具用于打包纹理。
 
 ##### 关于Effects11 SDK错误
-使用子模块克隆后，如果提示找不到WinSDK，右击重定向到8.1 SDK。
+使用子模块克隆后，如果提示找不到WinSDK，则需要手动重定向Effects的Windows SDK。
+建议使用v142工具链，并使用“10.0”的SDK。
 
 ##### 关于Windows下的XAudio2
 对于Snowing引擎来说，音频是可选模块。
