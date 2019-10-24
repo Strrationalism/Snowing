@@ -48,7 +48,8 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 	else
 	{
 		const auto metadata = playingTrack->player_.GetMetadata();
-		const auto offset = metadata.BeatsPerBar - metadata.BeatOffset;
+		const auto offset = 
+			metadata.BeatOffset ? metadata.BeatsPerBar - metadata.BeatOffset : 0;
 		auto t = playingTrack->metronome_.GetTime();
 		auto t2 = t;
 		t.Beat += offset;
@@ -100,8 +101,8 @@ void Fyee::BGMPlayer::ClearQueueTail()
 
 bool Fyee::BGMPlayer::Update()
 {
-	UpdateScheduledBreakLoop();
 	const bool hasObject = playground_.Update();
+	UpdateScheduledBreakLoop();
 	updateCurrentPlayingTrack();
 	return !(!hasObject && playQueue_.empty());
 }

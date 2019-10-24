@@ -77,9 +77,12 @@ namespace Snowing::Scene
 
 		bool Update() override
 		{
-			isBeat_ = false;
 			const auto t = GetTime();
-			isBeat_ = t.Beat != prevTime_.Beat;
+			
+			isBeat_ = false;
+			if(t.Bar != prevTime_.Bar || t.Beat != prevTime_.Beat)
+				isBeat_ = true;
+			
 			prevTime_ = t;
 
 			return true;
