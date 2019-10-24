@@ -36,13 +36,9 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 
 	constexpr D3D_FEATURE_LEVEL featureLevels[] =
 	{
-		D3D_FEATURE_LEVEL_11_1,
 		D3D_FEATURE_LEVEL_11_0,
 		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0,
-		D3D_FEATURE_LEVEL_9_3,
-		D3D_FEATURE_LEVEL_9_2,
-		D3D_FEATURE_LEVEL_9_1
+		D3D_FEATURE_LEVEL_10_0
 	};
 
 
@@ -50,12 +46,12 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	switch (level)
 	{
 	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_10_0:
-		selectedFeatureLevel = 3;
-		static_assert(featureLevels[3] == D3D_FEATURE_LEVEL_10_0);
+		selectedFeatureLevel = 2;
+		static_assert(featureLevels[2] == D3D_FEATURE_LEVEL_10_0);
 		break;
 	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_11_0:
-		selectedFeatureLevel = 1;
-		static_assert(featureLevels[1] == D3D_FEATURE_LEVEL_11_0);
+		selectedFeatureLevel = 0;
+		static_assert(featureLevels[0] == D3D_FEATURE_LEVEL_11_0);
 		break;
 	default:
 		throw std::invalid_argument{ "Not supported feature level." };
@@ -87,9 +83,10 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 
 
 	bool succ = false;
+	HRESULT hr;
 	for (auto type : types)
 	{
-		auto hr = D3D11CreateDeviceAndSwapChain(
+		hr = D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			type,
 			nullptr,
@@ -135,7 +132,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	}
 
 	if (!succ)
-		throw std::runtime_error{ "D3D Device create failed:" + std::to_string(succ) };
+		throw std::runtime_error{ "D3D Device create failed:" + std::to_string(hr) };
 
 	const_cast<Handler&>(swapChain_) =
 	{ static_cast<IUnknown*>(swapChain),COMHelper::COMIUnknownDeleter };
