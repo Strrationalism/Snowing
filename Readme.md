@@ -37,6 +37,19 @@
 - XInputControllerVibration - XInput控制器震动特效范例
 - FyeeDemo - Fyee动态BGM系统的Demo
 
+### 兼容性提示
+
+#### Microsoft Windows
+* 最低要求：Microsoft Windows 7 SP1
+* 可再分发库要求：
+	- Microsoft Visual C++ 2015
+	- Microsoft Visual C++ 2017
+	- Microsoft Visual C++ 2019
+	- Microsoft DirectX Redistributable June 2010（用于兼容XAudio 2.7）
+	- KB4019990 （用于Microsoft Windows 7的补丁，用于提供D3DCompiler_47.dll）
+
+
+
 ### FAQ
 
 ##### 对Windows 7兼容性
@@ -66,9 +79,10 @@ X可以为任意盘符，该工具用于打包纹理。
 使用子模块克隆后，如果提示找不到WinSDK，则需要手动重定向Effects的Windows SDK。
 建议使用v142工具链，并使用“10.0”的SDK。
 
-##### 关于Windows下的XAudio2
-对于Snowing引擎来说，音频是可选模块。
-如果需要使用Windows下的XAudio2，需要在包含Snowing.h之前，定义宏USE_XAUDIO2。
+##### 关于Windows下的XAudio2的问题
+如果你创建了XAudio2设备，则有可能失败，可能是因为你没有安装DirectX Redistributable June 2010的可再分发库。
+Snowing引擎为了兼容Windows 7，使用XAudio 2.7版本，此版本在某些Windows下不默认存在（包括Windows 10）。
+XAudio 2.7的可再分发库在DirectX Redistributable June 2010中。
 
 ##### Live2D支持遇到了编译错误
 由于Live2D的开发商的要求，我们不能提前做好Live2D的开发环境，如果你不需要Live2D，可以直接右键点击卸载项目。

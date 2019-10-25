@@ -173,6 +173,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetLoader.h" />
+    <ClInclude Include="audiodefs.h" />
+    <ClInclude Include="comdecl.h" />
     <ClInclude Include="COMHelper.h" />
     <ClInclude Include="D3DBuffer.h" />
     <ClInclude Include="D3DContext.h" />
@@ -194,6 +196,8 @@
     <ClInclude Include="WindowImpl.h" />
     <ClInclude Include="XADevice.h" />
     <ClInclude Include="XASoundPlayer.h" />
+    <ClInclude Include="XAudio2_7.h" />
+    <ClInclude Include="xma2defs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetLoader.cpp" />
