@@ -30,7 +30,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 
 		Graphics::GraphicsInterface<PlatformImpls::WindowsImpl::D3D::Device> keep_;
 	public:
-		Device(const Handler& hWnd, bool windowed = true, FeatureLevel = FeatureLevel::Level_11_0);
+		Device(const Handler& hWnd, bool windowed = true, FeatureLevel = FeatureLevel::Level_10_0);
 		~Device();
 
 		Device(Device&&) = default;
