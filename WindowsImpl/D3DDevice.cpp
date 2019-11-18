@@ -3,6 +3,7 @@
 #include <dxgi.h>
 #include <d3d11.h>
 #include <Utils.h>
+#include <VersionHelpers.h>
 #include "COMHelper.h"
 #include "WindowImpl.h"
 
@@ -27,31 +28,25 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+	sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_SEQUENTIAL;
 	sd.OutputWindow = hwnd;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = windowed;
 	sd.Flags = 0;
 
-	constexpr D3D_FEATURE_LEVEL featureLevels[] =
-	{
-		D3D_FEATURE_LEVEL_11_0,
-		D3D_FEATURE_LEVEL_10_1,
-		D3D_FEATURE_LEVEL_10_0
-	};
+	if (IsWindows8OrGreater())
+		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
 
-	int selectedFeatureLevel;
+	D3D_FEATURE_LEVEL featureLevel;
 	switch (level)
 	{
 	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_10_0:
-		selectedFeatureLevel = 2;
-		static_assert(featureLevels[2] == D3D_FEATURE_LEVEL_10_0);
+		featureLevel = D3D_FEATURE_LEVEL_10_0;
 		break;
 	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_11_0:
-		selectedFeatureLevel = 0;
-		static_assert(featureLevels[0] == D3D_FEATURE_LEVEL_11_0);
+		featureLevel = D3D_FEATURE_LEVEL_11_0;
 		break;
 	default:
 		throw std::invalid_argument{ "Not supported feature level." };
@@ -64,12 +59,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 
 #ifdef _DEBUG
 	constexpr UINT flag = D3D11_CREATE_DEVICE_DEBUG;
-	const D3D_FEATURE_LEVEL* usingFeatureLevels = featureLevels + selectedFeatureLevel;
-	constexpr UINT usingFeatureLevelCount = 1;
 #else
 	constexpr UINT flag = 0;
-	const D3D_FEATURE_LEVEL* const usingFeatureLevels = featureLevels;
-	const UINT usingFeatureLevelCount = selectedFeatureLevel + 1;
 #endif
 
 
@@ -91,8 +82,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 			type,
 			nullptr,
 			flag,
-			usingFeatureLevels,
-			usingFeatureLevelCount,
+			&featureLevel,
+			1,
 			D3D11_SDK_VERSION,
 			&sd,
 			&swapChain,
@@ -113,8 +104,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 				type,
 				nullptr,
 				0,
-				usingFeatureLevels,
-				usingFeatureLevelCount,
+				&featureLevel,
+				1,
 				D3D11_SDK_VERSION,
 				&sd,
 				&swapChain,
