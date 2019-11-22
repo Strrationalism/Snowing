@@ -5,13 +5,14 @@ open System.Collections.Generic
 
 
 let mutable AllProcs = [
-    MakeDir.Proc
-    PackSound.Proc
-    ConvertTexture.Proc
-    PackSprite.Proc
-    ConvertFont.Proc
-    CopyFile.Proc
-]
+        MakeDir.Proc
+        PackSound.Proc
+        ConvertTexture.Proc
+        PackSprite.Proc
+        ConvertFont.Proc
+        CopyFile.Proc
+        GenerateVersionText.Proc
+    ]
 
 let FindProcByCommand command =
     try
