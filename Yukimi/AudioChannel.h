@@ -35,6 +35,10 @@ namespace Yukimi
 		// 停止播放声音
 		void Stop(float fadeOut = 0);
 
+		void SetPan(float pan);
+
+		void SetVolume(float volume);
+
 		// 获取播放位置
 		uint32_t GetPosition() const;
 

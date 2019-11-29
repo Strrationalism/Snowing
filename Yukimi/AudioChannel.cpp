@@ -117,3 +117,13 @@ std::optional<const Snowing::Scene::Metronome<>*> Yukimi::AudioChannel::GetMetro
 	else
 		return std::nullopt;
 }
+
+void Yukimi::AudioChannel::SetPan(float pan)
+{
+	player_.SetPan(pan);
+}
+
+void Yukimi::AudioChannel::SetVolume(float volume)
+{
+	player_.SetVolume(volume);
+}

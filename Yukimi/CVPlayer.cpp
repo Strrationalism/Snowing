@@ -59,3 +59,12 @@ float CVPlayer::GetRealtimeVolume() const
 	else
 		return 0.0f;
 }
+
+void CVPlayer::SetVolumePan(float v, float pan)
+{
+	if (Exist(activeChannel_))
+	{
+		activeChannel_->SetPan(pan);
+		activeChannel_->SetVolume(v);
+	}
+}
