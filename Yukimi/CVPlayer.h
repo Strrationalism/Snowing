@@ -15,7 +15,7 @@ namespace Yukimi
 	public:
 		CVPlayer(AudioChannel::AudioLoader loader);
 
-		void Play(Snowing::AssetName ass);
+		void Play(Snowing::AssetName ass, float pan = 0.0f, float volume = 1.0f);
 		void FadeOutAll();
 		bool Update() override;
 		void VolumeDown();

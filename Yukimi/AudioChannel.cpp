@@ -2,13 +2,14 @@
 #include "AudioChannel.h"
 
 using namespace Yukimi;
-AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uint32_t begin, float pan):
+AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uint32_t begin, float pan, float volume):
 	onSoundLoaded_{
 		[this] { return Snowing::FutureReady(soundLoading_); },
-		[this,fadeIn,begin,pan] {
+		[this,fadeIn,begin,pan,volume] {
 			sound_ = soundLoading_.get();
 			fadeVolume_ = 0;
 			player_.SetPan(pan);
+			player_.SetVolume(volume);
 			player_.Play(&sound_, begin);
 
 			fadeVolume_.Start(1, fadeIn);
@@ -79,14 +80,15 @@ float AudioChannel::GetRealtimeVolume() const
 	return player_.GetRealtimeVolume();
 }
 
-Yukimi::AudioChannel::AudioChannel(Snowing::Blob&& soundBlob, float fadeIn, uint32_t begin, float pan):
+Yukimi::AudioChannel::AudioChannel(Snowing::Blob&& soundBlob, float fadeIn, uint32_t begin, float pan,float volume):
 	sound_{ std::move(soundBlob) },
 	onSoundLoaded_{
 		[this] { return  Snowing::FutureReady(soundLoading_); },
-		[this,fadeIn,begin,pan] {
+		[this,fadeIn,begin,pan,volume] {
 			sound_ = soundLoading_.get();
 			fadeVolume_ = 0;
 			player_.SetPan(pan);
+			player_.SetVolume(volume);
 			player_.Play(&sound_, begin);
 
 			fadeVolume_.Start(1, fadeIn);
@@ -120,10 +122,12 @@ std::optional<const Snowing::Scene::Metronome<>*> Yukimi::AudioChannel::GetMetro
 
 void Yukimi::AudioChannel::SetPan(float pan)
 {
-	player_.SetPan(pan);
+	if(player_.GetPlaying())
+		player_.SetPan(pan);
 }
 
 void Yukimi::AudioChannel::SetVolume(float volume)
 {
-	player_.SetVolume(volume);
+	if(player_.GetPlaying())
+		player_.SetVolume(volume);
 }

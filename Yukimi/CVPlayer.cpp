@@ -12,10 +12,10 @@ CVPlayer::CVPlayer(AudioChannel::AudioLoader loader) :
 	loader_{ loader }
 {}
 
-void CVPlayer::Play(Snowing::AssetName ass)
+void CVPlayer::Play(Snowing::AssetName ass,float pan,float volume)
 {
 	FadeOutAll();
-	activeChannel_ = Emplace<>(loader_, ass, 0.0f, 0u, 0.0f);
+	activeChannel_ = Emplace<>(loader_, ass, 0.0f, 0u,pan,volume);
 	activeChannel_->FadeVolume(volume_);
 }
 
