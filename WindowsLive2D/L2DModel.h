@@ -3,9 +3,13 @@
 
 namespace Live2D
 {
+	class LipSync;
 	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>,Snowing::NoCopyMove
 	{
 	private:
+		friend class ::Live2D::LipSync;
+		::Live2D::LipSync* lipSync_ = nullptr;
+
 		float ratio_;
 		Snowing::Math::Vec2f translate_ = { 0,0 }, scale_ = { 1,1 };
 		const ModelAsset* asset_;

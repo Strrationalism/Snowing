@@ -6,6 +6,7 @@
 #include <Effect/CubismPose.hpp>
 #include <Math/CubismModelMatrix.hpp>
 #include <Motion/CubismMotionManager.hpp>
+#include "L2DLipSync.h"
 
 void Live2D::Model::updateMatrix()
 {
@@ -100,6 +101,17 @@ bool Live2D::Model::Update()
 		pose_.Get<Csm::CubismPose*>()->UpdateParameters(
 			model_.Get<Csm::CubismModel*>(),
 			dt);
+
+	if (lipSync_)
+	{
+		const auto setting =
+			GetAsset()->GetSetting().Get<Csm::CubismModelSettingJson*>();
+
+		const auto paramCount = setting->GetLipSyncParameterCount();
+		for (Csm::csmInt32 id = 0; id < paramCount; ++id)
+			GetModel().Get<Csm::CubismModel*>()->SetParameterValue(
+				setting->GetLipSyncParameterId(id), lipSync_->volume_, 0.8f);
+	}
 
 	model_.Get<Csm::CubismModel*>()->Update();
 
