@@ -36,7 +36,7 @@ namespace Yukimi
 
 		Script::CharacterNameElement* characterNameElement_;
 
-
+		float textWaitTime = 0.025f;
 
 		// 如果当前行结束后需要停止，则返回true
 		bool doElement(const Script::Element&);
@@ -62,6 +62,8 @@ namespace Yukimi
 
 		TextWindow& GetTextWindow();
 		uint64_t GetContinuation() const;
+
+		void SetTextWaitTime(float t);
 
 		void SetContinuation(uint64_t cont);
 

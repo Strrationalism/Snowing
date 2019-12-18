@@ -11,7 +11,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	if (auto textElement = std::get_if<TextElement>(&e))
 	{
 		auto fontStyle = TextWindowFontStyle::Combine(fontStyleStack_.data(), fontStyleStack_.size());
-		textWindow_.AppendText(textElement->Text, fontStyle, 0.025f);
+		textWindow_.AppendText(textElement->Text, fontStyle, textWaitTime);
 		return true;
 	}
 	else if (auto fontStyleElement = std::get_if<FontStyleElement>(&e))
@@ -125,6 +125,11 @@ Yukimi::TextWindow& Yukimi::AVGPlayer::GetTextWindow()
 uint64_t Yukimi::AVGPlayer::GetContinuation() const
 {
 	return nextLine_;
+}
+
+void Yukimi::AVGPlayer::SetTextWaitTime(float t)
+{
+	textWaitTime = t;
 }
 
 void Yukimi::AVGPlayer::SetContinuation(uint64_t cont)
