@@ -47,11 +47,9 @@ bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(Snowing::Input::Classic
 	{
 	case Snowing::Input::ClassicGamepadArrow::Up:
 		if (Input::KeyPressed(KeyboardKey::Up)) return true;
-		if (Input::Trigger(MouseWheel{}) < 0) return true;
 		break;
 	case Snowing::Input::ClassicGamepadArrow::Down:
 		if (Input::KeyPressed(KeyboardKey::Down)) return true;
-		if (Input::Trigger(MouseWheel{}) > 0) return true;
 		break;
 	case Snowing::Input::ClassicGamepadArrow::Left:
 		if (Input::KeyPressed(KeyboardKey::Left)) return true;
