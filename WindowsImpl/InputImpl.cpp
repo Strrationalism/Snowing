@@ -99,9 +99,15 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::PushMessage(const Handler p
 	
 	case WM_MOUSEWHEEL:
 	{
-		const auto delta = static_cast<short>(HIWORD(msg->wParam));
-		wheel_.push(0.0f);
-		wheel_.push(delta > 0 ? -1.0f : 1.0f);
+		const auto delta = GET_WHEEL_DELTA_WPARAM(msg->wParam);
+		wheel_ += static_cast<float>(delta) / WHEEL_DELTA;
+		break;
+	}
+
+	case WM_MOUSEHWHEEL:
+	{
+		const auto delta = GET_WHEEL_DELTA_WPARAM(msg->wParam);
+		hWheel_ += static_cast<float>(delta) / WHEEL_DELTA;
 		break;
 	}
 
@@ -228,15 +234,16 @@ size_t Snowing::PlatformImpls::WindowsImpl::InputImpl::GetMaxTouchInputCount() c
 }
 float Snowing::PlatformImpls::WindowsImpl::InputImpl::Trigger(Snowing::Input::MouseWheel) const
 {
-	if (wheel_.empty())
-		return 0.0f;
-	else
-		return wheel_.front();
+	return wheel_;
+}
+float Snowing::PlatformImpls::WindowsImpl::InputImpl::Trigger(Snowing::Input::MouseHWheel) const
+{
+	return hWheel_;
 }
 void Snowing::PlatformImpls::WindowsImpl::InputImpl::Update()
 {
-	if (!wheel_.empty())
-		wheel_.pop();
+	wheel_ = 0;
+	hWheel_ = 0;
 }
 #undef MAPKEY
 

@@ -24,6 +24,7 @@ int __cdecl main()
 	assert(&engine == &Snowing::Engine::Get());
 
 	Snowing::Input::TriggerWatcher Wheel{ &Input::Get() ,MouseWheel{} };
+	Snowing::Input::TriggerWatcher HWheel{ &Input::Get() ,MouseHWheel{} };
 
 #define KEYWATCHER(KeyValue,KeyName) \
 	Snowing::Input::KeyWatcher<Input,decltype(KeyValue)> KeyName{ &Input::Get(),KeyValue }
@@ -78,6 +79,10 @@ int __cdecl main()
 		Wheel.Update();
 		if (Wheel.IsNew())
 			cout << "Mouse Wheel:" << Wheel.Value() << endl;
+
+		HWheel.Update();
+		if (HWheel.IsNew())
+			cout << "Mouse H Wheel:" << HWheel.Value() << endl;
 		
 
 #define WATCHKEY(Key) {\

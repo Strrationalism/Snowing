@@ -2,7 +2,6 @@
 #include <Input.h>
 #include "Handler.h"
 #include "InputParam.h"
-#include <queue>
 #include "SingleInstance.h"
 
 namespace Snowing::PlatformImpls::WindowsImpl
@@ -19,7 +18,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		const size_t touchInputCount_;
 		std::vector<uint8_t> touchInputCache_;
 		std::vector<TouchPointInfo> touchPoints_;
-		std::queue<float> wheel_;
+		float wheel_ = 0, hWheel_ = 0;
 		bool windowFocused_ = false;
 		std::optional<Math::Vec2f> mousePosition_;
 
@@ -47,6 +46,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		size_t GetMaxTouchInputCount() const;
 
 		float Trigger(Snowing::Input::MouseWheel) const;
+		float Trigger(Snowing::Input::MouseHWheel) const;
 
 		void Update();
 	};

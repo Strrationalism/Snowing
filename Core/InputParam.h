@@ -36,6 +36,10 @@ namespace Snowing::Input
 	struct MouseWheel final
 	{};
 
+	//鼠标水平滚轮，作为Input的Trigger参数
+	struct MouseHWheel final
+	{};
+
 	//窗口被Focus消息，作为Window的KeyPressed参数
 	struct WindowFocused final
 	{};
