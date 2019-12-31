@@ -44,6 +44,12 @@ namespace Snowing::Scene::UI
 			deviceCoord_{ Math::ConvertCoordnate2DToCenter(deviceCoord) }
 		{}
 
+		void RefreshSelect()
+		{
+			menu_.Unselect();
+			prevPosition_.reset();
+		}
+
 		bool Update() override
 		{
 			const auto p = 
@@ -71,7 +77,7 @@ namespace Snowing::Scene::UI
 					}
 				}
 
-				if (selected != prevSelect && p != prevPosition_)
+				if (selected != prevSelect && p != prevPosition_ && selected.has_value())
 					select(selected);
 			}
 
