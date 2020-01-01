@@ -2,6 +2,7 @@
 #include "WindowImpl.h"
 #include "PlatformImpls.h"
 #include <mutex>
+#include "COMHelper.h"
 
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
@@ -65,6 +66,7 @@ static void hwndDeleter(void* hwnd)
 	GetClassName((HWND)hwnd, className, 256);
 	DestroyWindow((HWND)hwnd);
 	UnregisterClass(className, GetModuleHandle(nullptr));
+	CoUninitialize();
 }
 
 ///////// 这里有一堆用于处理窗口移动的屎
@@ -166,6 +168,13 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 
 Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<int> size)
 {
+	COMHelper::AssertHResult("CoInitializeEx failed!",
+		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
+
+	Library{ "Imm32.dll" }
+		.GetCast<BOOL(__cdecl*)(IN DWORD)>(
+			"ImmDisableIME")(0);
+
 	auto instance = GetModuleHandle(NULL);//得到程序实例句柄
 
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
