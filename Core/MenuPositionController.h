@@ -28,6 +28,8 @@ namespace Snowing::Scene::UI
 
 		std::optional<Math::Vec2f> prevPosition_;
 
+		bool prevPosOnItem_ = false;
+
 	public:
 
 		template <typename... TPositionArgs,typename TCoordA,typename TCoordB>
@@ -59,6 +61,8 @@ namespace Snowing::Scene::UI
 
 			const auto prevSelect = menu_.GetSelectedIndex();
 
+			bool isOnItem = false;
+
 			if(p.has_value())
 			{
 				const auto position =
@@ -73,16 +77,20 @@ namespace Snowing::Scene::UI
 					if (IsPositionInBox(position, menuItem->GetBox()))
 					{
 						selected = i;
+						isOnItem = true;
 						break;
 					}
 				}
 
 				if (selected != prevSelect && p != prevPosition_ && selected.has_value())
 					select(selected);
+
+				if (prevPosOnItem_ && !isOnItem)
+					select(std::nullopt);
 			}
 
 			prevPosition_ = p;
-			
+			prevPosOnItem_ = isOnItem;
 			return true;
 		}
 	};
