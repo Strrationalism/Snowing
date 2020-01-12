@@ -43,7 +43,7 @@ namespace Snowing::Scene::UI
 			Math::Vec2f fontSize,
 			Graphics::FontSprite::AlignMode alignMode = Graphics::FontSprite::AlignMode::Left):
 			fontRenderer_{ fontRenderer },
-			box_{ box - Math::Vec4f{0.0f,fontSize.y * space.y * MagicFontSize,0.0f,0.0f } }
+			box_{ box - Snowing::Math::Vec4f{0,space.y*fontSize.y,0,0} }
 		{
 			Graphics::FontSprite::SetString(
 				text,
