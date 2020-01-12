@@ -57,17 +57,16 @@ namespace Fyee
 			NextBeat
 		};
 
-		struct NoSchedule{};
 		struct BreakOnNextLoop{};
 		struct BreakWhenJumpTime
 		{
 			BreakTime whenJump;
 			float fadeOutTime = 0.1f;
 		};
-		using BreakLoopSchedule = std::variant<NoSchedule, BreakOnNextLoop, BreakWhenJumpTime>;
+		using BreakLoopSchedule = std::variant<BreakOnNextLoop, BreakWhenJumpTime>;
 
 	private:
-		BreakLoopSchedule breakSchedule_;
+		std::queue<BreakLoopSchedule> breakSchedule_;
 		
 
 	public:

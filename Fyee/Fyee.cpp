@@ -111,66 +111,70 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 {
 	if(playQueue_.empty())
 	{
-		breakSchedule_ = NoSchedule{};
+		while (!breakSchedule_.empty())
+			breakSchedule_.pop();
 		return;
 	}
 
-	// BreakOnNextLoop
-	if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_))
+	if (!breakSchedule_.empty())
 	{
-		const auto playingTrack = getPlayingTrack();
-
-		bool update = false;
-		if (playingTrack == nullptr)
-			update = true;
-		else if (playingTrack->metronome_.GetTime() >= playQueue_.front().length)
-			update = true;
-
-		if (update)
+		// BreakOnNextLoop
+		if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_.front()))
 		{
-			playQueue_.front().loop = false;
+			const auto playingTrack = getPlayingTrack();
 
-			breakSchedule_ = NoSchedule{};
+			bool update = false;
+			if (playingTrack == nullptr)
+				update = true;
+			else if (playingTrack->metronome_.GetTime() >= playQueue_.front().length)
+				update = true;
+
+			if (update)
+			{
+				playQueue_.front().loop = false;
+
+				breakSchedule_.pop();
+			}
 		}
-	}
 
-	// BreakWhenJumpTime
-	else if (auto args = std::get_if<BreakWhenJumpTime>(&breakSchedule_))
-	{
-		const auto cur = getPlayingTrack();
-		bool isTime = false;
-		switch (args->whenJump)
+		// BreakWhenJumpTime
+		else if (auto args = std::get_if<BreakWhenJumpTime>(&breakSchedule_.front()))
 		{
-		case BreakTime::Now:
-			isTime = true;
-			break;
-		case BreakTime::NextBeat:
-			if (cur)
+			const auto cur = getPlayingTrack();
+			bool isTime = false;
+			switch (args->whenJump)
 			{
-				if (cur->metronome_.IsBeat())
-					isTime = true;
-			}
-			else
+			case BreakTime::Now:
 				isTime = true;
-			break;
-		case BreakTime::NextBar:
-			if (cur)
-			{
-				if (cur->metronome_.IsBeat() && cur->metronome_.GetTime().Beat == 0)
+				break;
+			case BreakTime::NextBeat:
+				if (cur)
+				{
+					if (cur->metronome_.IsBeat())
+						isTime = true;
+				}
+				else
 					isTime = true;
-			}
-			else
-				isTime = true;
-			break;	
-		};
+				break;
+			case BreakTime::NextBar:
+				if (cur)
+				{
+					if (cur->metronome_.IsBeat() && cur->metronome_.GetTime().Beat == 0)
+						isTime = true;
+				}
+				else
+					isTime = true;
+				break;
+			};
 
-		if(isTime)
-		{
-			if (cur) cur->FadeOutAndStop(args->fadeOutTime);
-			mainlyTrack_ = nullptr;
-			breakSchedule_ = NoSchedule{};
-			playQueue_.pop_front();
-			updateCurrentPlayingTrack();
+			if (isTime)
+			{
+				if (cur) cur->FadeOutAndStop(args->fadeOutTime);
+				mainlyTrack_ = nullptr;
+				breakSchedule_.pop();
+				playQueue_.pop_front();
+				updateCurrentPlayingTrack();
+			}
 		}
 	}
 }
@@ -178,7 +182,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 
 void Fyee::BGMPlayer::ScheduleBreakLoop(BreakLoopSchedule schedule)
 {
-	breakSchedule_ = schedule;
+	breakSchedule_.push(schedule);
 }
 
 const Snowing::Blob* Fyee::BGMPlayer::GetPlaying() 
