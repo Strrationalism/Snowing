@@ -172,7 +172,7 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
 
 	Library{ "Imm32.dll" }
-		.GetCast<BOOL(__cdecl*)(IN DWORD)>(
+		.GetCast<BOOL(__stdcall*)(IN DWORD)>(
 			"ImmDisableIME")(0);
 
 	auto instance = GetModuleHandle(NULL);//得到程序实例句柄
