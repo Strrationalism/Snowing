@@ -46,7 +46,7 @@ void Snowing::PlatformImpls::Abort(const char * log)
 		log,
 		"Error",
 		MsgBoxType);
-	std::terminate();
+	std::quick_exit(-1);
 }
 
 void Snowing::PlatformImpls::Abort(const wchar_t * log)
