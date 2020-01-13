@@ -56,7 +56,7 @@ void Snowing::PlatformImpls::Abort(const wchar_t * log)
 		log,
 		L"Error",
 		MsgBoxType);
-	std::terminate();
+	std::quick_exit(-1);
 }
 
 static void hwndDeleter(void* hwnd)
