@@ -97,6 +97,14 @@ void Fyee::BGMPlayer::ClearQueueTail()
 		playQueue_.pop_back();
 }
 
+void Fyee::BGMPlayer::Reset()
+{
+	playQueue_.clear();
+	playground_.Iter([](auto& x) {x.FadeOutAndStop(0.1f); });
+	mainlyTrack_ = nullptr;
+	breakSchedule_.clear();
+}
+
 const std::deque<Fyee::BGMPlayer::BreakLoopSchedule>& Fyee::BGMPlayer::BreakScheduleQueue()
 {
 	return breakSchedule_;
@@ -126,6 +134,9 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 		// BreakOnNextLoop
 		if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_.front()))
 		{
+			if(!playQueue_.empty())
+				playQueue_.front().loop = false;
+
 			const auto playingTrack = getPlayingTrack();
 
 			bool update = false;
@@ -135,11 +146,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 				update = true;
 
 			if (update)
-			{
-				playQueue_.front().loop = false;
-
 				breakSchedule_.pop_front();
-			}
 		}
 
 		// BreakWhenJumpTime

@@ -50,7 +50,7 @@ namespace Fyee
 
 	public:
 		// schedule break loop
-		enum class BreakTime
+		enum class BreakTime : uint32_t
 		{
 			Now,
 			NextBar,
@@ -81,6 +81,8 @@ namespace Fyee
 
 		// 清除所有待播放的Track，只保留正在播放的Track
 		void ClearQueueTail();
+
+		void Reset();
 
 		const std::deque<BreakLoopSchedule>& BreakScheduleQueue();
 
