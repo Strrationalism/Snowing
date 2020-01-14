@@ -97,6 +97,11 @@ void Fyee::BGMPlayer::ClearQueueTail()
 		playQueue_.pop_back();
 }
 
+const std::deque<Fyee::BGMPlayer::BreakLoopSchedule>& Fyee::BGMPlayer::BreakScheduleQueue()
+{
+	return breakSchedule_;
+}
+
 
 
 bool Fyee::BGMPlayer::Update()
@@ -112,7 +117,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 	if(playQueue_.empty())
 	{
 		while (!breakSchedule_.empty())
-			breakSchedule_.pop();
+			breakSchedule_.pop_front();
 		return;
 	}
 
@@ -133,7 +138,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 			{
 				playQueue_.front().loop = false;
 
-				breakSchedule_.pop();
+				breakSchedule_.pop_front();
 			}
 		}
 
@@ -171,7 +176,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 			{
 				if (cur) cur->FadeOutAndStop(args->fadeOutTime);
 				mainlyTrack_ = nullptr;
-				breakSchedule_.pop();
+				breakSchedule_.pop_front();
 				playQueue_.pop_front();
 				updateCurrentPlayingTrack();
 			}
@@ -182,7 +187,7 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 
 void Fyee::BGMPlayer::ScheduleBreakLoop(BreakLoopSchedule schedule)
 {
-	breakSchedule_.push(schedule);
+	breakSchedule_.push_back(schedule);
 }
 
 const Snowing::Blob* Fyee::BGMPlayer::GetPlaying() 

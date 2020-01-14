@@ -1,5 +1,5 @@
 #pragma once
-#include <queue>
+#include <deque>
 #include <Snowing.h>
 #include <memory>
 
@@ -66,7 +66,7 @@ namespace Fyee
 		using BreakLoopSchedule = std::variant<BreakOnNextLoop, BreakWhenJumpTime>;
 
 	private:
-		std::queue<BreakLoopSchedule> breakSchedule_;
+		std::deque<BreakLoopSchedule> breakSchedule_;
 		
 
 	public:
@@ -81,6 +81,8 @@ namespace Fyee
 
 		// 清除所有待播放的Track，只保留正在播放的Track
 		void ClearQueueTail();
+
+		const std::deque<BreakLoopSchedule>& BreakScheduleQueue();
 
 		void ScheduleBreakLoop(BreakLoopSchedule schedule);
 
