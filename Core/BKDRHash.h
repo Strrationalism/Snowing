@@ -20,7 +20,8 @@ namespace Snowing
 			return hash;
 		}
 
-		static inline uint64_t Hash(const char* bytes, size_t size) noexcept
+		template<typename CharType>
+		static inline uint64_t Hash(const CharType* bytes, size_t size) noexcept
 		{
 			assert(bytes);
 			assert(size);
@@ -41,7 +42,8 @@ namespace Snowing
 			hash_{ h }
 		{}
 
-		BKDRHash(const char* bytes,size_t size) noexcept :
+		template <typename CharType>
+		BKDRHash(const CharType* bytes,size_t size) noexcept :
 			hash_{ Hash(bytes,size) }
 		{
 			assert(bytes);
