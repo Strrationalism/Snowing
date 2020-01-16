@@ -12,9 +12,10 @@ let main args =
             Console.SetWindowSize(90,40)
         with _ -> ()
         let OutputPath =
-            args
-            |> Array.head
-            |> System.IO.Directory.CreateDirectory
+            if Directory.Exists (Array.head args) then
+                DirectoryInfo(Array.head args)
+            else
+                Directory.CreateDirectory (Array.head args)
 
         let Jobs = 
             BuildScriptParser.ParseBuildScript OutputPath.FullName "BuildScript.txt" 

@@ -11,7 +11,7 @@ let FinalRunProc = {
     Proc = runCommandProc
     InputType = InputType.None
     Command = "FinalRun"
-    FinishLogEnabled = true
+    FinishLogEnabled = false
     Prority = System.Int32.MaxValue
 }
 
