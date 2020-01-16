@@ -62,6 +62,7 @@
     <Compile Include="JobProcs\ConvertFont.fs" />
     <Compile Include="JobProcs\CopyFile.fs" />
     <Compile Include="JobProcs\GenerateVersionText.fs" />
+    <Compile Include="JobProcs\RunCommand.fs" />
     <Compile Include="JobProcs\JobProcs.fs" />
     <Compile Include="BuildScriptParser.fs" />
     <Compile Include="ProcRunner.fs" />

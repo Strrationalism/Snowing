@@ -12,6 +12,9 @@ let mutable AllProcs = [
         ConvertFont.Proc
         CopyFile.Proc
         GenerateVersionText.Proc
+        RunCommand.FinalRunProc
+        RunCommand.PostRunProc
+        RunCommand.PreRunProc
     ]
 
 let FindProcByCommand command =
