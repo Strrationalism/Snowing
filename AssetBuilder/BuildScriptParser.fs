@@ -7,12 +7,13 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
     let scriptInfo =
         System.IO.FileInfo scriptFilePath
 
-    let makeJob command args input output : Job.Job = {
+    let makeJob command args input output encrypt : Job.Job = {
         Processor = JobProcs.FindProcByCommand command |> Option.get
         Input = input |> Array.toList
         OutputPath = baseOutputPath + "\\" + output
         Arguments = args |> Array.toList
-        ScriptDir = scriptInfo.Directory }
+        ScriptDir = scriptInfo.Directory
+        Encrypt = encrypt }
 
     scriptFilePath
     |> System.IO.File.ReadAllLines
@@ -56,7 +57,11 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
         input.Split ',' |> Array.map (fun x -> x.Trim()),
         output.Trim())
 
-    |> Array.collect (fun (cmd,args,i,o) ->
+    |> Array.collect (fun (cmdWithEncryptFlag,args,i,o) ->
+        let encrypt = cmdWithEncryptFlag.StartsWith "*"
+        let cmd =
+            if encrypt then cmdWithEncryptFlag.[1..]
+            else cmdWithEncryptFlag
         match cmd with
         | "Include" -> 
             scriptInfo.DirectoryName + "\\" + (Array.head i)
@@ -70,11 +75,11 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
                     let n =
                         System.IO.FileInfo(path).Name
                     o + "\\" + n.[.. -1 + n.IndexOf '.'] + "." + args.[1]
-                makeJob args.[0] args.[2..] [|path|] fileName)
+                makeJob args.[0] args.[2..] [|path|] fileName encrypt)
             |> Seq.toArray
 
         | _ when JobProcs.JobProcs.FindProcByCommand cmd |> Option.isSome ->
-            let j = makeJob cmd args i o
+            let j = makeJob cmd args i o encrypt
             match j.Processor.Command with
             | "Custum" ->
                 j.Processor.Proc j

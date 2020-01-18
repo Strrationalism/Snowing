@@ -56,6 +56,7 @@ let private PackSprite (job:Job) =
         OutputPath = job.OutputPath
         Arguments = job.Arguments
         ScriptDir = job.ScriptDir
+        Encrypt = false
     }
     
     JobProcs.ConvertTexture.ConvertTexture spriteFrames true newJob

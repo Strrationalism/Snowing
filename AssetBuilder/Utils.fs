@@ -4,13 +4,26 @@ open System.Diagnostics
 open System.IO
 open System.Threading
 open System
+open System.Security.Cryptography
+
+let EncryptFile (aes:System.Security.Cryptography.AesCryptoServiceProvider option) fileName = 
+    fileName
+    |> File.ReadAllBytes
+    |> fun fileBytes ->
+        match aes with
+        | None -> failwith "AesKey.bin not found!"
+        | Some aes -> 
+            let outputContent = Array.copy fileBytes
+            aes.CreateEncryptor().TransformBlock(fileBytes,0,fileBytes.Length/16*16,outputContent,0)
+            |> ignore
+            File.WriteAllBytes(fileName,outputContent)
 
 let StartWait exe arg =
     use prc = new Process()
     prc.StartInfo.FileName <- exe
     prc.StartInfo.WorkingDirectory <- (FileInfo exe).DirectoryName
     prc.StartInfo.Arguments <- arg
-    prc.StartInfo.WindowStyle <- ProcessWindowStyle.Normal
+    prc.StartInfo.WindowStyle <- ProcessWindowStyle.Hidden
     if prc.Start() |> not then
         failwith ("Can not start " + exe)
     prc.WaitForExit ()

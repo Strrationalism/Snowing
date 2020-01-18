@@ -50,6 +50,7 @@ let private ConvertFont (job:Job) =
             OutputPath = job.OutputPath + "-" + string faceID + ".tmp"
             Arguments = job.Arguments
             ScriptDir = job.ScriptDir
+            Encrypt = false
         }
 
         ConvertTexture (chars |> Array.map (fun x -> x.Sprite)) true ctxJob)
