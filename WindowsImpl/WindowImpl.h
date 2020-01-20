@@ -18,6 +18,8 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		WMCloseHandler wmCloseHandler_ = nullptr;
 
 		Graphics::WindowInterface<PlatformImpls::WindowsImpl::WindowImpl> keepInterface_;
+
+		Math::Vec2<int> wndSize_;
 	public:
 		WindowImpl(const WindowImpl&) = delete;
 		WindowImpl(WindowImpl&&) = default;

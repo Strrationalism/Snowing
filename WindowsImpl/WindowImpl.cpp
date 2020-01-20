@@ -166,7 +166,8 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 	windowFocused_ = b;
 }
 
-Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<int> size)
+Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<int> size):
+	wndSize_{ size }
 {
 	COMHelper::AssertHResult("CoInitializeEx failed!",
 		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
@@ -294,6 +295,7 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetWindowed(bool windowed)
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> size)
 {
+	wndSize_ = size;
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
@@ -354,10 +356,11 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
 {
-	RECT r;
+	/*RECT r; //这里需要进一步讨论，在某些情况下GetClientRect返回四个0
 	if (!GetClientRect(hwnd_.Get<HWND>(), &r))
 		throw std::exception{ __FUNCDNAME__ "Faild to call GetClientRect." };
-	return { r.right - r.left,r.bottom - r.top };
+	return { r.right - r.left,r.bottom - r.top };*/
+	return wndSize_;
 }
 
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
