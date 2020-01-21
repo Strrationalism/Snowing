@@ -119,9 +119,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MemPool.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)AES.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)CSVParser.h">
       <Filter>Utils</Filter>
     </ClInclude>
