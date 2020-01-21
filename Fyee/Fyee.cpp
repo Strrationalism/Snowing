@@ -171,8 +171,15 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 			case BreakTime::NextBar:
 				if (cur)
 				{
-					if (cur->metronome_.IsBeat() && cur->metronome_.GetTime().Beat == 0)
-						isTime = true;
+					if (cur->metronome_.IsBeat())
+					{
+						const auto offset = 
+							Snowing::Audio::GetSoundMetadata(*(playQueue_.begin() + 1)->soundBlob).BeatOffset;
+						if (cur->metronome_.GetTime().Beat == offset && cur->player_.GetMetadata().BeatsPerBar)
+						{
+							isTime = true;
+						}
+					}
 				}
 				else
 					isTime = true;

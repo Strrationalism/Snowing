@@ -231,3 +231,7 @@ Snowing::Audio::Metadata Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPl
 	return metadata_;
 }
 
+const Snowing::Audio::Metadata& Snowing::Audio::GetSoundMetadata(const Snowing::Blob& soundBlob)
+{
+	return soundBlob.Get<SoundHead*>(0)->metadata;
+}
