@@ -173,8 +173,13 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 				{
 					if (cur->metronome_.IsBeat())
 					{
-						const auto offset = 
-							Snowing::Audio::GetSoundMetadata(*(playQueue_.begin() + 1)->soundBlob).BeatOffset;
+						const auto offset =
+							std::invoke([this] {
+							if (playQueue_.size() >= 2)
+								return Snowing::Audio::GetSoundMetadata(
+									*(playQueue_.begin() + 1)->soundBlob).BeatOffset;
+							else return 0;
+							});
 						if (cur->metronome_.GetTime().Beat == offset && cur->player_.GetMetadata().BeatsPerBar)
 						{
 							isTime = true;
