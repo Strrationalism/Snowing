@@ -94,11 +94,13 @@ namespace Snowing::Scene::Debug
 		};
 
 		bool killed_ = false;
+		const bool clearScreen_;
 
 	public:
 		DebugMenuInterface(
 			TTech *tech,
-			const TFont *font) :
+			const TFont *font,
+			bool clearScreen = false) :
 			fr_{
 				&TGraphics::Get().MainContext(),
 				tech,
@@ -106,7 +108,8 @@ namespace Snowing::Scene::Debug
 				font,
 				&vb_
 			},
-			font_{ *font }
+			font_{ *font },
+			clearScreen_{ clearScreen }
 		{ 
 			menuMouseCtrl_.RefreshSelect();
 		}
@@ -121,6 +124,9 @@ namespace Snowing::Scene::Debug
 		bool Update() override
 		{
 			TEngine::Get().Draw([this] {
+				if(clearScreen_)
+					TGraphics::MainContext().ClearRenderTarget(
+						TGraphics::MainRenderTarget());
 				TGraphics::MainContext().SetRenderTarget(
 					&TGraphics::MainRenderTarget());
 				fr_.DrawToSpriteBuffer(text_);
