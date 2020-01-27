@@ -2,7 +2,7 @@
 #include "AssetLoader.h"
 
 using namespace Snowing;
-
+using namespace std;
 Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
 {
 	std::ifstream in{ fileName,std::ios::binary };
@@ -13,7 +13,7 @@ Blob Snowing::PlatformImpls::WindowsImpl::ReadFile(const char * fileName)
 		sprintf_s(filePath, "../data/%s", fileName);
 		in.open(filePath, std::ios::binary);
 		if (in.fail())
-			throw std::runtime_error{ "Can not find file!" };
+			throw std::runtime_error{ "Can not find file:"s + fileName };
 	}
 
 	in.seekg(0, std::ios::end);
