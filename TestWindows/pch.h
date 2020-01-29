@@ -5,6 +5,9 @@
 
 #pragma once
 
+#define WINVER 0x0601
+#define _WIN32_WINNT 0x0601
+
 #define USE_XAUDIO2
 #define GTEST_HAS_TR1_TUPLE 0
 #define GTEST_HAS_STD_TUPLE_ 1
