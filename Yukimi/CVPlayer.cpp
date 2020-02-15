@@ -68,3 +68,8 @@ void CVPlayer::SetVolumePan(float v, float pan)
 		activeChannel_->SetVolume(v);
 	}
 }
+
+bool Yukimi::CVPlayer::IsPlaying() const
+{
+	return Snowing::Scene::Group<AudioChannel>::Count() > 0;
+}

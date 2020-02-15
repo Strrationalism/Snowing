@@ -23,6 +23,8 @@ namespace Yukimi
 		float GetRealtimeVolume() const;
 
 		void SetVolumePan(float v,float pan);
+
+		bool IsPlaying() const;
 	};
 }
 
