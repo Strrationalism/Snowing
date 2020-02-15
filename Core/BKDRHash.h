@@ -49,7 +49,8 @@ namespace Snowing
 			assert(bytes);
 		}
 
-		BKDRHash(std::string_view sv) noexcept :
+		template <typename CharType>
+		BKDRHash(std::basic_string_view<CharType> sv) noexcept :
 			hash_{ Hash(sv.data(),sv.size()) }
 		{}
 
