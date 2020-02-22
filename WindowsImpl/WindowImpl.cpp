@@ -365,13 +365,19 @@ Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSiz
 
 Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 {
-	RECT desktopRect;
+	// 旧版获得窗口大小，受到DPI影响
+	/*RECT desktopRect;
 	const auto desktop = GetDesktopWindow();
 	if (!GetClientRect(desktop, &desktopRect))
 		throw std::runtime_error("Get desktop size failed.");
 	return {
 		desktopRect.right - desktopRect.left,
-		desktopRect.bottom - desktopRect.top };
+		desktopRect.bottom - desktopRect.top };*/
+
+	return {
+		GetSystemMetrics(SM_CXSCREEN),
+		GetSystemMetrics(SM_CYSCREEN)
+	};
 
 }
 
