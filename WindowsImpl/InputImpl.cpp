@@ -31,6 +31,14 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::PushMessage(const Handler p
 		const UINT inputMsgCount = LOWORD(msg->wParam);
 		if (inputMsgCount)
 		{
+			RECT rect;
+			GetClientRect(msg->hwnd, &rect);
+			const Math::Vec2<int> screenSize
+			{
+				rect.right - rect.left,
+				rect.bottom - rect.top
+			};
+
 			touchInputCache_.resize(inputMsgCount);
 			const auto cache = reinterpret_cast<PTOUCHINPUT>(touchInputCache_.data());
 			if (GetTouchInputInfo((HTOUCHINPUT)msg->lParam,inputMsgCount, cache,sizeof(TOUCHINPUT)))
@@ -43,13 +51,11 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::PushMessage(const Handler p
 				throw std::runtime_error{ std::string{__FUNCDNAME__ " Cannot get touch input info. ID:"} + std::to_string(GetLastError()) };
 			}
 
-			const auto convertTouch = [hwnd = msg->hwnd](LONG x, LONG y) -> std::optional<Snowing::Math::Vec2f>
+			const auto convertTouch = [hwnd = msg->hwnd, screenSize](LONG x, LONG y) -> std::optional<Snowing::Math::Vec2f>
 			{
 				POINT p{ TOUCH_COORD_TO_PIXEL(x),TOUCH_COORD_TO_PIXEL(y) };
 				if (!ScreenToClient(hwnd, &p))
 					throw std::exception{ __FUNCDNAME__ "Failed to call ScreenToClient." };
-
-				const auto screenSize = WindowImpl::Get().GetSize();
 
 				const Snowing::Math::Vec2f posInPixel
 				{
