@@ -89,6 +89,8 @@ bool Live2D::Model::Update()
 {
 	const float dt = Snowing::Engine::Get().DeltaTime();
 
+	model_.Get<Csm::CubismModel*>()->SaveParameters();
+
 	motionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
 		model_.Get<Csm::CubismModel*>(),
 		dt);
@@ -132,6 +134,8 @@ bool Live2D::Model::Update()
 		renderer->DrawModel();
 		renderer->EndFrame(device);
 	});
+
+	model_.Get<Csm::CubismModel*>()->LoadParameters();
 
 	return true;
 }
