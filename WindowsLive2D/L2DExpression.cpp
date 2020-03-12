@@ -36,3 +36,15 @@ void Live2D::Expression::SetFadeOutTime(float t)
 	motion->SetFadeOutTime(t);
 }
 
+float Live2D::Expression::GetWeight() const
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	return motion->GetWeight();
+}
+
+void Live2D::Expression::SetWeight(float w)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	return motion->SetWeight(w);
+}
+

@@ -16,5 +16,8 @@ namespace Live2D
 
 		void SetFadeInTime(float t);
 		void SetFadeOutTime(float t);
+
+		float GetWeight() const;
+		void SetWeight(float w);
 	};
 }
