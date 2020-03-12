@@ -20,6 +20,19 @@ void Live2D::Expression::Apply() const
 {
 	const auto m = model_->GetExpressionManager().Get<Csm::CubismMotionManager*>();
 	const auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	m->StopAllMotions();
 	m->StartMotion(motion, false, 1);
+}
+
+void Live2D::Expression::SetFadeInTime(float t)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	motion->SetFadeInTime(t);
+}
+
+void Live2D::Expression::SetFadeOutTime(float t)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	motion->SetFadeOutTime(t);
 }
 

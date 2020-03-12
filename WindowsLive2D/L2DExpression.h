@@ -13,5 +13,8 @@ namespace Live2D
 		Expression(Model* model, size_t expressionID);
 
 		void Apply() const;
+
+		void SetFadeInTime(float t);
+		void SetFadeOutTime(float t);
 	};
 }

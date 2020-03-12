@@ -17,33 +17,6 @@
 #include "LibraryImpl.h"
 #include <filesystem>
 
-namespace Snowing
-{
-
-#ifndef PUBLISH_MODE
-
-	using AssetName = const char*;
-
-	[[nodiscard]]
-	inline Blob LoadAsset(AssetName name)
-	{
-		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name);
-	}
-
-	inline void CallAssetBuilder()
-	{
-		constexpr char path[] = "../AssetBuilderRelease/AssetBuilder.exe";
-		constexpr char cmd[] = 
-			"start /wait /b "
-			"/d ..\\..\\Assets "
-			"../AssetBuilderRelease/AssetBuilder.exe "
-			"../build/data";
-		if (std::filesystem::exists(path))
-			system(cmd);
-	}
-
-#endif
-}
 
 namespace Snowing::PlatformImpls
 {
@@ -69,4 +42,37 @@ namespace Snowing::PlatformImpls
 		};
 	}
 }
+
+namespace Snowing
+{
+
+#ifndef PUBLISH_MODE
+
+	using AssetName = const char*;
+
+	[[nodiscard]]
+	inline Blob LoadAsset(AssetName name)
+	{
+		return Snowing::PlatformImpls::WindowsImpl::ReadFile(name);
+	}
+
+	inline void CallAssetBuilder()
+	{
+		constexpr char path[] = "../AssetBuilderRelease/AssetBuilder.exe";
+		constexpr char cmd[] =
+			"start /wait /b "
+			"/d ..\\..\\Assets "
+			"../AssetBuilderRelease/AssetBuilder.exe "
+			"../build/data";
+		if (std::filesystem::exists(path))
+			system(cmd);
+#ifdef _DEBUG
+		else
+			Snowing::PlatformImpls::Log("Warning:Asset Build Not Found!");
+#endif
+	}
+
+#endif
+}
+
 
