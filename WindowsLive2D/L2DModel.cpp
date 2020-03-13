@@ -7,6 +7,8 @@
 #include <Math/CubismModelMatrix.hpp>
 #include <Motion/CubismMotionManager.hpp>
 #include "L2DLipSync.h"
+#include "L2DPhysics.h"
+#include <Physics/CubismPhysics.hpp>
 
 void Live2D::Model::updateMatrix()
 {
@@ -83,21 +85,32 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 	}
 
 	motionManager_.Get<Csm::CubismMotionManager*>()->SetEventCallback([] (auto,auto,auto){}, nullptr);
+	model_.Get<Csm::CubismModel*>()->SaveParameters();
 }
 
 bool Live2D::Model::Update()
 {
 	const float dt = Snowing::Engine::Get().DeltaTime();
 
-	model_.Get<Csm::CubismModel*>()->SaveParameters();
+	model_.Get<Csm::CubismModel*>()->LoadParameters();
 
 	motionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
 		model_.Get<Csm::CubismModel*>(),
 		dt);
 
+	model_.Get<Csm::CubismModel*>()->SaveParameters();
+
 	expressionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
 		model_.Get<Csm::CubismModel*>(),
 		dt);
+
+	if (phys_)
+	{
+		if (phys_->phys_.has_value())
+		{
+			phys_->phys_->Get<Csm::CubismPhysics*>()->Evaluate(model_.Get<Csm::CubismModel*>(),dt);
+		}
+	}
 
 	if(pose_.IsSome())
 		pose_.Get<Csm::CubismPose*>()->UpdateParameters(
@@ -134,8 +147,6 @@ bool Live2D::Model::Update()
 		renderer->DrawModel();
 		renderer->EndFrame(device);
 	});
-
-	model_.Get<Csm::CubismModel*>()->LoadParameters();
 
 	return true;
 }

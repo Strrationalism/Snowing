@@ -3,12 +3,15 @@
 
 namespace Live2D
 {
+	class Physics;
 	class LipSync;
 	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>,Snowing::NoCopyMove
 	{
 	private:
 		friend class ::Live2D::LipSync;
+		friend class ::Live2D::Physics;
 		::Live2D::LipSync* lipSync_ = nullptr;
+		::Live2D::Physics* phys_ = nullptr;
 
 		float ratio_;
 		Snowing::Math::Vec2f translate_ = { 0,0 }, scale_ = { 1,1 };
