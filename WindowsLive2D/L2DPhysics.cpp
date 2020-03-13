@@ -40,8 +40,8 @@ void Live2D::Physics::SetParams(Params p)
 		Csm::CubismPhysics::Options phyOpt;
 		phyOpt.Gravity.X = p.Gravity.x;
 		phyOpt.Gravity.Y = p.Gravity.y;
-		phyOpt.Wind.Y = -p.Wind.x;
-		phyOpt.Wind.X = p.Wind.y;
+		phyOpt.Wind.X = p.Wind.x;
+		phyOpt.Wind.Y = p.Wind.y;
 		phys_.value().Get<Csm::CubismPhysics*>()->SetOptions(phyOpt);
 	}
 }
