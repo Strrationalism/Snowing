@@ -21,8 +21,6 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
     |> Array.map (fun x -> x.[0..x.IndexOf '#' - 1])
     |> Array.map (fun x -> x.Trim())
     |> Array.filter (not << System.String.IsNullOrWhiteSpace)
-    |> Array.map (fun x -> x.Replace(" ",""))
-    |> Array.map (fun x -> x.Replace("\t",""))
     |> Array.map (fun x ->
         let pos =
             match x.IndexOf '(',x.IndexOf '[' with
