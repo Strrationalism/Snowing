@@ -50,6 +50,7 @@ let private ConvertFont (job:Job) =
             OutputPath = job.OutputPath + "-" + string faceID + ".tmp"
             Arguments = job.Arguments
             ScriptDir = job.ScriptDir
+            ScriptFile = job.ScriptFile
             Encrypt = false
         }
 

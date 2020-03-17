@@ -56,6 +56,7 @@ let private PackSprite (job:Job) =
         OutputPath = job.OutputPath
         Arguments = job.Arguments
         ScriptDir = job.ScriptDir
+        ScriptFile = job.ScriptFile
         Encrypt = false
     }
     
