@@ -5,7 +5,8 @@ open Job
 
 let Proc = {
     Proc = (fun job -> 
-        File.Copy (job.ScriptDir.FullName + "\\" + job.Input.Head,job.OutputPath))
+        File.ReadAllBytes (job.ScriptDir.FullName + "\\" + job.Input.Head)
+        |> fun bytes -> File.WriteAllBytes(job.OutputPath,bytes))
     InputType = InputType.File
     Command = "CopyFile"
     FinishLogEnabled = true
