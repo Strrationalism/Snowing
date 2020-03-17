@@ -20,6 +20,8 @@ let private ShoudRebuild (job : Job) : bool =
                 job.OutputPath
                 |> FileInfo
             outputFile.LastWriteTimeUtc
+
+        let scriptTime = job.ScriptFile.LastWriteTimeUtc
         
         match job.Processor.InputType with
         | None -> true
@@ -28,11 +30,11 @@ let private ShoudRebuild (job : Job) : bool =
                 let inputFile =
                     job.ScriptDir.FullName  + "\\" + job.Input.Head |> FileInfo
                 inputFile.LastWriteTimeUtc
-            inputTime > outputTime
+            inputTime > outputTime || scriptTime > outputTime
         | Files -> 
             let inputTime =
                 FilesLastWriteTime (job.Input |> List.map (fun x -> job.ScriptDir.FullName + "\\" + x))
-            inputTime > outputTime
+            inputTime > outputTime || scriptTime > outputTime
         | Directory ->
             let dir = 
                 job.Input
@@ -44,7 +46,7 @@ let private ShoudRebuild (job : Job) : bool =
                 |> Seq.toList
                 |> List.map (fun x -> x.FullName)
                 |> FilesLastWriteTime
-            inputTime > outputTime
+            inputTime > outputTime || scriptTime > outputTime
     with _ -> true
 
 let RunProcs (procs : Job[]) outputPath =  

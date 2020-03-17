@@ -22,6 +22,7 @@ and Job = {
     OutputPath : string
     Arguments : string list 
     ScriptDir : DirectoryInfo
+    ScriptFile : FileInfo
     Encrypt : bool
 }
 

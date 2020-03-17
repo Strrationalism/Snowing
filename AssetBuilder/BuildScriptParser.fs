@@ -13,6 +13,7 @@ let rec ParseBuildScript baseOutputPath scriptFilePath =
         OutputPath = baseOutputPath + "\\" + output
         Arguments = args |> Array.toList
         ScriptDir = scriptInfo.Directory
+        ScriptFile = scriptInfo
         Encrypt = encrypt }
 
     scriptFilePath
