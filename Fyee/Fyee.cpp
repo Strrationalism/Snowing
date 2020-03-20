@@ -1,22 +1,28 @@
 #include "pch.h"
 #include "Fyee.h"
 
-Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t position,float fadingVolume):
+Fyee::BGMPlayer::PlayingTrack::PlayingTrack(const TrackInfo& t, uint32_t position,float fadingVolume, float volume):
 	metronome_{&player_,180,0,0},
 	fadeOutVolume_{fadingVolume},
-	blob_{t.soundBlob}
+	blob_{t.soundBlob},
+	volume_{std::clamp(volume,0.0f,1.0f)}
 {
-	player_.SetVolume(fadingVolume);
+	player_.SetVolume(fadingVolume * volume_);
 	player_.Play(blob_.get(), position);
 	const auto metadata = player_.GetMetadata();
 	metronome_.Reset(&player_, metadata.Bpm, metadata.BeatsPerBar, metadata.BeatOffset);
+}
+
+void Fyee::BGMPlayer::PlayingTrack::SetVolume(float v)
+{
+	volume_ = std::clamp(v, 0.0f, 1.0f);
 }
 
 
 bool Fyee::BGMPlayer::PlayingTrack::Update()
 {
 	fadeOutVolume_.Update();
-	player_.SetVolume(std::clamp(fadeOutVolume_.Value(),0.0f,1.0f));
+	player_.SetVolume(volume_ * std::clamp(fadeOutVolume_.Value(),0.0f,1.0f));
 	metronome_.Update();
 	return player_.GetPlaying() || fadeOutVolume_.Value() < 0.0f;
 }
@@ -79,7 +85,7 @@ void Fyee::BGMPlayer::updateCurrentPlayingTrack()
 
 			PlayingTrack* track;
 				mainlyTrack_ = track =
-				playground_.Emplace(playQueue_.front(),0, playQueue_.front().fadeInTime > 0.01f ? 0.0f : 1.0f);
+				playground_.Emplace(playQueue_.front(),0, playQueue_.front().fadeInTime > 0.01f ? 0.0f : 1.0f,volume_);
 
 			track->fadeOutVolume_.Start(1.0, playQueue_.front().fadeInTime);
 
@@ -103,6 +109,12 @@ void Fyee::BGMPlayer::Reset()
 	playground_.Iter([](auto& x) {x.FadeOutAndStop(0.1f); });
 	mainlyTrack_ = nullptr;
 	breakSchedule_.clear();
+	volume_ = 1;
+}
+
+void Fyee::BGMPlayer::SetVolume(float v)
+{
+	volume_ = v;
 }
 
 const std::deque<Fyee::BGMPlayer::BreakLoopSchedule>& Fyee::BGMPlayer::BreakScheduleQueue()
@@ -114,6 +126,7 @@ const std::deque<Fyee::BGMPlayer::BreakLoopSchedule>& Fyee::BGMPlayer::BreakSche
 
 bool Fyee::BGMPlayer::Update()
 {
+	playground_.Iter([this](auto& c) {c.SetVolume(volume_); });
 	const bool hasObject = playground_.Update();
 	UpdateScheduledBreakLoop();
 	updateCurrentPlayingTrack();

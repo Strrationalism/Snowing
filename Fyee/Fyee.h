@@ -29,11 +29,12 @@ namespace Fyee
 			Metronome metronome_;
 
 			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
-
+			float volume_;
 			
 
 		public:
-			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1);
+			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1,float volume = 1);
+			void SetVolume(float v);
 			bool Update() override;
 
 			void FadeOutAndStop(float time);
@@ -67,7 +68,7 @@ namespace Fyee
 
 	private:
 		std::deque<BreakLoopSchedule> breakSchedule_;
-		
+		float volume_ = 1;
 
 	public:
 		template <typename TrackInfo>
@@ -83,6 +84,8 @@ namespace Fyee
 		void ClearQueueTail();
 
 		void Reset();
+
+		void SetVolume(float v);
 
 		const std::deque<BreakLoopSchedule>& BreakScheduleQueue();
 
