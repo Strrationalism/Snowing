@@ -83,7 +83,7 @@ namespace Fyee
 		// 清除所有待播放的Track，只保留正在播放的Track
 		void ClearQueueTail();
 
-		void Reset();
+		void Reset(float fadeout = 0.1f);
 
 		void SetVolume(float v);
 

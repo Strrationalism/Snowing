@@ -103,10 +103,10 @@ void Fyee::BGMPlayer::ClearQueueTail()
 		playQueue_.pop_back();
 }
 
-void Fyee::BGMPlayer::Reset()
+void Fyee::BGMPlayer::Reset(float fadeout)
 {
 	playQueue_.clear();
-	playground_.Iter([](auto& x) {x.FadeOutAndStop(0.1f); });
+	playground_.Iter([fadeout](auto& x) {x.FadeOutAndStop(fadeout); });
 	mainlyTrack_ = nullptr;
 	breakSchedule_.clear();
 	volume_ = 1;
