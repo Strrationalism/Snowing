@@ -31,6 +31,7 @@ namespace Fyee
 			Snowing::Scene::Tween<float> fadeOutVolume_ = 1.0f;
 			float volume_;
 			
+			bool isFadingOut_ = false;
 
 		public:
 			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1,float volume = 1);
@@ -38,6 +39,8 @@ namespace Fyee
 			bool Update() override;
 
 			void FadeOutAndStop(float time);
+
+			bool IsFadingOut() const { return isFadingOut_; }
 		};
 
 	private:
@@ -120,5 +123,8 @@ namespace Fyee
 
 		BeatTime GetTime();
 		bool IsBeatFrame();
+
+		// Çå³ýÎ²Éù
+		void ClearCoda(float time);
 	};
 }

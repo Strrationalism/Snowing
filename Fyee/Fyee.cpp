@@ -29,6 +29,7 @@ bool Fyee::BGMPlayer::PlayingTrack::Update()
 
 void Fyee::BGMPlayer::PlayingTrack::FadeOutAndStop(float time)
 {
+	isFadingOut_ = true;
 	fadeOutVolume_.Start(-0.001f, time);
 }
 
@@ -257,4 +258,12 @@ bool Fyee::BGMPlayer::IsBeatFrame()
 		return cur->metronome_.IsBeat();
 	else
 		return false;
+}
+
+void Fyee::BGMPlayer::ClearCoda(float time)
+{
+	playground_.Iter([time](auto& p) {
+		if (p.IsFadingOut())
+			p.FadeOutAndStop(time);
+	});
 }
