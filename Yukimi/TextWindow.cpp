@@ -186,7 +186,7 @@ void Yukimi::TextWindow::BasicAnimation::Update(Ch& ch)
 		FastFadeIn(ch);
 	}
 	else if (state_ == State::Displaying)
-		ch.Sprite.Sprite.Color.w = 1;
+		ch.Sprite.Sprite.Color.w = vis_ ? 1.0f : 0.0f;
 	else
 		ch.Sprite.Sprite.Color.w = 0;
 }
