@@ -32,6 +32,7 @@ namespace Fyee
 			float volume_;
 			
 			bool isFadingOut_ = false;
+			std::optional<float> fadeoutTime_;
 
 		public:
 			PlayingTrack(const TrackInfo&,uint32_t position = 0,float fadeingVolume = 1,float volume = 1);
@@ -47,7 +48,7 @@ namespace Fyee
 		std::deque<TrackInfo> playQueue_;	// 头部总是“正在播放的track”
 
 		Snowing::Scene::Group<PlayingTrack> playground_;
-		const PlayingTrack* mainlyTrack_ = nullptr;
+		const PlayingTrack* mainlyTrack_ = nullptr, *lastMainlyTrack_ = nullptr;
 
 		PlayingTrack* getPlayingTrack();
 		void updateCurrentPlayingTrack();

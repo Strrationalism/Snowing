@@ -29,6 +29,13 @@ bool Fyee::BGMPlayer::PlayingTrack::Update()
 
 void Fyee::BGMPlayer::PlayingTrack::FadeOutAndStop(float time)
 {
+	if (fadeoutTime_.has_value())
+	{
+		if (fadeoutTime_.value() < time)
+			return;
+	}
+
+	fadeoutTime_ = time;
 	isFadingOut_ = true;
 	fadeOutVolume_.Start(-0.001f, time);
 }
@@ -131,6 +138,9 @@ bool Fyee::BGMPlayer::Update()
 	const bool hasObject = playground_.Update();
 	UpdateScheduledBreakLoop();
 	updateCurrentPlayingTrack();
+	UpdateScheduledBreakLoop();
+
+	lastMainlyTrack_ = mainlyTrack_;
 	return !(!hasObject && playQueue_.empty());
 }
 
@@ -148,19 +158,11 @@ void Fyee::BGMPlayer::UpdateScheduledBreakLoop()
 		// BreakOnNextLoop
 		if (auto _ = std::get_if<BreakOnNextLoop>(&breakSchedule_.front()))
 		{
-			if(!playQueue_.empty())
-				playQueue_.front().loop = false;
-
-			const auto playingTrack = getPlayingTrack();
-
-			bool update = false;
-			if (playingTrack == nullptr)
-				update = true;
-			else if (playingTrack->metronome_.GetTime() >= playQueue_.front().length)
-				update = true;
-
-			if (update)
+			if (getPlayingTrack() != lastMainlyTrack_)
 				breakSchedule_.pop_front();
+
+			else if(!playQueue_.empty())
+				playQueue_.front().loop = false;
 		}
 
 		// BreakWhenJumpTime
