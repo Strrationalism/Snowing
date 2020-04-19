@@ -35,10 +35,6 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	sd.Windowed = windowed;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	if (IsWindows8OrGreater())
-		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-
-
 	D3D_FEATURE_LEVEL featureLevel;
 	switch (level)
 	{
@@ -193,7 +189,8 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> si
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Update()
 {
-	static_cast<IDXGISwapChain*>(swapChain_.Get<IUnknown*>())->Present(1, 0);
+	COMHelper::AssertHResult("Present Failed",
+		static_cast<IDXGISwapChain*>(swapChain_.Get<IUnknown*>())->Present(1, 0));
 }
 
 const Handler & Snowing::PlatformImpls::WindowsImpl::D3D::Device::GetHandler() const
