@@ -59,6 +59,7 @@ namespace Snowing::Input
 		Escape,
 		Enter,
 		Space,
+		Apps,
 
 		Up,
 		Down,

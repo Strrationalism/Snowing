@@ -195,6 +195,7 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(Snowing::Input::
 		MAPKEY(KeyboardKey::Escape, VK_ESCAPE);
 		MAPKEY(KeyboardKey::Enter, VK_RETURN);
 		MAPKEY(KeyboardKey::Space, VK_SPACE);
+		MAPKEY(KeyboardKey::Apps, VK_APPS);
 		MAPKEY(KeyboardKey::Up, VK_UP);
 		MAPKEY(KeyboardKey::Down, VK_DOWN);
 		MAPKEY(KeyboardKey::Left, VK_LEFT);
