@@ -35,6 +35,9 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	sd.Windowed = windowed;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
+	if (IsWindows8OrGreater())
+		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+
 	D3D_FEATURE_LEVEL featureLevel;
 	switch (level)
 	{
@@ -176,6 +179,7 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::SetFullscreen(bool b)
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> size)
 {
+	if (!swapChain_.IsSome()) return;
 	std::destroy_at(&mainRenderTarget_);
 	swapChain_.Cast<IUnknown*, IDXGISwapChain*>()->ResizeBuffers(
 		0,

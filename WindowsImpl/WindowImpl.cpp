@@ -138,6 +138,12 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 		}
 		break;
+	case WM_SIZE:
+		D3D::Device::Get().Resize({
+			static_cast<int>(LOWORD(l)),
+			static_cast<int>(HIWORD(l))
+		});
+		break;
 	default:{
 		MSG msgs
 		{
@@ -307,8 +313,6 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 		throw std::runtime_error{ "AdjustWindowRect error" };
 
 	MoveWindow(hwnd_.Get<HWND>(),winRect.left,winRect.top,winRect.right - winRect.left,winRect.bottom - winRect.top,true);
-
-	D3D::Device::Get().Resize(size);
 }
 
 
