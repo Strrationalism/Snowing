@@ -112,7 +112,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\140</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\142</AdditionalLibraryDirectories>
       <AdditionalDependencies>Live2DCubismCore_MDd.lib;D3DCompiler.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -133,7 +133,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\140</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\142</AdditionalLibraryDirectories>
       <AdditionalDependencies>Live2DCubismCore_MDd.lib;D3DCompiler.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -158,7 +158,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\140</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86\142</AdditionalLibraryDirectories>
       <AdditionalDependencies>Live2DCubismCore_MD.lib;D3DCompiler.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -183,7 +183,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\140</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Core\lib\windows\x86_64\142</AdditionalLibraryDirectories>
       <AdditionalDependencies>Live2DCubismCore_MD.lib;D3DCompiler.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
