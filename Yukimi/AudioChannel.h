@@ -59,5 +59,8 @@ namespace Yukimi
 
 		// 获取节拍器
 		std::optional<const Snowing::Scene::Metronome<>*> GetMetronome() const;
+
+		// 设置播放位置
+		void SetPosition(uint32_t position);
 	};
 }

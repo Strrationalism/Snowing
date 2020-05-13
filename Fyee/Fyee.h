@@ -76,7 +76,7 @@ namespace Fyee
 
 	public:
 		template <typename TrackInfo>
-		void AddToPlayQueue(TrackInfo&& track,float fadeTime = 0.0f)
+		void AddToPlayQueue(TrackInfo&& track)
 		{
 			playQueue_.emplace_back(std::forward<TrackInfo>(track));
 			updateCurrentPlayingTrack();

@@ -94,10 +94,12 @@ Yukimi::AudioChannel::AudioChannel(Snowing::Blob&& soundBlob, float fadeIn, uint
 
 			fadeVolume_.Start(1, fadeIn);
 		}
-	}
+	},
+	mainVolume_{ volume }
 {
 	fadeVolume_ = 0;
 	player_.SetPan(pan);
+	player_.SetVolume(volume);
 	player_.Play(&sound_, begin);
 
 	fadeVolume_.Start(1, fadeIn);
@@ -130,4 +132,10 @@ void Yukimi::AudioChannel::SetPan(float pan)
 void Yukimi::AudioChannel::SetVolume(float volume)
 {
 	mainVolume_ = volume;
+}
+
+void Yukimi::AudioChannel::SetPosition(uint32_t position)
+{
+	if(sound_.Size() > 0)
+		player_.Play(&sound_,position);
 }
