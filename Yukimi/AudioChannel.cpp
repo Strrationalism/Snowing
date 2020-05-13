@@ -20,7 +20,8 @@ AudioChannel::AudioChannel(AudioLoader loader,std::string&& s, float fadeIn, uin
 	},
 	soundLoading_{
 		std::async(std::launch::async,[s = std::move(s),loader]{return loader(s.c_str()); })
-	}
+	},
+	mainVolume_ { volume }
 {
 }
 
@@ -128,6 +129,5 @@ void Yukimi::AudioChannel::SetPan(float pan)
 
 void Yukimi::AudioChannel::SetVolume(float volume)
 {
-	if(player_.GetPlaying())
-		player_.SetVolume(volume);
+	mainVolume_ = volume;
 }
