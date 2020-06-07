@@ -85,7 +85,8 @@ void Yukimi::TextWindow::FadeClear()
 
 void Yukimi::TextWindow::AppendWaitTime(float t)
 {
-	assert(currentTimeLineEnd_.has_value());
+	if (!currentTimeLineEnd_.has_value())
+		currentTimeLineEnd_.emplace(0.0f);
 	*currentTimeLineEnd_ += t;
 }
 
