@@ -26,6 +26,10 @@ namespace Snowing::Graphics
 {
 	using EffectReflectionObject = EffectReflectionObjectInterface
 		<Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectReflectionObject>;
+
+	template <typename TParam>
+	using EffectReflection = EffectReflectionInterface<
+		Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectReflectionObject,TParam>;
 }
 
 
