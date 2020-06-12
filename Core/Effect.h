@@ -257,6 +257,14 @@ namespace Snowing::Graphics
 			return p;
 		}
 
+		template <typename TReflectionObjectType>
+		[[nodiscard]]
+		auto Reflection(const char* objectName)
+		{
+			return EffectReflectionInterface<TImpl, TReflectionObjectType>(
+				Reflection(objectName));
+		}
+
 		[[nodiscard]]
 		auto operator * ()
 		{
