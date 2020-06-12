@@ -14,6 +14,8 @@ namespace Snowing::Graphics
 	private:
 		TImpl impl_;
 	public:
+		using ImplType = TImpl;
+
 		EffectReflectionObjectInterface(TImpl&& impl) :
 			impl_{ std::move(impl) }
 		{}
@@ -261,8 +263,9 @@ namespace Snowing::Graphics
 		[[nodiscard]]
 		auto Reflection(const char* objectName)
 		{
-			return EffectReflectionInterface<TImpl, TReflectionObjectType>(
-				Reflection(objectName));
+			auto p = Reflection(objectName);
+			return EffectReflectionInterface<decltype(p)::ImplType, TReflectionObjectType>(
+				std::move(p));
 		}
 
 		[[nodiscard]]
