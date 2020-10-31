@@ -97,6 +97,22 @@ namespace Snowing::Scene
 			}
 		}
 
+		void Add(const TVariable& add, float time, TweenFX::FX fx = TweenFX::Once)
+		{
+			assert(fx);
+			if (!Tweening()) Start(variable_ + add, time, fx);
+			else {
+				tween_ = TweenData
+				{
+					std::forward<TVariable>(variable_),
+					tween_->target + add,
+					time,
+					0,
+					fx
+				};
+			}
+		}
+
 		void Stop()
 		{
 			tween_.reset();
