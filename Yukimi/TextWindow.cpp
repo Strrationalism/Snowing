@@ -133,7 +133,9 @@ bool Yukimi::TextWindow::Update()
 		p.SinceFadeInTime += deltaTime;
 		
 		p.Animation->Update(p);
-		p.Renderer->DrawToSpriteBuffer(p.Sprite);
+
+		if(p.Sprite.Sprite.Color.w >= 0.000001f)
+			p.Renderer->DrawToSpriteBuffer(p.Sprite);
 	}
 
 	userAdapter_->FlushDrawCall();
