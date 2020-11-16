@@ -2,3 +2,4 @@
 
 Include Sound/Build.bake
 ConvertTexture $Out DDS DXT1 Background.png
+PackSprite $Out/Sprite.ctx RGBA32 Sprite

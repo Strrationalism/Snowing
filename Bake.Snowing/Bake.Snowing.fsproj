@@ -9,12 +9,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ConvertTexture.fs" />
+    <Compile Include="PackSprite.fs" />
+    <Compile Include="BuildFont.fs" />
     <Compile Include="ConvertSound.fs" />
   </ItemGroup>
 
-  <ItemGroup />
-
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
     <PackageReference Include="WAVFileReader" Version="1.0.0" />
   </ItemGroup>

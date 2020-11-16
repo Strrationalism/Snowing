@@ -218,7 +218,7 @@ let ConvertTexture = {
     usage = []
     example = []
     action = fun ctx script ->
-        let outDir = script.arguments.Head |> Utils.applyContextToArgument ctx
+        let outDir = script.arguments.Head |> Utils.applyContextToArgument ctx |> Utils.normalizeDirPath
         let arguments = script.arguments.[1..script.arguments.Length-2] |> List.map (Utils.applyContextToArgument ctx)
         let inputFiles = List.last script.arguments |> Utils.applyContextToArgument ctx
 

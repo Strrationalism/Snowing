@@ -9,6 +9,7 @@ Import {
 
 Parallel {
 	Include {
+		BasicAssets/Build.bake
 		ExampleAssets/Build.bake
 	}
 }
