@@ -1,0 +1,14 @@
+
+Set $Out "../build/data/"
+
+CreateDirectory $Out
+
+Import {
+	../Bake.Snowing/bin/Release/net5.0-windows/publish/Bake.Snowing.dll
+}
+
+Parallel {
+	Include {
+		ExampleAssets/Build.bake
+	}
+}
