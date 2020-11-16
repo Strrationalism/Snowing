@@ -1,3 +1,4 @@
 
 
 Include Sound/Build.bake
+ConvertTexture $Out DDS DXT1 Background.png
