@@ -95,7 +95,7 @@ let ConvertSound = {
         let tasks = 
             blockArgumentTaskPerLine 
                 (fun _ script file ->
-                    Utils.mapPathToOutputPath inDir file
+                    Utils.matchInputFiles inDir file
                     |> Seq.map (fun (path, fileName) ->
                         let inFile = FileInfo path
                         let outFile = outDir + fileName |> modifyExtensionName "snd"
@@ -114,3 +114,6 @@ let ConvertSound = {
 
         tasks, ctx
 }
+
+[<BakeAction>]
+let ``ConvertSound-Encrypt`` = Encrypt.wrapToEncryptAction ConvertSound

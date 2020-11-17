@@ -224,7 +224,7 @@ let ConvertTexture = {
 
         let tasks =
             Utils.blockArgumentTaskPerLine (fun _ script inputFiles ->
-                Utils.mapPathToOutputPath script.scriptFile.Directory.FullName inputFiles
+                Utils.matchInputFiles script.scriptFile.Directory.FullName inputFiles
                 |> Seq.map (fun (path, fileName) ->
                     let outFile = outDir + fileName |> Utils.modifyExtensionName "ctx"
                     {
@@ -248,3 +248,6 @@ let ConvertTexture = {
 
         tasks, ctx
 }
+
+[<BakeAction>]
+let ``ConvertTexture-Encrypt`` = Encrypt.wrapToEncryptAction ConvertTexture

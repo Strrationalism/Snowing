@@ -3,6 +3,7 @@
 open System.IO
 
 open Bake
+open Bake.Snowing
 open Bake.Snowing.ConvertTexture
 open Newtonsoft.Json
 open Newtonsoft.Json.Linq
@@ -94,3 +95,6 @@ let PackSprite = {
 
 }
 
+
+[<BakeAction>]
+let ``PackSprite-Encrypt`` = Encrypt.wrapToEncryptAction PackSprite

@@ -8,6 +8,7 @@
     <None Include="texconv.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="Encrypt.fs" />
     <Compile Include="ConvertTexture.fs" />
     <Compile Include="PackSprite.fs" />
     <Compile Include="BuildFont.fs" />
