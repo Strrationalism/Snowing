@@ -40,7 +40,7 @@ let SetAESKey = {
 }
 
 [<BakeAction>]
-let AESEncrypt = {
+let Encrypt = {
     help = "对文件进行AES加密"
     usage = []
     example = []
@@ -52,14 +52,14 @@ let AESEncrypt = {
         Utils.blockArgumentTaskPerLine (fun ctx script line ->
             Utils.matchInputFiles script.scriptFile.DirectoryName line
             |> Seq.map (fun (path, fileName) ->
-                let dst = dstDir + fileName
+                let dst = dstDir + fileName |> Utils.modifyExtensionName ext
                 {
                     inputFiles = seq { FileInfo path }
                     source = script
                     outputFiles = seq { dst }
                     dirty = false
                     run = fun () -> 
-                        lock stdout (fun () -> printfn "AESEncrypt:%s..." fileName)
+                        lock stdout (fun () -> printfn "Encrypt:%s..." fileName)
                         EncryptFile path dst
                 })) ctx script inputFile
         , ctx
