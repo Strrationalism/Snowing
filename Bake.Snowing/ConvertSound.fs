@@ -8,13 +8,13 @@ open WAVFileReader
 
 
 [<Struct>]
-type private Options = {
+type Options = {
     Bpm : float32
     BeatsPerBar : uint32
     BeatsOffset : int32
 }
 
-let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
+let PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
     if File.Exists dst then
         failwith ("Sound file " + dst + " is already exists.")
 
@@ -63,7 +63,7 @@ let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) 
 
 
 
-let private GetOptions argumentStrList =
+let GetOptions argumentStrList =
     let defaultOption = {
         Bpm = 120.0f
         BeatsPerBar = 4u
