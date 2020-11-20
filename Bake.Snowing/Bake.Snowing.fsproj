@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Reference Include="Bake.Core">
-      <HintPath>..\..\..\Bake\Bake.Core\bin\Release\net5.0\Bake.Core.dll</HintPath>
+      <HintPath>..\..\..\Bake\Bake.Core\bin\Release\net5.0-windows\Bake.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
 
