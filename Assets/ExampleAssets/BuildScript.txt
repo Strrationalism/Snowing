@@ -1,6 +1,0 @@
-Include				[Sound/SoundScript.txt]
-#PackSprite	(RGBA32)		[Sprite]			[Sprite.ctx]
-ConvertTexture	(DDS,DXT1)	[Background.png]		[Background.ctx]
-MakeDir				[]			[Dir]
-#Custum		(Files,HelloWorld)	[..\HelloWorld.exe]		[]
-#HelloWorld	(1,2,3,Fuck)	[Background.png,Background.png]	[BGP.dat]

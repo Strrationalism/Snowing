@@ -1,34 +1,73 @@
-﻿module JobProcs.ConvertTexture
+﻿module Bake.Snowing.ConvertTexture
 
-open Job
 open System.IO
-open System.Drawing
+open SixLabors
+open SixLabors.ImageSharp
+open System.Diagnostics
+open System.Threading
 open System
+
+open Bake
 
 type TextureFormat =
 | R8G8B8A8_UNORM = 0uy
 | R8_UNORM = 1uy
 | DDS = 2uy
 
+let StartWait exe arg =
+    use prc = new Process()
+    prc.StartInfo.FileName <- exe
+    prc.StartInfo.WorkingDirectory <- (FileInfo exe).DirectoryName
+    prc.StartInfo.Arguments <- arg
+    prc.StartInfo.WindowStyle <- ProcessWindowStyle.Hidden
+    prc.StartInfo.RedirectStandardOutput <- true
+    if prc.Start() |> not then
+        failwith ("Can not start " + exe)
+    prc.WaitForExit ()
+    match prc.ExitCode with
+    | 0 -> ()
+    | x ->
+        failwith (
+            "Build Tool Failed. Exit Code:" + string x + 
+            Environment.NewLine + 
+            exe + " " + arg + 
+            Environment.NewLine +
+            prc.StandardOutput.ReadToEnd())
+
+let WaitForFile maxTimes path =
+    for _ in 0..maxTimes do
+        if File.Exists path |> not then
+            Thread.Sleep 1000
+    if File.Exists path |> not then
+        failwith ("Can not find file " + path)
+
+
 type RequestedTextureFormat =
 | RGBA32
 | R8
 | DDS of string
 
-let Is4MulBitmap (bitmap:Bitmap) =
+type Job = {
+    ScriptDir : DirectoryInfo
+    Input : string list
+    Arguments : string list
+    OutputPath : string
+}
+
+let Is4MulBitmap (bitmap: Image) =
     bitmap.Width % 4 = 0 && bitmap.Height % 4 = 0
 
-let WrapBitmapTo4 (bitmap:Bitmap) =
+let WrapBitmapTo4 (bitmap: Image<ImageSharp.PixelFormats.Rgba32>) =
     let wrapTo4 x =
         (4 - (x % 4)) % 4 + x
 
     let newSize =
-        (wrapTo4 bitmap.Size.Width,wrapTo4 bitmap.Size.Height)
-    let newBitmap = new Bitmap(fst newSize,snd newSize)
+        (wrapTo4 bitmap.Width,wrapTo4 bitmap.Height)
+    let newBitmap = new Image<ImageSharp.PixelFormats.Rgba32>(fst newSize,snd newSize)
     for y in 0..bitmap.Height-1 do
         for x in 0..bitmap.Width-1 do
-            let px = bitmap.GetPixel(x,y)
-            newBitmap.SetPixel(x,y,px)
+            let px = bitmap.[x, y]
+            newBitmap.[x,y] <- px
     newBitmap
 
 
@@ -77,13 +116,13 @@ let DumpPixels (format:TextureFormat) (path:string) : uint16*uint16*byte[] =
         | TextureFormat.R8_UNORM -> 1uy
         | _ -> raise (System.ArgumentException())
 
-    use bitmap = new Bitmap(path)
+    use bitmap = Image.Load<PixelFormats.Rgba32>(path)
     let pixels = Array.init ((pixelSize |> int) * bitmap.Width * bitmap.Height) (fun _ -> 0uy)
     use memStream = new MemoryStream(pixels)
     use binWriter = new BinaryWriter(memStream)
     for y in 0..bitmap.Height-1 do
         for x in 0..bitmap.Width-1 do
-            let px = bitmap.GetPixel(x,y)
+            let px = bitmap.[x, y]
             match format with
             | TextureFormat.R8G8B8A8_UNORM ->
                 binWriter.Write px.R
@@ -98,7 +137,7 @@ let DumpPixels (format:TextureFormat) (path:string) : uint16*uint16*byte[] =
     memStream.Close ()
     bitmap.Width |> uint16,bitmap.Height |> uint16,pixels
 
-let ConvertTexture spriteSheet inputFullName (job:Job) =
+let ConvertTextureFunc spriteSheet inputFullName (job:Job) =
     let reqFormat = ParseArgument job
     let innerFormat = GetFormatFormRequestedFormat reqFormat
 
@@ -124,7 +163,7 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
         dstWriter.Write px
 
     | DDS (ddsFormat) -> 
-        let orgBitmap = new Bitmap(srcPath)
+        let orgBitmap = Image.Load<PixelFormats.Rgba32>(srcPath)
         let is4MulBitmap = Is4MulBitmap orgBitmap
         use bitmap = 
             if is4MulBitmap then orgBitmap
@@ -134,7 +173,10 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
                 ret
 
         let tmpout = FileInfo(job.OutputPath).DirectoryName
-        let texconv = AppContext.BaseDirectory + "\\texconv.exe"
+        let texconv = 
+            System.Reflection.Assembly.GetExecutingAssembly().Location 
+            |> FileInfo |> fun x -> x.DirectoryName |> Utils.normalizeDirPath
+        let texconv = texconv + "texconv.exe"
 
         let incPng =
             if is4MulBitmap then
@@ -145,7 +187,7 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
                 path
 
         sprintf "\"%s\" -ft DDS -f %s -o \"%s\"" incPng ddsFormat tmpout
-        |> Utils.StartWait texconv
+        |> StartWait texconv
 
         if not is4MulBitmap then
             File.Delete incPng
@@ -161,7 +203,7 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
             let baseFileName = 
                 FileInfo(srcPath).Name
             tmpout + "\\" + baseFileName.[..baseFileName.LastIndexOf '.' - 1] + ".DDS"
-        Utils.WaitForFile 5 ddsPath
+        WaitForFile 5 ddsPath
         let ddsBytes = File.ReadAllBytes ddsPath
         dstWriter.Write (ddsBytes |> Array.length |> uint32)
         dstWriter.Write ddsBytes
@@ -170,10 +212,42 @@ let ConvertTexture spriteSheet inputFullName (job:Job) =
     dstWriter.Close ()
     dstFile.Close ()
 
-let Proc = {
-    Proc = ConvertTexture Seq.empty false
-    InputType = InputType.File
-    Command = "ConvertTexture"
-    FinishLogEnabled = true
-    Prority = 100
+[<BakeAction>]
+let ConvertTexture = {
+    help = "转换纹理到Snowing引擎可以使用的格式"
+    usage = []
+    example = []
+    action = fun ctx script ->
+        let outDir = script.arguments.Head |> Utils.applyContextToArgument ctx |> Utils.normalizeDirPath
+        let arguments = script.arguments.[1..script.arguments.Length-2] |> List.map (Utils.applyContextToArgument ctx)
+        let inputFiles = List.last script.arguments |> Utils.applyContextToArgument ctx
+
+        let tasks =
+            Utils.blockArgumentTaskPerLine (fun _ script inputFiles ->
+                Utils.matchInputFiles script.scriptFile.Directory.FullName inputFiles
+                |> Seq.map (fun (path, fileName) ->
+                    let outFile = outDir + fileName |> Utils.modifyExtensionName "ctx"
+                    {
+                        inputFiles = seq { FileInfo path }
+                        source = script
+                        outputFiles = seq { outFile }
+                        dirty = false
+                        run = fun () ->
+                            lock stdout (fun () -> printfn "ConvertTexture:%s..." fileName)
+                            ConvertTextureFunc Seq.empty true {
+                                ScriptDir = script.scriptFile.Directory
+                                Input = [ path ]
+                                OutputPath = outFile
+                                Arguments = arguments
+                            }
+
+                    }))
+                ctx
+                script
+                inputFiles
+
+        tasks, ctx
 }
+
+[<BakeAction>]
+let ``ConvertTexture-Encrypt`` = Encrypt.wrapToEncryptAction ConvertTexture

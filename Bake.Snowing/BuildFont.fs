@@ -1,8 +1,9 @@
-﻿module JobProcs.ConvertFont
+﻿module Bake.Snowing.BuildFont
+
+open Bake
+open Bake.Snowing.ConvertTexture
 
 open System.IO
-open Job
-open JobProcs.ConvertTexture
 open System.Text
 
 type CharInfo = {
@@ -45,16 +46,13 @@ let private ConvertFont (job:Job) =
     |> Array.Parallel.iteri (fun _ faceID ->
         let chars = fontIndex.[faceID]
         let ctxJob = {
-            Processor = JobProcs.ConvertTexture.Proc
             Input = [job.ScriptDir.FullName + "\\" + job.Input.Head + "\\font" + string faceID + ".bmp"]
             OutputPath = job.OutputPath + "-" + string faceID + ".tmp"
             Arguments = job.Arguments
             ScriptDir = job.ScriptDir
-            ScriptFile = job.ScriptFile
-            Encrypt = false
         }
 
-        ConvertTexture (chars |> Array.map (fun x -> x.Sprite)) true ctxJob)
+        ConvertTextureFunc (chars |> Array.map (fun x -> x.Sprite)) true ctxJob)
 
     let charCount = fontIndex.Values |> Seq.map Array.length |> Seq.sum 
     let faceCount = fontIndex.Keys.Count
@@ -96,13 +94,31 @@ let private ConvertFont (job:Job) =
     writer.Close ()
     out.Close ()
 
+[<BakeAction>]
+let BuildFont = {
+    help = "从图片字模构建字体文件"
+    usage = []
+    example = []
+    action = fun ctx script ->
+        Utils.verifyArgumentCount script 2
+        let out = script.arguments.[0] |> Utils.applyContextToArgument ctx
+        let input = script.arguments.[1] |> Utils.applyContextToArgument ctx 
 
-    
-let Proc = {
-    Proc = ConvertFont
-    InputType = InputType.Directory
-    Command = "ConvertFont"
-    FinishLogEnabled = true
-    Prority = 100
+        seq { {
+            dirty = false
+            source = script
+            inputFiles = Utils.normalizeDirPath script.scriptFile.Directory.FullName + input |> Directory.EnumerateFiles |> Seq.map FileInfo
+            outputFiles = seq { out }
+            run = fun () ->
+                lock stdout (fun () -> printfn "BuildFont:%s..." input)
+                ConvertFont {
+                    Arguments = [ "R8" ]
+                    Input = [ input ]
+                    ScriptDir = script.scriptFile.Directory
+                    OutputPath = out
+                }
+        } },
+        ctx
+
 }
 

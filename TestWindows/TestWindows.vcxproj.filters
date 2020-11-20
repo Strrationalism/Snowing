@@ -12,7 +12,6 @@
     <ClCompile Include="D3D.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="XAudio2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />

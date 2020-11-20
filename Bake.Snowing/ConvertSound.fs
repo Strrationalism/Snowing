@@ -1,18 +1,20 @@
-﻿module JobProcs.PackSound
+﻿module Bake.Snowing.ConvertSound
 
-open Job
+open Bake
+open Bake.Utils
+
 open System.IO
 open WAVFileReader
 
 
 [<Struct>]
-type private Options = {
+type Options = {
     Bpm : float32
     BeatsPerBar : uint32
     BeatsOffset : int32
 }
 
-let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
+let PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) =
     if File.Exists dst then
         failwith ("Sound file " + dst + " is already exists.")
 
@@ -61,7 +63,7 @@ let private PackSound scriptPath srcHead srcLoop (options:Options) (dst:string) 
 
 
 
-let private GetOptions argumentStrList =
+let GetOptions argumentStrList =
     let defaultOption = {
         Bpm = 120.0f
         BeatsPerBar = 4u
@@ -80,19 +82,38 @@ let private GetOptions argumentStrList =
     argumentStrList
     |> List.fold optionFolder defaultOption
 
-let Proc = {
-    Proc = (fun job ->
-        PackSound
-            job.ScriptDir.FullName
-            job.Input.[0]
-            (List.tryItem 1 job.Input
-            |> function
-            | Some x -> x
-            | Option.None -> "")
-            (GetOptions job.Arguments)
-            job.OutputPath)
-    InputType = Files
-    Command = "PackSound" 
-    FinishLogEnabled = true
-    Prority = 100
+[<BakeAction>]
+let ConvertSound = {
+    help = "转换音频到Snowing引擎支持的格式"
+    example = []
+    usage = []
+    action = fun ctx script ->
+        let outDir = script.arguments.Head |> Utils.applyContextToArgument ctx |> normalizeDirPath
+        let inDir = script.scriptFile.Directory.FullName |> normalizeDirPath
+        let inputFiles = List.last script.arguments |> Utils.applyContextToArgument ctx
+        let options = script.arguments.[1..script.arguments.Length - 2] |> List.map (Utils.applyContextToArgument ctx) |> GetOptions
+        let tasks = 
+            blockArgumentTaskPerLine 
+                (fun _ script file ->
+                    Utils.matchInputFiles inDir file
+                    |> Seq.map (fun (path, fileName) ->
+                        let inFile = FileInfo path
+                        let outFile = outDir + fileName |> modifyExtensionName "snd"
+                        {
+                            inputFiles = seq { inFile }
+                            outputFiles = seq { outFile }
+                            source = script
+                            dirty = false
+                            run = fun () ->
+                                lock stdout (fun () -> printfn "ConvertSound:%s..." inFile.Name)
+                                PackSound inFile.Directory.FullName inFile.Name "" options outFile
+                        }))
+                ctx
+                script
+                inputFiles
+
+        tasks, ctx
 }
+
+[<BakeAction>]
+let ``ConvertSound-Encrypt`` = Encrypt.wrapToEncryptAction ConvertSound

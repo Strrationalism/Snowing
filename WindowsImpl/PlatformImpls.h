@@ -58,17 +58,12 @@ namespace Snowing
 
 	inline void CallAssetBuilder()
 	{
-		constexpr char path[] = "../AssetBuilderRelease/AssetBuilder.exe";
+#ifdef _DEBUG
 		constexpr char cmd[] =
 			"start /wait /b "
 			"/d ..\\..\\Assets "
-			"../AssetBuilderRelease/AssetBuilder.exe "
-			"../build/data";
-		if (std::filesystem::exists(path))
-			system(cmd);
-#ifdef _DEBUG
-		else
-			Snowing::PlatformImpls::Log("Warning:Asset Build Not Found!");
+			"Bake.exe";
+		system(cmd);
 #endif
 	}
 
