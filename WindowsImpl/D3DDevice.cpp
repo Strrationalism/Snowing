@@ -35,6 +35,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	sd.Windowed = windowed;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
+	MessageBoxA(nullptr, "Ready to call IsWindows8OrGreater.", __FUNCTION__, 0);
+
 	if (IsWindows8OrGreater())
 		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
@@ -71,6 +73,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	};
 
 
+	MessageBoxA(nullptr, "Ready to create swap chain and device.", __FUNCTION__, 0);
 
 	bool succ = false;
 	HRESULT hr;
@@ -147,6 +150,7 @@ Snowing::PlatformImpls::WindowsImpl::D3D::Device::Device(const Handler & hWnd, b
 	mainContext_{ createSwapChainAndDevice_ReturnMainContext(level,hWnd,windowed) },
 	mainRenderTarget_{ D3DRenderTarget(getBackBuffer(),device_) }
 {
+	MessageBoxA(nullptr, "Device creation succeed.", __FUNCTION__, 0);
 }
 
 Snowing::PlatformImpls::WindowsImpl::D3D::Device::~Device()
