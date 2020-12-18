@@ -224,10 +224,7 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		instance, NULL);
 
 	// 注册为触摸窗口
-	if(!RegisterTouchWindow(hwnd,0))
-		MessageBox(hwnd,
-			L"Cannot register application window for touch input", L"Error", MB_OK);
-
+	RegisterTouchWindow(hwnd, 0);
 
 	// TestHandler
 	Handler hnd(hwnd, hwndDeleter);
