@@ -35,10 +35,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	sd.Windowed = windowed;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	MessageBoxA(nullptr, "Ready to call IsWindows8OrGreater.", __FUNCTION__, 0);
-
-	if (IsWindows8OrGreater())
-		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+	/*if (IsWindows8OrGreater())
+		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;*/
 
 	D3D_FEATURE_LEVEL featureLevel;
 	switch (level)
@@ -123,6 +121,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 		}
 #endif
 	}
+
+	MessageBoxA(nullptr, "Swapchain and device create succeed.", __FUNCTION__, 0);
 
 	if (!succ)
 		throw std::runtime_error{ "D3D Device create failed:" + std::to_string(hr) };
