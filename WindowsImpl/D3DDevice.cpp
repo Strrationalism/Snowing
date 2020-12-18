@@ -99,9 +99,6 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 #ifdef _DEBUG
 		else 
 		{
-			// Debug For Proton
-			featureLevel = D3D_FEATURE_LEVEL_11_0;
-			// End
 			hr = D3D11CreateDeviceAndSwapChain(
 				nullptr,
 				type,
@@ -113,7 +110,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 				&sd,
 				&swapChain,
 				&device,
-				&featureLevel,
+				nullptr,
 				&context);
 
 			if (SUCCEEDED(hr))
