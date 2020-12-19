@@ -96,18 +96,6 @@
     <ClInclude Include="Snowing.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="XAudio2_7.h">
-      <Filter>头文件\XAudio2</Filter>
-    </ClInclude>
-    <ClInclude Include="audiodefs.h">
-      <Filter>头文件\XAudio2</Filter>
-    </ClInclude>
-    <ClInclude Include="xma2defs.h">
-      <Filter>头文件\XAudio2</Filter>
-    </ClInclude>
-    <ClInclude Include="comdecl.h">
-      <Filter>头文件\XAudio2</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -172,5 +160,6 @@
     <None Include="PostEffect.hlsli">
       <Filter>HLSL头文件</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

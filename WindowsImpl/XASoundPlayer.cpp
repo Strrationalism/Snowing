@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "XASoundPlayer.h"
 #include "XADevice.h"
-#include "xaudio2_7.h"
+#include <xaudio2.h>
 #include "COMHelper.h"
 
 #pragma pack(1)

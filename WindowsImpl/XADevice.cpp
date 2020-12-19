@@ -1,14 +1,14 @@
 #include "stdafx.h"
 #include "XADevice.h"
 #include "COMHelper.h"
-#include "xaudio2_7.h"
+#include <xaudio2.h>
 
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
 Snowing::PlatformImpls::WindowsImpl::XAudio2::XADevice::XADevice() noexcept
 {
 	IXAudio2* xa;
-	COMHelper::AssertHResult("Can not create XAudio 2.7 engine.",
+	COMHelper::AssertHResult("Can not create XAudio 2 engine.",
 		XAudio2Create(&xa));
 	xaEngine_ = { static_cast<IUnknown*>(xa),COMHelper::COMIUnknownDeleter };
 
