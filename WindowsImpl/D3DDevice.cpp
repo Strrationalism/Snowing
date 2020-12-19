@@ -77,18 +77,24 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	HRESULT hr;
 	for (auto type : types)
 	{
+		D3D_FEATURE_LEVEL levels[] = {
+			D3D_FEATURE_LEVEL_11_1,
+			D3D_FEATURE_LEVEL_11_0,
+			D3D_FEATURE_LEVEL_10_1,
+			D3D_FEATURE_LEVEL_10_0
+		};
 		hr = D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			type,
 			nullptr,
 			flag,
-			&featureLevel,
-			1,
+			levels,
+			4,
 			D3D11_SDK_VERSION,
 			&sd,
 			&swapChain,
 			&device,
-			nullptr,
+			&featureLevel,
 			&context);
 
 		if (SUCCEEDED(hr))
