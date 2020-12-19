@@ -225,11 +225,6 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 
 	// 注册为触摸窗口
 	RegisterTouchWindow(hwnd, 0);
-
-	// TestHandler
-	Handler hnd(hwnd, hwndDeleter);
-	Handler hnd2 = std::move(hnd);
-	hwnd_ = std::move(hnd2);
 }
 
 bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
