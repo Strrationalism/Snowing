@@ -225,6 +225,8 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 
 	// 注册为触摸窗口
 	RegisterTouchWindow(hwnd, 0);
+
+	hwnd_ = Handler{ hwnd, hwndDeleter };
 }
 
 bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
