@@ -65,7 +65,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 
 	constexpr D3D_DRIVER_TYPE types[] = 
 	{
-		D3D_DRIVER_TYPE_HARDWARE,
+		//D3D_DRIVER_TYPE_HARDWARE,
 		D3D_DRIVER_TYPE_WARP,
 		D3D_DRIVER_TYPE_REFERENCE
 	};
@@ -77,24 +77,18 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	HRESULT hr;
 	for (auto type : types)
 	{
-		D3D_FEATURE_LEVEL levels[] = {
-			D3D_FEATURE_LEVEL_11_1,
-			D3D_FEATURE_LEVEL_11_0,
-			D3D_FEATURE_LEVEL_10_1,
-			D3D_FEATURE_LEVEL_10_0
-		};
 		hr = D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			type,
 			nullptr,
 			flag,
-			levels,
-			4,
+			&featureLevel,
+			1,
 			D3D11_SDK_VERSION,
 			&sd,
 			&swapChain,
 			&device,
-			&featureLevel,
+			nullptr,
 			&context);
 
 		if (SUCCEEDED(hr))
