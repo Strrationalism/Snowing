@@ -2,8 +2,6 @@
 
 弦语蝶梦 第二代游戏引擎 Snowing   
 
-[快速入门](https://www.bilibili.com/video/av43701922/)
-
 ### 基本组件
 - Core - 引擎核心代码
 - Assets - 基本素材与示例素材
