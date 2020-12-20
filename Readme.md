@@ -2,8 +2,6 @@
 
 弦语蝶梦 第二代游戏引擎 Snowing   
 
-[快速入门](https://www.bilibili.com/video/av43701922/)
-
 ### 基本组件
 - Core - 引擎核心代码
 - Assets - 基本素材与示例素材
@@ -39,13 +37,9 @@
 #### Microsoft Windows
 * 最低要求：Microsoft Windows 7 SP1
 * 可再分发库要求：
-	- Microsoft Visual C++ 2015
-	- Microsoft Visual C++ 2017
 	- Microsoft Visual C++ 2019
-	- Microsoft DirectX Redistributable June 2010（用于兼容XAudio 2.7）
 	- KB4019990 （用于Microsoft Windows 7的补丁，用于提供D3DCompiler_47.dll）
-
-
+	- [XAudio2.9 Redist](https://docs.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-redistributable)（已经集成到WindowsImpl）
 
 ### FAQ
 
@@ -55,12 +49,10 @@
 如果需要执行Live2D范例，应当额外执行`Bake BuildLive2D`。 
 
 ##### 对Windows 7兼容性
-已经向Windows 7 SP1妥协，可支持到Windows 7 SP1，但是更低版本的Windows不再支持。
+可支持到Windows 7 SP1，但是更低版本的Windows不再支持。
 
 ##### 当我发布游戏时是否需要向玩家提供一些运行库
-需要，运行库被放在了redist文件夹下。
 对于Win7、Win8用户，如果你导入了Live2D支持，则需要确保用户安装了KB4019990补丁，以确保用户拥有D3DCompiler_47.dll。
-在某些情况下，你还需要让用户安装Visual C++ 2019可再发行组件包，见redist文件夹。
 你可以在Steamworks进行配置，让Steam自动为你的玩家安装Visual C++ 2019可再发行组件包。
 
 ##### 关于git-lfs
@@ -81,12 +73,7 @@ X可以为任意盘符，该工具用于打包纹理。
 
 ##### 关于Effects11 SDK错误
 使用子模块克隆后，如果提示找不到WinSDK，则需要手动重定向Effects的Windows SDK。
-建议使用v142工具链，并使用“10.0”的SDK。
-
-##### 关于Windows下的XAudio2的问题
-如果你创建了XAudio2设备，则有可能失败，可能是因为你没有安装DirectX Redistributable June 2010的可再分发库。
-Snowing引擎为了兼容Windows 7，使用XAudio 2.7版本，此版本在某些Windows下不默认存在（包括Windows 10）。
-XAudio 2.7的可再分发库在DirectX Redistributable June 2010中。
+建议使用v142工具链，并使用“8.1”的SDK。
 
 ##### Live2D支持遇到了编译错误
 由于Live2D的开发商的要求，我们不能提前做好Live2D的开发环境，如果你不需要Live2D，可以直接右键点击卸载项目。

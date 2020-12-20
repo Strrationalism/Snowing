@@ -6,4 +6,8 @@
   <ItemGroup>
     <FxCompile Include="Particle.fx" />
   </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x64\xaudio2_9redist.dll" />
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x86\xaudio2_9redist.dll" />
+  </ItemGroup>
 </Project>

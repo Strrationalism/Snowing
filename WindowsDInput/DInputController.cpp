@@ -7,6 +7,7 @@
 #include <COMHelper.h>
 #include <Windows.h>
 #include <WindowImpl.h>
+#include <algorithm>
 using namespace Snowing::PlatformImpls::WindowsImpl;
 using namespace Snowing::PlatformImpls::WindowsDInput;
 

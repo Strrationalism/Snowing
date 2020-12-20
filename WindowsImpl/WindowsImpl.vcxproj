@@ -114,6 +114,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>xaudio2_9redist.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\lib\$(PlatformShortName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -130,6 +134,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>xaudio2_9redist.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\lib\$(PlatformShortName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -150,6 +158,10 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>xaudio2_9redist.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\lib\$(PlatformShortName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -170,11 +182,13 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>xaudio2_9redist.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\lib\$(PlatformShortName);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AssetLoader.h" />
-    <ClInclude Include="audiodefs.h" />
-    <ClInclude Include="comdecl.h" />
     <ClInclude Include="COMHelper.h" />
     <ClInclude Include="D3DBuffer.h" />
     <ClInclude Include="D3DContext.h" />
@@ -196,8 +210,6 @@
     <ClInclude Include="WindowImpl.h" />
     <ClInclude Include="XADevice.h" />
     <ClInclude Include="XASoundPlayer.h" />
-    <ClInclude Include="XAudio2_7.h" />
-    <ClInclude Include="xma2defs.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssetLoader.cpp" />
@@ -229,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Blender.hlsli" />
+    <None Include="packages.config" />
     <None Include="PostEffect.hlsli" />
     <None Include="SpriteRenderer.hlsli">
       <FileType>Document</FileType>
@@ -237,5 +250,12 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\Microsoft.XAudio2.Redist.targets" Condition="Exists('..\..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\Microsoft.XAudio2.Redist.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\Microsoft.XAudio2.Redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\Microsoft.XAudio2.Redist.targets'))" />
+  </Target>
 </Project>
