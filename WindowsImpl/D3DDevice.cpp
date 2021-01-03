@@ -181,6 +181,14 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::SetFullscreen(bool b)
 	Resize({ static_cast<int>(r.right - r.left),static_cast<int>(r.bottom - r.top) });
 }
 
+bool Snowing::PlatformImpls::WindowsImpl::D3D::Device::GetFullscreen() const
+{
+	BOOL b = false;
+	auto sc = static_cast<IDXGISwapChain*>(swapChain_.Get<IUnknown*>());
+	sc->GetFullscreenState(&b, nullptr);
+	return b;
+}
+
 void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> size)
 {
 	if (!swapChain_.IsSome()) return;

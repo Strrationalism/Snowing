@@ -39,6 +39,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		Graphics::RenderTarget& MainRenderTarget();
 
 		void SetFullscreen(bool b);
+		bool GetFullscreen() const;
 		void Resize(Math::Vec2<int> size);
 
 		void Update();

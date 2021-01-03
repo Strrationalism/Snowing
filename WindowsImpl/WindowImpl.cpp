@@ -303,8 +303,9 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> siz
 		winpos.x + size.x,winpos.y + size.y
 	};
 
-	if (!AdjustWindowRect(&winRect, dwStyle, false))
-		throw std::runtime_error{ "AdjustWindowRect error" };
+	if (!D3D::Device::Get().GetFullscreen())
+		if (!AdjustWindowRect(&winRect, dwStyle, false))
+			throw std::runtime_error{ "AdjustWindowRect error" };
 
 	MoveWindow(hwnd_.Get<HWND>(),winRect.left,winRect.top,winRect.right - winRect.left,winRect.bottom - winRect.top,true);
 }
