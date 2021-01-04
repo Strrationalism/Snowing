@@ -20,6 +20,8 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		Graphics::WindowInterface<PlatformImpls::WindowsImpl::WindowImpl> keepInterface_;
 
 		Math::Vec2<int> wndSize_;
+
+		void processWindowMoving();
 	public:
 		WindowImpl(const WindowImpl&) = delete;
 		WindowImpl(WindowImpl&&) = default;
