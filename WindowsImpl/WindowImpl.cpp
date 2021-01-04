@@ -138,12 +138,6 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 		}
 		break;
-	case WM_SIZE:
-		D3D::Device::Get().Resize({
-			static_cast<int>(LOWORD(l)),
-			static_cast<int>(HIWORD(l))
-		});
-		break;
 	default:{
 		MSG msgs
 		{
@@ -229,9 +223,8 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 	hwnd_ = Handler{ hwnd, hwndDeleter };
 }
 
-bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::processWindowMoving()
 {
-	// 处理窗口移动的屎的开始
 	if (movingMousePositionToLTCorner.has_value())
 	{
 		// 如果鼠标松开则退出窗口移动模式
@@ -255,7 +248,11 @@ bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
 				FALSE);
 		}
 	}
-	// 处理窗口移动的屎的结束
+}
+
+bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
+{
+	processWindowMoving();
 
 	MSG msg = { 0 };
 
