@@ -95,12 +95,13 @@ static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	}
 	case SC_KEYMENU:
 	case SC_MOUSEMENU:
-		break;
 	default:
 		DefWindowProc(wnd, msg, w, l);
 		break;
 	};
 }
+
+static WindowStyle windowStyle;
 
 static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 {
@@ -138,6 +139,7 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 		}
 		break;
+
 	default:{
 		MSG msgs
 		{
@@ -166,9 +168,10 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 	windowFocused_ = b;
 }
 
-Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<int> size):
+Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle):
 	wndSize_{ size }
 {
+	::windowStyle = windowStyle;
 	COMHelper::AssertHResult("CoInitializeEx failed!",
 		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
 
@@ -181,8 +184,8 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
-		winpos.x,winpos.y,
-		winpos.x + size.x,winpos.y + size.y
+		static_cast<LONG>(winpos.x), static_cast<LONG>(winpos.y),
+		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
 
 	if (!AdjustWindowRect(&winRect, dwStyle, false))
@@ -219,6 +222,11 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 
 	// 注册为触摸窗口
 	RegisterTouchWindow(hwnd, 0);
+
+	// 注册为Sizable窗口
+	if (windowStyle.sizable) {
+		SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) | WS_SIZEBOX);
+	}
 
 	hwnd_ = Handler{ hwnd, hwndDeleter };
 }
@@ -290,14 +298,14 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetWindowed(bool windowed)
 	}
 }
 
-void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> size)
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<size_t> size)
 {
 	wndSize_ = size;
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
-		winpos.x,winpos.y,
-		winpos.x + size.x,winpos.y + size.y
+		static_cast<LONG>(winpos.x), static_cast<LONG>(winpos.y),
+		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
 
 	if (!D3D::Device::Get().GetFullscreen())
@@ -347,10 +355,10 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 		HWND_TOPMOST,
 		rcClient.left, rcClient.top,
 		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
-		SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
+		SWP_FRAMECHANGED | SWP_NOMOVE);
 }
 
-Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
+Snowing::Math::Vec2<size_t> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
 {
 	/*RECT r; //这里需要进一步讨论，在某些情况下GetClientRect返回四个0
 	if (!GetClientRect(hwnd_.Get<HWND>(), &r))
@@ -359,7 +367,7 @@ Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSiz
 	return wndSize_;
 }
 
-Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
+Snowing::Math::Vec2<size_t> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 {
 	// 旧版获得窗口大小，受到DPI影响
 	/*RECT desktopRect;
@@ -371,8 +379,8 @@ Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 		desktopRect.bottom - desktopRect.top };*/
 
 	return {
-		GetSystemMetrics(SM_CXSCREEN),
-		GetSystemMetrics(SM_CYSCREEN)
+		static_cast<size_t>(GetSystemMetrics(SM_CXSCREEN)),
+		static_cast<size_t>(GetSystemMetrics(SM_CYSCREEN))
 	};
 
 }

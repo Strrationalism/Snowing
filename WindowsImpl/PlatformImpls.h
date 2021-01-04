@@ -33,9 +33,9 @@ namespace Snowing::PlatformImpls
 	namespace WindowsImpl
 	{
 		[[nodiscard]]
-		inline auto MakeEngine(const wchar_t* title, Math::Vec2<int> size, bool windowed)
+		inline auto MakeEngine(const wchar_t* title, Math::Vec2<size_t> size, bool windowed, WindowStyle windowStyle = {})
 		{
-			WindowImpl win{ title, size };
+			WindowImpl win{ title, size, windowStyle };
 			D3D::Device d3d{ WindowImpl::Get().GetHWND(),windowed };
 			Engine eng{ Engine::ConstructToken{} };
 			return std::tuple{ std::move(win), std::move(d3d), std::move(eng) };

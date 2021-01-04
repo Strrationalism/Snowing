@@ -88,7 +88,11 @@ namespace Snowing::Math
 	[[nodiscard]]
 	constexpr Vec2<A> operator - (const Vec2<A>& a, const Vec2<B>& b) noexcept
 	{
-		return a + (-b);
+		return
+		{
+			a.x - b.x,
+			a.y - b.y
+		};
 	}
 
 	template <typename A, typename B>

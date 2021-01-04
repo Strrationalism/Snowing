@@ -5,6 +5,10 @@
 #include "SingleInstance.h"
 namespace Snowing::PlatformImpls::WindowsImpl
 {
+	struct WindowStyle {
+		bool sizable = false;
+	};
+
 	class WindowImpl final : public SingleInstance<WindowImpl>
 	{
 	public:
@@ -19,7 +23,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 
 		Graphics::WindowInterface<PlatformImpls::WindowsImpl::WindowImpl> keepInterface_;
 
-		Math::Vec2<int> wndSize_;
+		Math::Vec2<size_t> wndSize_;
 
 		void processWindowMoving();
 	public:
@@ -32,7 +36,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 
 		void FocusWindow(bool b);
 
-		WindowImpl(const wchar_t* title,Math::Vec2<int> size);
+		WindowImpl(const wchar_t* title,Math::Vec2<size_t> size, WindowStyle windowStyle);
 
 		bool Update();
 
@@ -43,10 +47,10 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		const Handler& GetHWND() const;
 
 		void SetWindowed(bool windowed);
-		void Resize(Math::Vec2<int> size);
+		void Resize(Math::Vec2<size_t> size);
 		void SetTransparent();
 
-		Math::Vec2<int> GetSize() const;
+		Math::Vec2<size_t> GetSize() const;
 
 		void ShowCursor(bool cursor);
 
@@ -61,7 +65,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		}
 	};
 
-	Math::Vec2<int> GetDesktopSize();
+	Math::Vec2<size_t> GetDesktopSize();
 }
 
 namespace Snowing::Graphics
