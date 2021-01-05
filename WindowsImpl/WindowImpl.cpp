@@ -165,7 +165,7 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	{
 		RECT orgRect;
 		GetWindowRect(wnd, &orgRect);
-		static float sScale =
+		const float sScale =
 			static_cast<float>(orgRect.bottom - orgRect.top) / static_cast<float>(orgRect.right - orgRect.left);
 
 		constexpr int minWidth = 320;
