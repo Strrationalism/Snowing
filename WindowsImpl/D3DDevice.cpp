@@ -14,16 +14,12 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 {
 	const auto hwnd = hWnd.Get<HWND>();
 
-	ShowWindow(hwnd, SW_SHOW);
-
-	RECT winRect;
-	if (!GetClientRect(hwnd, &winRect))
-		throw std::runtime_error("Get client rect failed");
+	const auto size = WindowImpl::Get().GetSize().Cast<UINT>();
 
 	DXGI_SWAP_CHAIN_DESC sd = { 0 };
 	sd.BufferCount = 2;
-	sd.BufferDesc.Width = winRect.right - winRect.left;
-	sd.BufferDesc.Height = winRect.bottom - winRect.top;
+	sd.BufferDesc.Width = size.x;
+	sd.BufferDesc.Height = size.y;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
@@ -131,6 +127,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	{ static_cast<IUnknown*>(swapChain),COMHelper::COMIUnknownDeleter };
 	const_cast<Handler&>(device_) =
 	{ static_cast<IUnknown*>(device),COMHelper::COMIUnknownDeleter };
+
+	ShowWindow(hwnd, SW_SHOW);
 
 	return { static_cast<IUnknown*>(context),COMHelper::COMIUnknownDeleter };
 }

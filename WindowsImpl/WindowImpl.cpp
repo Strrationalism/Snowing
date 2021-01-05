@@ -139,6 +139,69 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 		}
 		break;
+
+	case WM_SIZE:
+		if (currentWindow) {
+			D3D::Device::Get().Resize({
+				static_cast<int>(LOWORD(l)),
+				static_cast<int>(HIWORD(l))
+			});
+		}
+		return DefWindowProc(wnd, msg, w, l);
+		break;
+
+	case WM_SIZING:
+	{
+		RECT orgRect;
+		GetWindowRect(wnd, &orgRect);
+		static float sScale =
+			static_cast<float>(orgRect.bottom - orgRect.top) / static_cast<float>(orgRect.right - orgRect.left);
+
+		constexpr int minWidth = 320;
+		const int minHeight = static_cast<int>(320 * sScale);
+
+		int cx, cy;
+		LPRECT lpRect = (LPRECT)l;
+		if (w == WMSZ_LEFT || w == WMSZ_RIGHT)
+		{
+			cx = lpRect->right - lpRect->left;
+			if (cx < minWidth) {
+				cx = minWidth;
+				lpRect->right = lpRect->left + cx;
+			}
+			cy = (int)(cx * sScale);
+			lpRect->bottom = lpRect->top + cy;
+		}
+		else if (w == WMSZ_TOPLEFT || w == WMSZ_BOTTOMLEFT)
+		{
+			cy = lpRect->bottom - lpRect->top;
+			cx = (int)(cy / sScale);
+
+			if (cy < minHeight) {
+				cy = minHeight;
+				lpRect->bottom = lpRect->top + cy;
+			}
+
+			if (cx < minWidth) {
+				cx = minWidth;
+				lpRect->right = lpRect->left + cx;
+			}
+
+			lpRect->left = lpRect->right - cx;
+		}
+		else
+		{
+			cy = lpRect->bottom - lpRect->top;
+			if (cy < minHeight) {
+				cy = minHeight;
+				lpRect->bottom = lpRect->top + cy;
+			}
+			cx = (int)(cy / sScale);
+			lpRect->right = lpRect->left + cx;
+		}
+
+		return DefWindowProc(wnd, msg, w, l);
+	}
 	
 	default:{
 		MSG msgs
@@ -308,9 +371,16 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<size_t> 
 		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
 
-	if (!D3D::Device::Get().GetFullscreen())
+
+	if (D3D::Device::InstanceExists()) {
+		if (!D3D::Device::Get().GetFullscreen())
+			if (!AdjustWindowRect(&winRect, dwStyle, false))
+				throw std::runtime_error{ "AdjustWindowRect error" };
+	}
+	else {
 		if (!AdjustWindowRect(&winRect, dwStyle, false))
 			throw std::runtime_error{ "AdjustWindowRect error" };
+	}
 
 	MoveWindow(hwnd_.Get<HWND>(),winRect.left,winRect.top,winRect.right - winRect.left,winRect.bottom - winRect.top,true);
 }

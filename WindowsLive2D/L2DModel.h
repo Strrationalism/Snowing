@@ -33,6 +33,8 @@ namespace Live2D
 
 		bool Update() override;
 
+		void SetRatio(float ratio);
+
 		static constexpr Snowing::Math::Coordinate2DCenter Coordinate
 		{
 			{ 0,0 },

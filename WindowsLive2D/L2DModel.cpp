@@ -151,6 +151,12 @@ bool Live2D::Model::Update()
 	return true;
 }
 
+void Live2D::Model::SetRatio(float ratio)
+{
+	ratio_ = ratio;
+	updateMatrix();
+}
+
 bool Live2D::Model::MotionFinished() const
 {
 	return motionManager_.Get<Csm::CubismMotionManager*>()->IsFinished();

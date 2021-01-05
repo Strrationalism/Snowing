@@ -74,6 +74,11 @@ namespace Snowing::Graphics
 			impl_.SetRenderTarget(&rt, 1);
 		}
 
+		void SetRenderTarget()
+		{
+			impl_.SetRenderTarget(nullptr, 0);
+		}
+
 		auto GetRenderTarget()
 		{
 			auto r = impl_.GetRenderTarget();

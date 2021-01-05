@@ -54,26 +54,33 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::Draw(size_t count, size_
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetRenderTarget(Graphics::RenderTarget ** rt, int size)
 {
-	assert(size < 8);
-	assert(size > 0);
-	rt_ = *rt;
-	std::array<ID3D11RenderTargetView*,8> rtCache{0};
-	std::array<D3D11_VIEWPORT,8> vpCache;
-
-	for (int i = 0; i < size; ++i)
-	{
-		rtCache[i] = (static_cast<ID3D11RenderTargetView*>(rt[i]->GetImpl().GetHandler().Get<IUnknown*>()));
-		D3D11_VIEWPORT vp = { 0 };
-		vp.MaxDepth = 1.0f;
-		const auto sizeTex = rt[i]->GetTexture().Size();
-		vp.Width = static_cast<float>(sizeTex.x);
-		vp.Height = static_cast<float>(sizeTex.y);
-		vpCache[i] = vp;
-	}
-
 	const auto ctx = static_cast<ID3D11DeviceContext*>(context_.Get<IUnknown*>());
-	ctx->OMSetRenderTargets(8, rtCache.data(),nullptr);
-	ctx->RSSetViewports(size, vpCache.data());
+	if (rt) {
+		assert(size < 8);
+		assert(size >= 0);
+		rt_ = *rt;
+		std::array<ID3D11RenderTargetView*, 8> rtCache{ 0 };
+		std::array<D3D11_VIEWPORT, 8> vpCache;
+
+		for (int i = 0; i < size; ++i)
+		{
+			rtCache[i] = (static_cast<ID3D11RenderTargetView*>(rt[i]->GetImpl().GetHandler().Get<IUnknown*>()));
+			D3D11_VIEWPORT vp = { 0 };
+			vp.MaxDepth = 1.0f;
+			const auto sizeTex = rt[i]->GetTexture().Size();
+			vp.Width = static_cast<float>(sizeTex.x);
+			vp.Height = static_cast<float>(sizeTex.y);
+			vpCache[i] = vp;
+		}
+		
+		ctx->OMSetRenderTargets(8, rtCache.data(), nullptr);
+		ctx->RSSetViewports(size, vpCache.data());
+	}
+	else {
+		ID3D11RenderTargetView* p[8] = { nullptr };
+		ctx->OMSetRenderTargets(8, p, nullptr);
+		ctx->RSSetViewports(0, nullptr);
+	}
 }
 
 void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetStreamOutBuffer(Graphics::Buffer** buf, int bufSize)
