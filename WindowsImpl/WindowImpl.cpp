@@ -139,7 +139,7 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 		}
 		break;
-
+	
 	default:{
 		MSG msgs
 		{
