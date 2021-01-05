@@ -208,6 +208,17 @@ namespace Snowing::Graphics
 				);
 		}
 
+		void SetCoordinateSystem(const Math::Coordinate2DCenter& c)
+		{
+			for (auto& r : renderer_)
+				r.SetCoordinateSystem(c);
+		}
+
+		void SetCoordinateSystem(const Math::Coordinate2DRect& c)
+		{
+			SetCoordinateSystem(ConvertCoordnate2DToCenter(c));
+		}
+
 		void FlushSpriteBuffer()
 		{
 			for (auto& r : renderer_)

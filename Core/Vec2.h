@@ -6,6 +6,15 @@ namespace Snowing::Math
 	struct[[nodiscard]] alignas(sizeof(T)) Vec2 final
 	{
 		T x, y;
+
+		template <typename U>
+		Vec2<U> Cast() const
+		{
+			return {
+				static_cast<U>(x),
+				static_cast<U>(y)
+			};
+		}
 	};
 
 	template <typename A, typename B>
