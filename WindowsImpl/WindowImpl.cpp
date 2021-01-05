@@ -119,11 +119,13 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 
 	case WM_CLOSE:
 		if (currentWindow)
+		{
 			if (currentWindow->GetWMCloseHandler())
 				currentWindow->GetWMCloseHandler()();
 			else
 				currentWindow->Kill();
-			
+			ShowWindow(currentWindow->Get().GetHWND().Get<HWND>(), SW_HIDE);
+		}
 		break;
 	case WM_SETFOCUS:
 		if (currentWindow)
