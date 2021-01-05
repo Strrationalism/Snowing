@@ -142,10 +142,21 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 
 	case WM_SIZE:
 		if (currentWindow) {
-			D3D::Device::Get().Resize({
-				static_cast<int>(LOWORD(l)),
-				static_cast<int>(HIWORD(l))
-			});
+			Snowing::Math::Vec2<size_t> size {
+				static_cast<size_t>(LOWORD(l)),
+				static_cast<size_t>(HIWORD(l))
+			};
+
+			if (currentWindow->GetWMSizeHandler())
+			{
+				size = currentWindow->GetWMSizeHandler()({
+					static_cast<size_t>(LOWORD(l)),
+					static_cast<size_t>(HIWORD(l))
+				});
+			}
+
+			D3D::Device::Get().Resize(size.Cast<int>());
+
 		}
 		return DefWindowProc(wnd, msg, w, l);
 		break;

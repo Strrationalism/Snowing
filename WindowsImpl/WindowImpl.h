@@ -13,6 +13,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 	{
 	public:
 		using WMCloseHandler = void(*)();
+		using WMSizeHandler = Snowing::Math::Vec2<size_t>(*)(Snowing::Math::Vec2<size_t> size);
 
 	private:
 		Handler hwnd_;
@@ -20,6 +21,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		bool keep_ = true;
 		bool windowFocused_ = false;
 		WMCloseHandler wmCloseHandler_ = nullptr;
+		WMSizeHandler wmSizeHandler_ = nullptr;
 
 		Graphics::WindowInterface<PlatformImpls::WindowsImpl::WindowImpl> keepInterface_;
 
@@ -62,6 +64,16 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		inline WMCloseHandler GetWMCloseHandler() const
 		{
 			return wmCloseHandler_;
+		}
+
+		inline void SetWMSizeHandler(WMSizeHandler wm)
+		{
+			wmSizeHandler_ = wm;
+		}
+
+		inline WMSizeHandler GetWMSizeHandler()
+		{
+			return wmSizeHandler_;
 		}
 	};
 
