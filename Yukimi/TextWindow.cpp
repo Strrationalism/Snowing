@@ -122,6 +122,8 @@ void Yukimi::TextWindow::SetVisible(bool vis)
 
 bool Yukimi::TextWindow::Update()
 {
+	typer_.SetBox(userAdapter_->GetTextWindowBox());
+
 	float deltaTime = Snowing::Engine::Get().DeltaTime();
 
 	if(currentTimeLineEnd_.has_value())
