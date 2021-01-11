@@ -246,7 +246,6 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle):
 	wndSize_{ size }
 {
-	sScale = size.y / static_cast<float>(size.x);
 	::windowStyle = windowStyle;
 	COMHelper::AssertHResult("CoInitializeEx failed!",
 		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
@@ -266,6 +265,8 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 
 	if (!AdjustWindowRect(&winRect, dwStyle, false))
 		throw std::runtime_error{ "AdjustWindowRect error" };
+
+	sScale = (winRect.bottom - winRect.top) / static_cast<float>(winRect.right - winRect.left);
 
 	WNDCLASSEX wnd;
 	wnd.cbClsExtra = 0;
