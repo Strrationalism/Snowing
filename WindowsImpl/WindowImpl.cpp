@@ -102,7 +102,7 @@ static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 }
 
 static WindowStyle windowStyle;
-
+static float sScale = 1.0f;
 static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 {
 	auto currentWindow = &WindowImpl::Get();
@@ -168,8 +168,6 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	{
 		RECT orgRect;
 		GetWindowRect(wnd, &orgRect);
-		const float sScale =
-			static_cast<float>(orgRect.bottom - orgRect.top) / static_cast<float>(orgRect.right - orgRect.left);
 
 		constexpr int minWidth = 320;
 		const int minHeight = static_cast<int>(320 * sScale);
@@ -248,6 +246,7 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle):
 	wndSize_{ size }
 {
+	sScale = size.y / static_cast<float>(size.x);
 	::windowStyle = windowStyle;
 	COMHelper::AssertHResult("CoInitializeEx failed!",
 		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
