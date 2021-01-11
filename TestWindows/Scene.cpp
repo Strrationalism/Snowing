@@ -6,7 +6,7 @@
 
 void RunGameObject(Snowing::Scene::Object& obj,const wchar_t* testName)
 {
-	WindowImpl window{ testName ,WinSize };
+	WindowImpl window{ testName ,WinSize, {false} };
 	D3D::Device device{ window.GetHWND(),true };
 	Engine engine{ Snowing::Engine::ConstructToken{} };
 	engine.RunObject(obj);
@@ -398,7 +398,7 @@ TEST(Scene,MenuPositionController)
 	Snowing::Engine::Get().RunObject(MyScene{});
 }
 
-static void TestDebugDisplay(Math::Vec2<int> size)
+static void TestDebugDisplay(Math::Vec2<size_t> size)
 {
 	auto engine = Snowing::PlatformImpls::WindowsImpl::MakeEngine(
 		L"FPSDisplay",

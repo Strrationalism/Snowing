@@ -24,7 +24,7 @@ using namespace Snowing;
 using namespace Snowing::Graphics;
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
-constexpr Math::Vec2<int> WinSize{ 800,600 };
+constexpr Math::Vec2<size_t> WinSize{ 800,600 };
 
 template <typename T,typename U>
 void Assert(const T& a, const U& b)
