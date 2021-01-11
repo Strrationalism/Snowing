@@ -108,6 +108,12 @@ Snowing::Graphics::RenderTarget* Snowing::PlatformImpls::WindowsImpl::D3D::Conte
 	return rt_;
 }
 
+void Snowing::PlatformImpls::WindowsImpl::D3D::Context::ClearState()
+{
+	const auto ctx = static_cast<ID3D11DeviceContext*>(context_.Get<IUnknown*>());
+	ctx->ClearState();
+}
+
 const Handler & Snowing::PlatformImpls::WindowsImpl::D3D::Context::GetHandler() const
 {
 	return context_;

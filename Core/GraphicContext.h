@@ -95,6 +95,11 @@ namespace Snowing::Graphics
 			SetRenderTarget(rtorg);
 		}
 
+		void ClearState()
+		{
+			impl_.ClearState();
+		}
+
 		[[nodiscard]]
 		const auto& GetImpl() const
 		{
