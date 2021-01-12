@@ -169,6 +169,9 @@ namespace Yukimi
 			const TextWindowFontStyle& style,
 			float wait);
 
+		// 下一行
+		void NextLine();
+
 		// 停止淡出效果
 		void FastFadeIn();
 

@@ -97,6 +97,11 @@ void Yukimi::TextWindow::AppendText(std::wstring_view text, const TextWindowFont
 		appendCharacter(p, style, wait);
 }
 
+void Yukimi::TextWindow::NextLine()
+{
+	typer_.NextLine();
+}
+
 void Yukimi::TextWindow::FastFadeIn()
 {
 	for (auto& p : text_)
