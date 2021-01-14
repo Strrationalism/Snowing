@@ -243,6 +243,10 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 	windowFocused_ = b;
 }
 
+#ifdef _DEBUG
+static size_t debuggingScreenId = 0;
+#endif
+
 Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle):
 	wndSize_{ size }
 {
@@ -262,6 +266,29 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		static_cast<LONG>(winpos.x), static_cast<LONG>(winpos.y),
 		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
+
+#ifdef _DEBUG
+	std::vector<RECT> monitors;
+	EnumDisplayMonitors(nullptr, nullptr, 
+		[] (HMONITOR, HDC, LPRECT lprcMonitor, LPARAM dwData) -> BOOL{
+			static_assert(sizeof(dwData) == sizeof(void*));
+			const auto monitors = reinterpret_cast<std::vector<RECT>*>(dwData);
+			monitors->push_back(*lprcMonitor);
+			return TRUE;
+		}, reinterpret_cast<LPARAM>(&monitors));
+	const size_t debuggingMonitorIdSelected = std::clamp<size_t>(debuggingScreenId, 0u, monitors.size() - 1);
+	const auto screenRect = monitors.at(debuggingMonitorIdSelected);
+	const Snowing::Math::Vec2<LONG> screenSize = {
+		screenRect.right - screenRect.left,
+		screenRect.bottom - screenRect.top
+	};
+	const auto lSize = size.Cast<LONG>();
+	winRect = {
+		screenRect.left + screenSize.x / 2 - lSize.x / 2, screenRect.top + screenSize.y / 2 - lSize.y / 2,
+		screenRect.left + screenSize.x / 2 + lSize.x / 2, screenRect.top + screenSize.y / 2 + lSize.y / 2
+	};
+#endif // _DEBUG
+
 
 	if (!AdjustWindowRect(&winRect, dwStyle, false))
 		throw std::runtime_error{ "AdjustWindowRect error" };
@@ -467,6 +494,13 @@ Snowing::Math::Vec2<size_t> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize(
 		static_cast<size_t>(GetSystemMetrics(SM_CYSCREEN))
 	};
 
+}
+
+void Snowing::PlatformImpls::WindowsImpl::SetDebuggingScreen(size_t screenId)
+{
+#ifdef _DEBUG
+	debuggingScreenId = screenId;
+#endif
 }
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)

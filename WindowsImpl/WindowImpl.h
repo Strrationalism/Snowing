@@ -78,6 +78,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 	};
 
 	Math::Vec2<size_t> GetDesktopSize();
+	void SetDebuggingScreen(size_t screenId);
 }
 
 namespace Snowing::Graphics
