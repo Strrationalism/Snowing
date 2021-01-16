@@ -33,6 +33,9 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Context::SetVertexBuffer(Graphics
 	case Snowing::Graphics::Primitive::TriangleStrip:
 		ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 		break;
+	case Snowing::Graphics::Primitive::LineList:
+		ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+		break;
 	default:
 		assert(false);
 		break;

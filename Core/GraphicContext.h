@@ -11,6 +11,7 @@ namespace Snowing::Graphics
 	enum class Primitive
 	{
 		PointList,
+		LineList,
 		TriangleList,
 		TriangleStrip
 	};
