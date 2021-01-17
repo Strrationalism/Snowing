@@ -7,6 +7,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 {
 	struct WindowStyle {
 		bool sizable = false;
+		std::optional<int> icon = std::nullopt;
 	};
 
 	class WindowImpl final : public SingleInstance<WindowImpl>
@@ -16,7 +17,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 		using WMSizeHandler = Snowing::Math::Vec2<size_t>(*)(Snowing::Math::Vec2<size_t> size);
 
 	private:
-		Handler hwnd_;
+		Handler icon_, hwnd_;
 		InputImpl input_;
 		bool keep_ = true;
 		bool windowFocused_ = false;

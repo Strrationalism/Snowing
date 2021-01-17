@@ -308,6 +308,20 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 	wnd.lpszClassName = title;
 	wnd.lpszMenuName = title;
 	wnd.style = CS_HREDRAW | CS_VREDRAW;
+	
+	if (windowStyle.icon.has_value())
+	{
+		const auto icon = static_cast<HICON>(LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(*windowStyle.icon)));
+		icon_ = {
+			icon,
+			[](void* icon) {
+				DestroyIcon(static_cast<HICON>(icon));
+			}
+		};
+
+		wnd.hIcon = icon;
+		wnd.hIconSm = icon;
+	}
 
 	if (!RegisterClassEx(&wnd))
 	{
