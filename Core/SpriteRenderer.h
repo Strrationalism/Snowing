@@ -152,6 +152,11 @@ namespace Snowing::Graphics
 			SetCoordinateSystem(coordSystem);
 		}
 
+		void SetTexture(const Texture* tex)
+		{
+			tex_ = tex;
+		}
+
 		void FlushSpriteBuffer()
 		{
 			assert(gpuVBuffer_);
