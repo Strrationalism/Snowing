@@ -204,8 +204,8 @@ bool Snowing::PlatformImpls::WindowsImpl::InputImpl::KeyPressed(Snowing::Input::
 		MAPKEY(KeyboardKey::RShift, VK_RSHIFT);
 		MAPKEY(KeyboardKey::LCtrl, VK_LCONTROL);
 		MAPKEY(KeyboardKey::RCtrl, VK_RCONTROL);
-		MAPKEY(KeyboardKey::PageDown, VK_PRIOR);
-		MAPKEY(KeyboardKey::PageUp, VK_NEXT);
+		MAPKEY(KeyboardKey::PageDown, VK_NEXT);
+		MAPKEY(KeyboardKey::PageUp, VK_PRIOR);
 		MAPKEY(KeyboardKey::F1, VK_F1);
 		MAPKEY(KeyboardKey::F2, VK_F2);
 		MAPKEY(KeyboardKey::F3, VK_F3);
