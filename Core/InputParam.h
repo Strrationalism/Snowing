@@ -71,6 +71,9 @@ namespace Snowing::Input
 		LCtrl,
 		RCtrl,
 
+		PageDown,
+		PageUp,
+
 		F1,
 		F2,
 		F3
