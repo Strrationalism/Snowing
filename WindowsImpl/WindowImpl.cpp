@@ -3,6 +3,7 @@
 #include "PlatformImpls.h"
 #include <mutex>
 #include "COMHelper.h"
+#include <stack>
 
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
@@ -103,6 +104,7 @@ static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 
 static WindowStyle windowStyle;
 static float sScale = 1.0f;
+static std::stack<bool> focusFullScreenStack;
 static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 {
 	auto currentWindow = &WindowImpl::Get();
@@ -133,6 +135,13 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 		{
 			currentWindow->FocusWindow(true);
 			currentWindow->GetInputImpl().FocusWindow(true);
+
+			if (!focusFullScreenStack.empty())
+			{
+				if(focusFullScreenStack.top())
+					currentWindow->SetWindowed(false);
+				focusFullScreenStack.pop();
+			}
 		}
 		break;
 	case WM_KILLFOCUS:
@@ -142,8 +151,13 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 			currentWindow->GetInputImpl().FocusWindow(false);
 
 			// 这里可以修复一切可能因为Alt+Tab导致的全屏Bug
-			if (D3D::Device::Get().GetFullscreen())
-				currentWindow->SetWindowed(true);
+			if (IsWindowVisible(wnd)) 
+			{
+				const bool isFullscreen = D3D::Device::Get().GetFullscreen();
+				focusFullScreenStack.push(isFullscreen);
+				if (isFullscreen)
+					currentWindow->SetWindowed(true);
+			}
 		}
 		break;
 
