@@ -140,6 +140,10 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 		{
 			currentWindow->FocusWindow(false);
 			currentWindow->GetInputImpl().FocusWindow(false);
+
+			// 这里可以修复一切可能因为Alt+Tab导致的全屏Bug
+			if (D3D::Device::Get().GetFullscreen())
+				currentWindow->SetWindowed(true);
 		}
 		break;
 
