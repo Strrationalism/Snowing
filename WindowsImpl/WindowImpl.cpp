@@ -176,7 +176,7 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 				});
 			}
 
-			//D3D::Device::Get().Resize(size.Cast<int>());
+			D3D::Device::Get().Resize(size.Cast<int>());
 
 		}
 		return DefWindowProc(wnd, msg, w, l);
@@ -456,6 +456,8 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<size_t> 
 	}
 
 	MoveWindow(hwnd_.Get<HWND>(),winRect.left,winRect.top,winRect.right - winRect.left,winRect.bottom - winRect.top,true);
+
+	D3D::Device::Get().Resize(size.Cast<int>());
 }
 
 
