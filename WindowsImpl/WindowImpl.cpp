@@ -176,7 +176,7 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 				});
 			}
 
-			D3D::Device::Get().Resize(size.Cast<int>());
+			//D3D::Device::Get().Resize(size.Cast<int>());
 
 		}
 		return DefWindowProc(wnd, msg, w, l);
