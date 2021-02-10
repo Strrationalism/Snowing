@@ -12,7 +12,7 @@ namespace Snowing::Scene::UI
 		Menu<TMenuItem> &menu_;
 		const TPositionDevice &device_;
 		std::tuple<TPositionArgs...> deviceArgs_;
-		const Math::Coordinate2DCenter menuCoord_, deviceCoord_;
+		Math::Coordinate2DCenter menuCoord_, deviceCoord_;
 
 		void select(const std::optional<size_t>& index)
 		{
@@ -45,6 +45,12 @@ namespace Snowing::Scene::UI
 			menuCoord_{ Math::ConvertCoordnate2DToCenter(menuCoord) },
 			deviceCoord_{ Math::ConvertCoordnate2DToCenter(deviceCoord) }
 		{}
+
+		template <typename TCoord>
+		void SetMenuCoordinateSystem(const TCoord& coord)
+		{
+			menuCoord_ = Math::ConvertCoordnate2DToCenter(coord);
+		}
 
 		void RefreshSelect()
 		{
