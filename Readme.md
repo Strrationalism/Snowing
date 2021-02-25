@@ -37,7 +37,7 @@
 #### Microsoft Windows
 * 最低要求：Microsoft Windows 7 SP1
 * 可再分发库要求：
-	- Microsoft Visual C++ 2019
+	- Microsoft Visual C++ 2019 Redistributable
 	- KB4019990 （用于Microsoft Windows 7的补丁，用于提供D3DCompiler_47.dll）
 	- [XAudio2.9 Redist](https://docs.microsoft.com/en-us/windows/win32/xaudio2/xaudio2-redistributable)（已经集成到WindowsImpl）
 
@@ -67,9 +67,6 @@ git-lfs install
 如果你需要自己编写Bake Script，应当导入Bake.Snowing.dll以访问素材构建器的功能。
 
 参见[Bake构建系统](https://github.com/Strrationalism/Bake)。
-
-需要安装[Erget TextureMerger](https://www.egret.com/products/others.html#egret-texture)到X:\Program Files\Egret\TextureMerger\下。
-X可以为任意盘符，该工具用于打包纹理。
 
 ##### 关于Effects11 SDK错误
 使用子模块克隆后，如果提示找不到WinSDK，则需要手动重定向Effects的Windows SDK。

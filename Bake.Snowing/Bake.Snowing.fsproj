@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bake.Core" Version="1.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="BinPack" Version="1.0.0" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
     <PackageReference Include="WAVFileReader" Version="1.0.0" />
   </ItemGroup>

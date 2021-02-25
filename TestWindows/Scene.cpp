@@ -475,7 +475,7 @@ TEST(Scene, ConditionTask)
 		&Graphics::Device::MainContext(),
 		&Graphics::Device::MainRenderTarget());
 
-	Scene::ConditionTask task
+	Scene::VirtualConditionTask task
 	{
 		[&i] { return i >= 60; },
 		[] {Engine::Get().Exit(); }

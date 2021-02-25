@@ -5,66 +5,66 @@ open System.IO
 open Bake
 open Bake.Snowing
 open Bake.Snowing.ConvertTexture
-open Newtonsoft.Json
-open Newtonsoft.Json.Linq
-
-let CallTextureMerger inputDir outputFilePair =
-    let textureMerger =
-        [
-            for i in 'C'..'Z' ->
-                string i + ":\\Program Files\\Egret\\TextureMerger\\TextureMerger.exe" ]
-        |> List.filter File.Exists
-        |> function
-        | s :: _ -> s
-        | [] ->
-            failwith "Can not find TextureMerger"
-    sprintf "-p \"%s\" -o \"%s.json\"" inputDir outputFilePair
-    |> StartWait textureMerger
-    WaitForFile 60 (outputFilePair + ".json")
-    WaitForFile 60 (outputFilePair + ".png")
+open BinPack
+open SixLabors.ImageSharp
+open SixLabors.ImageSharp.PixelFormats
+open SixLabors.ImageSharp.Processing
 
 let private spriteLock = obj()
 
 let private PackSpriteFunc (job:Job) =
-    lock spriteLock (fun () ->
-        CallTextureMerger (job.ScriptDir.FullName + "\\" + job.Input.Head) job.OutputPath
-        let frames =
-            using (new JsonTextReader(File.OpenText(job.OutputPath + ".json"))) (fun x ->
-                let token = JToken.ReadFrom x
-                let frames = token.["frames"]
-                [ for i in frames -> 
-                    uint16 i.Path.[7..],
-                    {
-                        x = uint16 i.First.["x"]
-                        y = uint16 i.First.["y"]
-                        w = uint16 i.First.["w"]
-                        h = uint16 i.First.["h"]
-                    }])
-            |> List.sortBy (fun (a,_) -> a)
+    let inputDir = job.ScriptDir.FullName + "\\" + job.Input.Head
+    let sprites =
+        Directory.EnumerateFiles inputDir
+        |> Seq.map (fun x -> 
+            let x = FileInfo x
+            let id = x.Name.[..(-1 + x.Name.IndexOf '.')] |> uint32
+            let image = Image.Load<Rgba32> x.FullName
+            { W = image.Width + 2; H = image.Height + 2; Tag = id, image })
+        |> Seq.toList
+        |> binPack
 
-        let spriteFrames =
-            let maxFrameID =
-                frames
-                |> List.maxBy (fun (a,_) -> a)
-                |> fst
-            let ret =
-                Array.init (maxFrameID |> int |> (+) 1) (fun x -> { x = 0us; y = 0us; w = 0us;h = 0us })
-            frames
-            |> List.iter (fun (id,frame) ->
-                ret.[int id] <- frame)
-            ret |> Array.toList
+    use mergedTexture = 
+        let wrapTo4 a = 
+            let x = a % 4
+            if x > 0 then (4 - x) + a
+            else a
+        let w, h = wrapTo4 sprites.Width, wrapTo4 sprites.Height
+        let buffer = Array.init (w * h) (fun _ -> Rgba32 0u)
+        Image.WrapMemory<Rgba32>(System.Memory(buffer), w, h)
 
-        let newJob = {
-            Input = [ job.OutputPath + ".png" ]
-            OutputPath = job.OutputPath
-            Arguments = job.Arguments
-            ScriptDir = job.ScriptDir
-        }
+    let mergedPath = job.OutputPath + ".png"
+    sprites.Rects
+    |> List.iter (fun (rect, (id, image)) ->
+        mergedTexture.Mutate (fun x -> 
+            x.DrawImage(image, new Point(rect.X + 1, rect.Y + 1), PixelColorBlendingMode.Normal, 1.0f)
+            |> ignore))
+
+    let spriteFrames =
+        let maxFrameID =
+            sprites.Rects
+            |> List.maxBy (fun (rect,(id, _)) -> id)
+            |> snd |> fst
+        let ret =
+            Array.init (maxFrameID |> int |> (+) 1) (fun _ -> { x = 0us; y = 0us; w = 0us;h = 0us })
+        sprites.Rects
+        |> List.iter (fun (frame,(id,_)) ->
+            ret.[int id] <- 
+                { x = uint16 (frame.X + 1); y = uint16 (frame.Y + 1); w = uint16 (frame.W - 2); h = uint16 (frame.H - 2) })
+        ret |> Array.toList
+        
+
+    mergedTexture.SaveAsPng mergedPath
+
+    let newJob = {
+        Input = [ job.OutputPath + ".png" ]
+        OutputPath = job.OutputPath
+        Arguments = job.Arguments
+        ScriptDir = job.ScriptDir
+    }
     
-        ConvertTextureFunc spriteFrames true newJob
-
-        File.Delete (job.OutputPath + ".json")
-        File.Delete (job.OutputPath + ".png"))
+    ConvertTextureFunc spriteFrames true newJob
+    File.Delete mergedPath
 
 
 [<BakeAction>]

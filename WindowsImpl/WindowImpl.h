@@ -39,7 +39,7 @@ namespace Snowing::PlatformImpls::WindowsImpl
 
 		void FocusWindow(bool b);
 
-		WindowImpl(const wchar_t* title,Math::Vec2<size_t> size, WindowStyle windowStyle);
+		WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle = {});
 
 		bool Update();
 
