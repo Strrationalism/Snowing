@@ -96,6 +96,7 @@ static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	}
 	case SC_KEYMENU:
 	case SC_MOUSEMENU:
+		break;
 	default:
 		DefWindowProc(wnd, msg, w, l);
 		break;
