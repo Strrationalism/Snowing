@@ -17,7 +17,7 @@ type TextureFormat =
 let StartWait exe arg =
     use prc = new Process()
     prc.StartInfo.FileName <- exe
-    prc.StartInfo.WorkingDirectory <- (FileInfo exe).DirectoryName
+    prc.StartInfo.WorkingDirectory <- System.Environment.CurrentDirectory
     prc.StartInfo.Arguments <- arg
     prc.StartInfo.WindowStyle <- ProcessWindowStyle.Hidden
     prc.StartInfo.RedirectStandardOutput <- true
