@@ -13,24 +13,17 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 {
 	class Device final : public SingleInstance<Device>
 	{
-	public:
-		enum class FeatureLevel
-		{
-			Level_10_0,
-			Level_11_0
-		};
-
 	private:
 		Handler swapChain_, device_;
 		Graphics::Context mainContext_;
 		Graphics::RenderTarget mainRenderTarget_;
 
-		Handler createSwapChainAndDevice_ReturnMainContext(FeatureLevel, const Handler& hWnd, bool windowed);
+		Handler createSwapChainAndDevice_ReturnMainContext(const Handler& hWnd, bool windowed);
 		D3DTexture2D getBackBuffer();
 
 		Graphics::GraphicsInterface<PlatformImpls::WindowsImpl::D3D::Device> keep_;
 	public:
-		Device(const Handler& hWnd, bool windowed = true, FeatureLevel = FeatureLevel::Level_10_0);
+		Device(const Handler& hWnd, bool windowed = true);
 		~Device();
 
 		Device(Device&&) = default;

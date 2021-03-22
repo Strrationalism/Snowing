@@ -10,7 +10,7 @@
 using namespace Snowing::PlatformImpls::WindowsImpl;
 using namespace Snowing::PlatformImpls::WindowsImpl::D3D;
 
-Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevice_ReturnMainContext(FeatureLevel level, const Handler & hWnd, bool windowed)
+Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevice_ReturnMainContext(const Handler & hWnd, bool windowed)
 {
 	const auto hwnd = hWnd.Get<HWND>();
 
@@ -34,19 +34,12 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 	if (IsWindows8OrGreater())
 		sd.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
-	D3D_FEATURE_LEVEL featureLevel;
-	switch (level)
-	{
-	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_10_0:
-		featureLevel = D3D_FEATURE_LEVEL_10_0;
-		break;
-	case Snowing::PlatformImpls::WindowsImpl::D3D::Device::FeatureLevel::Level_11_0:
-		featureLevel = D3D_FEATURE_LEVEL_11_0;
-		break;
-	default:
-		throw std::invalid_argument{ "Not supported feature level." };
-		break;
-	}
+	const D3D_FEATURE_LEVEL levels[] = {
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0,
+		D3D_FEATURE_LEVEL_10_1,
+		D3D_FEATURE_LEVEL_10_0
+	};
 
 	IDXGISwapChain* swapChain = nullptr;
 	ID3D11Device* device = nullptr;
@@ -78,8 +71,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 			type,
 			nullptr,
 			flag,
-			&featureLevel,
-			1,
+			levels,
+			sizeof(levels) / sizeof(levels[0]),
 			D3D11_SDK_VERSION,
 			&sd,
 			&swapChain,
@@ -95,6 +88,7 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 #ifdef _DEBUG
 		else 
 		{
+			const D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_10_0;
 			hr = D3D11CreateDeviceAndSwapChain(
 				nullptr,
 				type,
@@ -144,8 +138,8 @@ D3DTexture2D Snowing::PlatformImpls::WindowsImpl::D3D::Device::getBackBuffer()
 	return D3DTexture2D{ { static_cast<IUnknown*>(pBackBuffer),COMHelper::COMIUnknownDeleter } };
 }
 
-Snowing::PlatformImpls::WindowsImpl::D3D::Device::Device(const Handler & hWnd, bool windowed, FeatureLevel level):
-	mainContext_{ createSwapChainAndDevice_ReturnMainContext(level,hWnd,windowed) },
+Snowing::PlatformImpls::WindowsImpl::D3D::Device::Device(const Handler & hWnd, bool windowed):
+	mainContext_{ createSwapChainAndDevice_ReturnMainContext(hWnd,windowed) },
 	mainRenderTarget_{ D3DRenderTarget(getBackBuffer(),device_) }
 {
 	//MessageBoxA(nullptr, "Device creation succeed.", __FUNCTION__, 0);
