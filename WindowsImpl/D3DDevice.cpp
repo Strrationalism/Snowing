@@ -85,9 +85,16 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 			succ = true;
 			break;
 		}
-#ifdef _DEBUG
 		else 
 		{
+			constexpr auto MsgBoxType =
+				MB_OK | MB_ICONSTOP | MB_DEFBUTTON1 | MB_APPLMODAL | MB_TOPMOST;
+			char s[128] = { '\0' };
+			sprintf_s(s, "D3D11CreateDeviceAndSwapChain failed: \nHRESULT=%x, type=%d",
+				hr, type);
+			MessageBoxA(nullptr, s, "D3D11CreateDeviceAndSwapChain failed", MsgBoxType);
+
+#ifdef _DEBUG
 			const D3D_FEATURE_LEVEL featureLevel = D3D_FEATURE_LEVEL::D3D_FEATURE_LEVEL_10_0;
 			hr = D3D11CreateDeviceAndSwapChain(
 				nullptr,
@@ -108,8 +115,14 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 				succ = true;
 				break;
 			}
-		}
+			else
+			{
+				sprintf_s(s, "D3D11CreateDeviceAndSwapChain failed(debug): \nHRESULT=%x, type=%d", 
+					hr, type);
+				MessageBoxA(nullptr, s, "D3D11CreateDeviceAndSwapChain failed", MsgBoxType);
+			}
 #endif
+		}
 	}
 
 	//MessageBoxA(nullptr, "Swapchain and device create succeed.", __FUNCTION__, 0);
