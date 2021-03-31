@@ -18,8 +18,8 @@ Handler Snowing::PlatformImpls::WindowsImpl::D3D::Device::createSwapChainAndDevi
 
 	DXGI_SWAP_CHAIN_DESC sd = { 0 };
 	sd.BufferCount = 2;
-	sd.BufferDesc.Width = size.x;
-	sd.BufferDesc.Height = size.y;
+	sd.BufferDesc.Width = (size.x / 4) * 4;
+	sd.BufferDesc.Height = (size.y / 4) * 4;
 	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 	sd.BufferDesc.RefreshRate.Numerator = 60;
