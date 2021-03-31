@@ -200,8 +200,8 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::Device::Resize(Math::Vec2<int> si
 	std::destroy_at(&mainRenderTarget_);
 	swapChain_.Cast<IUnknown*, IDXGISwapChain*>()->ResizeBuffers(
 		0,
-		static_cast<UINT>(size.x),
-		static_cast<UINT>(size.y),
+		static_cast<UINT>(size.x) / 4 * 4,
+		static_cast<UINT>(size.y) / 4 * 4,
 		DXGI_FORMAT_UNKNOWN,
 		0);
 	new (&mainRenderTarget_) Graphics::RenderTarget{ D3DRenderTarget(getBackBuffer(),device_) };
