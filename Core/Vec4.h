@@ -19,6 +19,17 @@ namespace Snowing::Math
 		}
 	};
 
+	template <typename A, typename B>
+	constexpr Vec4<A> operator + (const Vec4<A>& a, const Vec4<B>& b)
+	{
+		return {
+			a.x + b.x,
+			a.y + b.y,
+			a.z + b.z,
+			a.w + b.w
+		};
+	}
+
 	template <typename A,typename B>
 	constexpr Vec4<A> operator - (const Vec4<A>& a, const Vec4<B>& b)
 	{
