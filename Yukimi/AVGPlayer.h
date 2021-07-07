@@ -20,6 +20,8 @@ namespace Yukimi
 			virtual std::function<bool()> OnCommand(const Script::CommandElement& command) = 0;
 			virtual void OnCharacter(const std::wstring_view name) = 0;
 			virtual void OnPageEnd() = 0;
+
+			virtual void ScriptPostProcess(Yukimi::Script::Line& line) = 0;
 		};
 
 	private:
@@ -34,11 +36,10 @@ namespace Yukimi
 
 		Script::CharacterNameElement* characterNameElement_;
 
-
+		float textWaitTime = 0.025f;
 
 		// 如果当前行结束后需要停止，则返回true
 		bool doElement(const Script::Element&);
-		void runScriptContinuation();
 
 		bool waitingForCommand_ = false;
 		
@@ -52,8 +53,7 @@ namespace Yukimi
 		AVGPlayer(
 			const Script::Script* script,
 			TextWindow::TextWindowUserAdapter* textWindowAdapter,
-			AVGPlayerUserAdapter * avgPlayerAdapter,
-			bool runScript = true);
+			AVGPlayerUserAdapter * avgPlayerAdapter);
 
 		bool Update() override;
 		void Click();
@@ -63,6 +63,10 @@ namespace Yukimi
 		TextWindow& GetTextWindow();
 		uint64_t GetContinuation() const;
 
+		void SetTextWaitTime(float t);
+
 		void SetContinuation(uint64_t cont);
+
+		void RunScriptContinuation();
 	};
 }

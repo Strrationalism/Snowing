@@ -6,6 +6,15 @@ namespace Snowing::Math
 	struct[[nodiscard]] alignas(sizeof(T)) Vec2 final
 	{
 		T x, y;
+
+		template <typename U>
+		Vec2<U> Cast() const
+		{
+			return {
+				static_cast<U>(x),
+				static_cast<U>(y)
+			};
+		}
 	};
 
 	template <typename A, typename B>
@@ -88,7 +97,11 @@ namespace Snowing::Math
 	[[nodiscard]]
 	constexpr Vec2<A> operator - (const Vec2<A>& a, const Vec2<B>& b) noexcept
 	{
-		return a + (-b);
+		return
+		{
+			a.x - b.x,
+			a.y - b.y
+		};
 	}
 
 	template <typename A, typename B>

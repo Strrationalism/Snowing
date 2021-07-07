@@ -8,5 +8,7 @@
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="..\TestWindows\Sprite.ctx" />
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x64\xaudio2_9redist.dll" />
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x86\xaudio2_9redist.dll" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 #pragma once
 #include <future>
+#include "Utils.h"
 #include "Object.h"
 
 namespace Snowing::Scene
@@ -30,7 +31,7 @@ namespace Snowing::Scene
 		{
 			if (!finished_)
 			{
-				if (asyncObject_.valid())
+				if (Snowing::FutureReady(asyncObject_))
 				{
 					if(!canceled_)
 						targetGroup_->PushBack(asyncObject_.get());

@@ -5,7 +5,7 @@
 #include "Vec2.h"
 #include "Controller.h"
 
-#pragma comment(lib,"xinput.lib")
+#pragma comment(lib,"Xinput9_1_0.lib")
 
 namespace Snowing::PlatformImpls::WindowsXInput
 {

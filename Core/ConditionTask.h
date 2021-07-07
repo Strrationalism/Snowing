@@ -13,9 +13,10 @@ namespace Snowing::Scene
 		bool finished_ = false;
 
 	public:
-		ConditionTask(const TCondition& condition,const TFunc& func):
-			condition_{ condition },
-			func_{ func }
+		template <typename TCondition, typename TFunc>
+		ConditionTask(TCondition&& condition,TFunc&& func):
+			condition_{ std::forward<TCondition>(condition) },
+			func_{ std::forward<TFunc>(func) }
 		{}
 
 		bool Update() override

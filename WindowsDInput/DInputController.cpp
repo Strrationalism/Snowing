@@ -1,3 +1,5 @@
+#define WINVER 0x0601
+#define _WIN32_WINNT 0x0601
 #include "DInputController.h"
 #define DIRECTINPUT_HEADER_VERSION 0x0800
 #define DIRECTINPUT_VERSION       DIRECTINPUT_HEADER_VERSION
@@ -5,6 +7,7 @@
 #include <COMHelper.h>
 #include <Windows.h>
 #include <WindowImpl.h>
+#include <algorithm>
 using namespace Snowing::PlatformImpls::WindowsImpl;
 using namespace Snowing::PlatformImpls::WindowsDInput;
 

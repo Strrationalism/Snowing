@@ -12,10 +12,7 @@ namespace Snowing::Scene::UI
 		Menu<TMenuItem> &menu_;
 		const TPositionDevice &device_;
 		std::tuple<TPositionArgs...> deviceArgs_;
-		const Math::Coordinate2DCenter menuCoord_, deviceCoord_;
-
-		decltype(std::declval<TPositionDevice>().Position(std::declval<TPositionArgs>()...))
-			lastDevicePosition_;
+		Math::Coordinate2DCenter menuCoord_, deviceCoord_;
 
 		void select(const std::optional<size_t>& index)
 		{
@@ -28,6 +25,10 @@ namespace Snowing::Scene::UI
 					menu_.Unselect();
 			}
 		}
+
+		std::optional<Math::Vec2f> prevPosition_;
+
+		bool prevPosOnItem_ = false;
 
 	public:
 
@@ -45,6 +46,18 @@ namespace Snowing::Scene::UI
 			deviceCoord_{ Math::ConvertCoordnate2DToCenter(deviceCoord) }
 		{}
 
+		template <typename TCoord>
+		void SetMenuCoordinateSystem(const TCoord& coord)
+		{
+			menuCoord_ = Math::ConvertCoordnate2DToCenter(coord);
+		}
+
+		void RefreshSelect()
+		{
+			menu_.Unselect();
+			prevPosition_.reset();
+		}
+
 		bool Update() override
 		{
 			const auto p = 
@@ -52,36 +65,38 @@ namespace Snowing::Scene::UI
 					[this](TPositionArgs... args) {return device_.Position(args...); }, 
 					deviceArgs_);
 
-			if (lastDevicePosition_ != p)
+			const auto prevSelect = menu_.GetSelectedIndex();
+
+			bool isOnItem = false;
+
+			if(p.has_value())
 			{
-				lastDevicePosition_ = p;
+				const auto position =
+					Math::ConvertPosition2DCoordinate(
+						p.value(),
+						deviceCoord_, menuCoord_);
 
-				if (!p.has_value())
-					select(std::nullopt);
-				else
+				std::optional<size_t> selected;
+				for (size_t i = 0; i < menu_.Count(); ++i)
 				{
-					const auto position =
-						Math::ConvertPosition2DCoordinate(
-							p.value(),
-							deviceCoord_, menuCoord_);
-
-					bool selected = false;
-					for (size_t i = 0; i < menu_.Count(); ++i)
+					const auto& menuItem = menu_[i];
+					if (IsPositionInBox(position, menuItem->GetBox()))
 					{
-						const auto& menuItem = menu_[i];
-						if (IsPositionInBox(position, menuItem->GetBox()))
-						{
-							select(i);
-							selected = true;
-							break;
-						}
+						selected = i;
+						isOnItem = true;
+						break;
 					}
-
-					if (!selected)
-						select(std::nullopt);
 				}
+
+				if (selected != prevSelect && p != prevPosition_ && selected.has_value())
+					select(selected);
+
+				if (prevPosOnItem_ && !isOnItem)
+					select(std::nullopt);
 			}
 
+			prevPosition_ = p;
+			prevPosOnItem_ = isOnItem;
 			return true;
 		}
 	};

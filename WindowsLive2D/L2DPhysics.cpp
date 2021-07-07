@@ -7,6 +7,7 @@ Live2D::Physics::Physics(Model* model) :
 		model->GetModel().Get<Csm::CubismModel*>(),
 		Snowing::Platforms::Handler::DoNothingDeleter
 	},
+	wrappedModel_{model},
 	phys_{
 		std::invoke([model]() -> decltype(phys_) {
 			if (model->GetAsset()->GetPhysicsJson().has_value())
@@ -23,6 +24,13 @@ Live2D::Physics::Physics(Model* model) :
 		})
 	}
 {
+	// ¹Ò½Óµ½Live2DÉÏ
+	wrappedModel_->phys_ = this;
+}
+
+Live2D::Physics::~Physics()
+{
+	wrappedModel_->phys_ = nullptr;
 }
 
 void Live2D::Physics::SetParams(Params p)
@@ -40,13 +48,5 @@ void Live2D::Physics::SetParams(Params p)
 
 bool Live2D::Physics::Update()
 {
-	if (phys_.has_value())
-	{
-		phys_.value().Get<Csm::CubismPhysics*>()->Evaluate(
-			model_.Get<Csm::CubismModel*>(),
-			Snowing::Engine::Get().DeltaTime());
-		return true;
-	}
-	else
-		return false;
+	return true;
 }

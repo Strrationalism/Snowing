@@ -25,6 +25,12 @@ namespace Snowing::Input
 			return TImpl::Get().Position(t);
 		}
 
+		[[nodiscard]]
+		static size_t GetMaxTouchInputCount()
+		{
+			return TImpl::Get().GetMaxTouchInputCount();
+		}
+
 		template <typename TriggerType>
 		[[nodiscard]]
 		static float Trigger(TriggerType t)

@@ -5,13 +5,64 @@
 #include <cassert>
 #include "D3DDevice.h"
 #include "DDSTextureLoader.h"
+#include "D3DBuffer.h"
 
+using namespace Snowing;
 using namespace Snowing::Graphics;
 using namespace Snowing::PlatformImpls::WindowsImpl;
 using namespace D3D;
 
 
-Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureFormat f, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode, void * pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
+std::pair<void*, size_t> D3DTexture2D::map(Snowing::Graphics::Context& ctx, Snowing::Graphics::AccessType accessType)
+{
+	D3D11_MAP mt;
+	switch (accessType)
+	{
+	case Snowing::Graphics::AccessType::Read:
+		mt = D3D11_MAP::D3D11_MAP_READ;
+		break;
+	case Snowing::Graphics::AccessType::Write:
+		mt = D3D11_MAP::D3D11_MAP_WRITE;
+		break;
+	case Snowing::Graphics::AccessType::ReadWrite:
+		mt = D3D11_MAP::D3D11_MAP_READ_WRITE;
+		break;
+	case Snowing::Graphics::AccessType::WriteDiscard:
+		mt = D3D11_MAP::D3D11_MAP_WRITE_DISCARD;
+		break;
+	default:
+		throw std::invalid_argument{ "Unknown d3d11 buffer access type." };
+		break;
+	};
+
+	D3D11_MAPPED_SUBRESOURCE data;
+
+	COMHelper::AssertHResult("Can not map texture data.",
+		ctx.GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>()->Map(
+		tex_.Cast<IUnknown*, ID3D11Texture2D*>(),
+		0,
+		mt,
+		0,
+		&data));
+
+	return { data.pData,data.RowPitch };
+}
+
+void D3DTexture2D::unmap(Snowing::Graphics::Context& ctx)
+{
+	ctx.GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>()->Unmap(
+		tex_.Cast<IUnknown*, ID3D11Texture2D*>(),
+		0
+	);
+}
+
+Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(PixelFormat fmt, Math::Vec2<size_t> size, Graphics::BufferBindMode mode,
+	const void* pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
+	D3DTexture2D(PixFormat2TexFormat(fmt), { static_cast<uint16_t>(size.x),static_cast<uint16_t>(size.y) }, mode, pixels, usage, cpuAccessFlag)
+{
+}
+
+Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureFormat f, Math::Vec2<std::uint16_t> size, Graphics::BufferBindMode mode, const void * pixels, BufferUsage usage, CPUAccessFlag cpuAccessFlag):
 	tex_{
 		std::invoke([=]() {
 
@@ -20,8 +71,8 @@ Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::D3DTexture2D(TextureForm
 		{
 			case Snowing::PlatformImpls::WindowsImpl::D3D::TextureFormat::DDS:
 			{
-				auto size = static_cast<size_t>(*(uint32_t*)pixels);
-				auto pDDS = static_cast<uint8_t*>(pixels) + sizeof(uint32_t);
+				auto size = static_cast<size_t>(*(const uint32_t*)pixels);
+				auto pDDS = static_cast<const uint8_t*>(pixels) + sizeof(uint32_t);
 				ID3D11Resource *tex;
 				ID3D11ShaderResourceView *shaderRes;
 				COMHelper::AssertHResult("Can not create texture from DDS.",
@@ -107,6 +158,14 @@ const Handler & Snowing::PlatformImpls::WindowsImpl::D3D::D3DTexture2D::ShaderRe
 		});
 	}
 	return shaderRes_;
+}
+
+void D3DTexture2D::CopyTo(Snowing::Graphics::Context& ctx, Snowing::Graphics::Texture2D& dst) const
+{
+	ctx.GetImpl().GetHandler().Cast<IUnknown*, ID3D11DeviceContext*>()->CopyResource(
+		dst.GetImpl().GetHandler().Cast<IUnknown*, ID3D11Texture2D*>(),
+		tex_.Cast<IUnknown*, ID3D11Texture2D*>()
+	);
 }
 
 size_t Snowing::PlatformImpls::WindowsImpl::D3D::FormatPixleSize(TextureFormat f)

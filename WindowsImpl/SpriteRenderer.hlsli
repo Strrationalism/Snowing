@@ -21,7 +21,7 @@ struct SpriteGSIn
 
 Texture2D SpriteTexture : register(t0);
 float2 TextureSize;
-cbuffer SpriteSheet : register(c0)
+cbuffer SpriteSheet : register(b0)
 {
 	float4 SpriteSheetRects[512];
 };

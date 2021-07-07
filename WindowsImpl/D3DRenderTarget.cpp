@@ -38,19 +38,21 @@ constexpr static Snowing::Graphics::BufferBindMode RenderTargetMode =
 	true
 };
 
-Snowing::PlatformImpls::WindowsImpl::D3D::D3DRenderTarget::D3DRenderTarget(Math::Vec2<size_t> size):
+Snowing::PlatformImpls::WindowsImpl::D3D::D3DRenderTarget::D3DRenderTarget(Math::Vec2<size_t> size, Graphics::PixelFormat fmt, Graphics::BufferCPUAccessFlag cpuAccess):
 	tex_{D3DTexture2D{
-		TextureFormat::R8G8B8A8_UNORM,
-		ConvVec(size),RenderTargetMode,
+		fmt,
+		size,
+		RenderTargetMode,
 		nullptr,
-		Snowing::Graphics::BufferUsage::Default}}
+		Snowing::Graphics::BufferUsage::Default,
+		cpuAccess}}
 {
 	rt_ =
-		std::invoke([this]() {
+		std::invoke([this,fmt]() {
 		auto device = Device::Get().GetHandler().Cast<IUnknown*, ID3D11Device*>();
 
 		D3D11_RENDER_TARGET_VIEW_DESC desc;
-		desc.Format = TexFormat2DXGI(TextureFormat::R8G8B8A8_UNORM);
+		desc.Format = PixFormat2DXGI(fmt);
 		desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
 		desc.Texture2D.MipSlice = 0;
 

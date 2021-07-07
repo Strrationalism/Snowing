@@ -12,10 +12,10 @@ CVPlayer::CVPlayer(AudioChannel::AudioLoader loader) :
 	loader_{ loader }
 {}
 
-void CVPlayer::Play(Snowing::AssetName ass)
+void CVPlayer::Play(Snowing::AssetName ass,float pan,float volume)
 {
 	FadeOutAll();
-	activeChannel_ = Emplace<>(loader_, ass, 0.0f, 0u, 0.0f);
+	activeChannel_ = Emplace<>(loader_, ass, 0.0f, 0u,pan,volume);
 	activeChannel_->FadeVolume(volume_);
 }
 
@@ -58,4 +58,18 @@ float CVPlayer::GetRealtimeVolume() const
 		return activeChannel_->GetRealtimeVolume();
 	else
 		return 0.0f;
+}
+
+void CVPlayer::SetVolumePan(float v, float pan)
+{
+	if (Exist(activeChannel_))
+	{
+		activeChannel_->SetPan(pan);
+		activeChannel_->SetVolume(v);
+	}
+}
+
+bool Yukimi::CVPlayer::IsPlaying() const
+{
+	return Snowing::Scene::Group<AudioChannel>::Count() > 0;
 }

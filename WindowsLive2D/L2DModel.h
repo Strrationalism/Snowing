@@ -3,9 +3,16 @@
 
 namespace Live2D
 {
+	class Physics;
+	class LipSync;
 	class Model final : public Snowing::Scene::Object, public Snowing::MemPool<Model>,Snowing::NoCopyMove
 	{
 	private:
+		friend class ::Live2D::LipSync;
+		friend class ::Live2D::Physics;
+		::Live2D::LipSync* lipSync_ = nullptr;
+		::Live2D::Physics* phys_ = nullptr;
+
 		float ratio_;
 		Snowing::Math::Vec2f translate_ = { 0,0 }, scale_ = { 1,1 };
 		const ModelAsset* asset_;
@@ -25,6 +32,8 @@ namespace Live2D
 		Model(Snowing::Graphics::Context*,const ModelAsset* asset,float ratio);
 
 		bool Update() override;
+
+		void SetRatio(float ratio);
 
 		static constexpr Snowing::Math::Coordinate2DCenter Coordinate
 		{

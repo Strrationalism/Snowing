@@ -15,18 +15,19 @@ namespace Snowing
 		{
 			constexpr unsigned int seed = 131;
 			uint64_t hash = 0;
-			for (size_t i = 0; i < StrLen - 2; i++)
+			for (size_t i = 0; i < StrLen - 1; i++)
 				hash = hash * seed + str[i];
 			return hash;
 		}
 
-		static inline uint64_t Hash(const char* bytes, size_t size) noexcept
+		template<typename CharType>
+		static inline uint64_t Hash(const CharType* bytes, size_t size) noexcept
 		{
 			assert(bytes);
 			assert(size);
 			constexpr unsigned int seed = 131;
 			uint64_t hash = 0;
-			for (size_t i = 0; i < size - 1; i++)
+			for (size_t i = 0; i < size; i++)
 				hash = hash * seed + bytes[i];
 			return hash;
 		}
@@ -41,13 +42,15 @@ namespace Snowing
 			hash_{ h }
 		{}
 
-		BKDRHash(const char* bytes,size_t size) noexcept :
+		template <typename CharType>
+		BKDRHash(const CharType* bytes,size_t size) noexcept :
 			hash_{ Hash(bytes,size) }
 		{
 			assert(bytes);
 		}
 
-		BKDRHash(std::string_view sv) noexcept :
+		template <typename CharType>
+		BKDRHash(std::basic_string_view<CharType> sv) noexcept :
 			hash_{ Hash(sv.data(),sv.size()) }
 		{}
 

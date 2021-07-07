@@ -39,4 +39,5 @@ namespace Snowing::PlatformImpls::WindowsImpl::XAudio2
 namespace Snowing::Audio
 {
 	using SoundPlayer = SoundPlayerInterface<Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer>;
+	const Snowing::Audio::Metadata& GetSoundMetadata(const Snowing::Blob& soundBlob);
 }

@@ -6,6 +6,9 @@
 #include <Effect/CubismPose.hpp>
 #include <Math/CubismModelMatrix.hpp>
 #include <Motion/CubismMotionManager.hpp>
+#include "L2DLipSync.h"
+#include "L2DPhysics.h"
+#include <Physics/CubismPhysics.hpp>
 
 void Live2D::Model::updateMatrix()
 {
@@ -40,7 +43,7 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 		std::invoke([this,ratio,asset,model = model_.Get<Csm::CubismModel*>()] {
 			Csm::Rendering::CubismRenderer* renderer = Csm::Rendering::CubismRenderer::Create();
 			renderer->Initialize(model);
-			auto p = dynamic_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer);
+			auto p = static_cast<Csm::Rendering::CubismRenderer_D3D11*>(renderer);
 
 			for (Csm::csmUint32 i = 0; i < asset->GetTextures().size(); ++i)
 				if (asset->GetTextures()[i].has_value())
@@ -82,24 +85,48 @@ Live2D::Model::Model(Snowing::Graphics::Context* ctx,const ModelAsset* asset,flo
 	}
 
 	motionManager_.Get<Csm::CubismMotionManager*>()->SetEventCallback([] (auto,auto,auto){}, nullptr);
+	model_.Get<Csm::CubismModel*>()->SaveParameters();
 }
 
 bool Live2D::Model::Update()
 {
 	const float dt = Snowing::Engine::Get().DeltaTime();
 
+	model_.Get<Csm::CubismModel*>()->LoadParameters();
+
 	motionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
 		model_.Get<Csm::CubismModel*>(),
 		dt);
+
+	model_.Get<Csm::CubismModel*>()->SaveParameters();
 
 	expressionManager_.Get<Csm::CubismMotionManager*>()->UpdateMotion(
 		model_.Get<Csm::CubismModel*>(),
 		dt);
 
+	if (phys_)
+	{
+		if (phys_->phys_.has_value())
+		{
+			phys_->phys_->Get<Csm::CubismPhysics*>()->Evaluate(model_.Get<Csm::CubismModel*>(),dt);
+		}
+	}
+
 	if(pose_.IsSome())
 		pose_.Get<Csm::CubismPose*>()->UpdateParameters(
 			model_.Get<Csm::CubismModel*>(),
 			dt);
+
+	if (lipSync_)
+	{
+		const auto setting =
+			GetAsset()->GetSetting().Get<Csm::CubismModelSettingJson*>();
+
+		const auto paramCount = setting->GetLipSyncParameterCount();
+		for (Csm::csmInt32 id = 0; id < paramCount; ++id)
+			GetModel().Get<Csm::CubismModel*>()->SetParameterValue(
+				setting->GetLipSyncParameterId(id), lipSync_->volume_, 0.8f);
+	}
 
 	model_.Get<Csm::CubismModel*>()->Update();
 
@@ -122,6 +149,12 @@ bool Live2D::Model::Update()
 	});
 
 	return true;
+}
+
+void Live2D::Model::SetRatio(float ratio)
+{
+	ratio_ = ratio;
+	updateMatrix();
 }
 
 bool Live2D::Model::MotionFinished() const

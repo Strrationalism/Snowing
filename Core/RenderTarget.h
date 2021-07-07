@@ -2,6 +2,7 @@
 #include "Platforms.h"
 #include "Vec2.h"
 #include "Texture2D.h"
+#include "PixelFormat.h"
 
 namespace Snowing::Graphics
 {
@@ -16,8 +17,8 @@ namespace Snowing::Graphics
 			impl_{ std::move(impl) }
 		{}
 
-		RenderTargetInterface(Math::Vec2<size_t> size) :
-			impl_{ size }
+		RenderTargetInterface(Math::Vec2<size_t> size,PixelFormat fmt = PixelFormat::R8G8B8A8, BufferCPUAccessFlag cpuAccess = BufferCPUAccessFlag::NoAccess) :
+			impl_{ size,fmt,cpuAccess }
 		{}
 
 		RenderTargetInterface(RenderTargetInterface&&) = default;

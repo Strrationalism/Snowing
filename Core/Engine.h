@@ -46,10 +46,9 @@ namespace Snowing
 
 			while (keep_)
 			{
+				InputImpl::Get().Update();
 				if (!WindowImpl::Get().Update())
 					keep_ = false;
-
-				InputImpl::Get().Update();
 
 				deltaTime_ = std::chrono::duration<float, std::ratio<1>>{ clock.now() - lastFrame }.count();
 				lastFrame = clock.now();

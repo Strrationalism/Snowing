@@ -36,9 +36,22 @@ namespace Snowing::Input
 	struct MouseWheel final
 	{};
 
-	//窗口被Focus消息，作为Window的KeyPressed参数
-	struct WindowFocused
+	//鼠标水平滚轮，作为Input的Trigger参数
+	struct MouseHWheel final
 	{};
+
+	//窗口被Focus消息，作为Window的KeyPressed参数
+	struct WindowFocused final
+	{};
+
+	//触摸屏参数
+	struct TouchScreen final
+	{
+		constexpr static Math::Coordinate2DRect CoordinateSystem = 
+			MousePosition::CoordinateSystem;
+		struct AnyPoint final {};
+		size_t TouchID;
+	};
 
 	//键盘消息，作为Input的KeyPressed参数
 	enum class KeyboardKey : int
@@ -46,6 +59,7 @@ namespace Snowing::Input
 		Escape,
 		Enter,
 		Space,
+		Apps,
 
 		Up,
 		Down,
@@ -56,6 +70,9 @@ namespace Snowing::Input
 		RShift,
 		LCtrl,
 		RCtrl,
+
+		PageDown,
+		PageUp,
 
 		F1,
 		F2,

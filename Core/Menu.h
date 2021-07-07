@@ -5,6 +5,19 @@
 
 namespace Snowing::Scene::UI
 {
+	class BaseMenuItem : public Snowing::Scene::Object
+	{
+	public:
+		virtual void OnUnselected() = 0;
+		virtual void OnSelected() = 0;
+	};
+
+	class BaseMenuItemWithBox : public BaseMenuItem
+	{
+	public:
+		virtual Math::Vec4f GetBox() const = 0;
+	};
+
 	template <typename TMenuItem>
 	class[[nodiscard]] Menu final : public Group<TMenuItem>
 	{

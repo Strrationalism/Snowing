@@ -16,10 +16,34 @@ Live2D::Expression::Expression(Model* model, size_t expressionID):
 {
 }
 
-void Live2D::Expression::Apply() const
+void Live2D::Expression::Apply(int pri) const
 {
 	const auto m = model_->GetExpressionManager().Get<Csm::CubismMotionManager*>();
 	const auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
-	m->StartMotion(motion, false, 1);
+	m->StartMotionPriority(motion, false, pri);
+}
+
+void Live2D::Expression::SetFadeInTime(float t)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	motion->SetFadeInTime(t);
+}
+
+void Live2D::Expression::SetFadeOutTime(float t)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	motion->SetFadeOutTime(t);
+}
+
+float Live2D::Expression::GetWeight() const
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	return motion->GetWeight();
+}
+
+void Live2D::Expression::SetWeight(float w)
+{
+	auto motion = expression_.Get<Csm::CubismExpressionMotion*>();
+	return motion->SetWeight(w);
 }
 

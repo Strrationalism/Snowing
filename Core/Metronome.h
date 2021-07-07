@@ -10,8 +10,21 @@ namespace Snowing::Scene
 	public:
 		struct Time
 		{
-			size_t Bar, Beat;
-			long double Remainder;
+			size_t Bar = 0, Beat = 0;
+			long double Remainder = 0;
+
+			bool operator >= (const Time& x) const
+			{
+				if (Bar == x.Bar)
+				{
+					if (Beat == x.Beat)
+						return Remainder >= x.Remainder;
+					else
+						return Beat >= x.Beat;
+				}
+				else
+					return Bar >= x.Bar;
+			}
 		};
 
 	private:
@@ -64,9 +77,12 @@ namespace Snowing::Scene
 
 		bool Update() override
 		{
-			isBeat_ = false;
 			const auto t = GetTime();
-			isBeat_ = t.Beat != prevTime_.Beat;
+			
+			isBeat_ = false;
+			if(t.Bar != prevTime_.Bar || t.Beat != prevTime_.Beat)
+				isBeat_ = true;
+			
 			prevTime_ = t;
 
 			return true;

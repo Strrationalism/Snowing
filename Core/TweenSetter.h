@@ -38,6 +38,12 @@ namespace Snowing::Scene
 		}
 
 		[[nodiscard]]
+		const TVariable& Value() const
+		{
+			return tween_.Value();
+		}
+
+		[[nodiscard]]
 		TVariable* operator -> ()
 		{
 			return tween_.operator->();

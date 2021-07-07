@@ -11,7 +11,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	if (auto textElement = std::get_if<TextElement>(&e))
 	{
 		auto fontStyle = TextWindowFontStyle::Combine(fontStyleStack_.data(), fontStyleStack_.size());
-		textWindow_.AppendText(textElement->Text, fontStyle, 0.025f);
+		textWindow_.AppendText(textElement->Text, fontStyle, textWaitTime);
 		return true;
 	}
 	else if (auto fontStyleElement = std::get_if<FontStyleElement>(&e))
@@ -34,7 +34,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 			waitingForCommand_ = true;
 			auto task = [this] { 
 				waitingForCommand_ = false; 
-				runScriptContinuation();
+				RunScriptContinuation();
 			};
 			Emplace<Snowing::Scene::ConditionTask<std::function<bool()>,decltype(task)>>(std::move(condition),task);
 		}
@@ -50,7 +50,7 @@ bool Yukimi::AVGPlayer::doElement(const Yukimi::Script::Element& e)
 	return false;
 }
 
-void Yukimi::AVGPlayer::runScriptContinuation()
+void Yukimi::AVGPlayer::RunScriptContinuation()
 {
 	bool isSpeakLine = false;
 	while (!isSpeakLine)
@@ -66,7 +66,8 @@ void Yukimi::AVGPlayer::runScriptContinuation()
 		fontStyleStack_.push_back(*adapter_->GetDefaultFontStyle());
 		while (!fontStyleStackCounts_.empty()) fontStyleStackCounts_.pop();
 
-		const auto& currentLine = (*script_)[static_cast<unsigned int>(nextLine_++)];
+		auto currentLine = (*script_)[static_cast<unsigned int>(nextLine_++)];
+		adapter_->ScriptPostProcess(currentLine);
 		for (const auto& element : currentLine)
 		{
 			const auto ret = doElement(element);
@@ -90,7 +91,7 @@ void Yukimi::AVGPlayer::Click()
 				return textWindow_.GetState() == Yukimi::TextWindow::State::EmptyTextWindow;
 			};
 
-			const auto task = [this] { runScriptContinuation(); };
+			const auto task = [this] { RunScriptContinuation(); };
 
 			Emplace<Snowing::Scene::ConditionTask<decltype(condition), decltype(task)>>(condition, task);
 		}
@@ -126,13 +127,16 @@ uint64_t Yukimi::AVGPlayer::GetContinuation() const
 	return nextLine_;
 }
 
+void Yukimi::AVGPlayer::SetTextWaitTime(float t)
+{
+	textWaitTime = t;
+}
+
 void Yukimi::AVGPlayer::SetContinuation(uint64_t cont)
 {
 	nextLine_ = findLastTextLine(cont);
 
 	textWindow_.Clear();
-
-	runScriptContinuation();
 }
 
 uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
@@ -151,14 +155,11 @@ uint64_t Yukimi::AVGPlayer::findLastTextLine(uint64_t nextLine)
 Yukimi::AVGPlayer::AVGPlayer(
 	const Yukimi::Script::Script* script, 
 	TextWindow::TextWindowUserAdapter* textWindowAdapter,
-	AVGPlayerUserAdapter* avgPlayerAdapter,
-	bool runScript):
+	AVGPlayerUserAdapter* avgPlayerAdapter):
 	textWindow_{ textWindowAdapter },
 	script_{ script },
 	adapter_{ avgPlayerAdapter }
 {
-	if(runScript)
-		runScriptContinuation();
 }
 
 bool Yukimi::AVGPlayer::Update()

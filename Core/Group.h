@@ -37,6 +37,8 @@ namespace Snowing::Scene
 
 		bool Update() override
 		{
+			PrepareNewObjects();
+
 			for (auto& p : objs_)
 				p.living = p.object->Update();
 
@@ -49,9 +51,7 @@ namespace Snowing::Scene
 				eraseBegin,
 				objs_.end());
 
-			PrepareNewObjects();
-
-			return !objs_.empty();
+			return !objs_.empty() || !newObjs_.empty();
 		}
 
 		template <typename TObj = TBaseObject,typename ... TArgs>
@@ -93,12 +93,8 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 			Iter([this,&f](TBaseObject& obj) {
-				try
-				{
-					f(dynamic_cast<TObjectType&>(obj));
-				}
-				catch(std::bad_cast)
-				{ }
+				auto* casted = dynamic_cast<TObjectType*>(&obj);
+				if (casted) f(*casted);
 			});
 		}
 		
@@ -107,13 +103,8 @@ namespace Snowing::Scene
 		{
 			for(auto& p : objs_)
 			{
-				try
-				{
-					auto ptr = dynamic_cast<TObjectType*>(p.object.get());
-					if (ptr) return ptr;
-				}
-				catch(std::bad_cast)
-				{ }
+				auto ptr = dynamic_cast<TObjectType*>(p.object.get());
+				if (ptr) return ptr;
 			}
 			return nullptr;
 		}
@@ -155,6 +146,25 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 			return ExistIgnoreNewObjects(pObject);
+		}
+
+		template <typename TCond>
+		TBaseObject* FindFirstIgnoreNewObjects(TCond& cond)
+		{
+			for (auto& p : objs_)
+			{
+				if (cond(*p.object))
+					return p.object.get();
+			}
+
+			return nullptr;
+		}
+
+		template <typename TCond>
+		TBaseObject* FindFirst(TCond& cond)
+		{
+			PrepareNewObjects();
+			return FindFirstIgnoreNewObjects(cond);
 		}
 	};
 

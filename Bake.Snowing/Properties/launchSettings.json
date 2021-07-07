@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Bake.Snowing": {
+      "commandName": "Executable",
+      "executablePath": "bake",
+      "workingDirectory": "../Assets"
+    }
+  }
+}

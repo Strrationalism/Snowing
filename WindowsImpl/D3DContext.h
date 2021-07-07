@@ -33,6 +33,7 @@ namespace Snowing::PlatformImpls::WindowsImpl::D3D
 		void SetRenderTarget(Graphics::RenderTarget** rt, int size);
 		void SetStreamOutBuffer(Graphics::Buffer** buf, int bufSize);
 		Graphics::RenderTarget* GetRenderTarget();
+		void ClearState();
 
 		const Handler& GetHandler() const;
 	};

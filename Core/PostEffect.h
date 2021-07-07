@@ -37,12 +37,12 @@ namespace Snowing::Graphics
 		static_assert(std::is_standard_layout<PostEffectVertex>::value);
 		static_assert(sizeof(Math::Vec2f) == sizeof(PostEffectVertex));
 
-		constexpr static std::array<PostEffectVertex, 4> ScreenMesh
+		const static inline std::array<PostEffectVertex, 4> ScreenMesh
 		{
 			PostEffectVertex{Math::Vec2f{1.0f,1.0f}},
 			PostEffectVertex{Math::Vec2f{1.0f,0.0f}},
 			PostEffectVertex{Math::Vec2f{0.0f,1.0f}},
-			PostEffectVertex{Math::Vec2f{0.0f,0.0f}},
+			PostEffectVertex{Math::Vec2f{0.0f,0.0f}}
 		};
 
 		EffectTech *tech_;

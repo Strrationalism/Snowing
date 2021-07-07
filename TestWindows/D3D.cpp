@@ -24,7 +24,7 @@ TEST(D3D, BasicllyRendering) {
 
 	MyVertex blank[3];
 
-	WindowImpl window{ L"BasicllyRendering" ,WinSize };
+	WindowImpl window{ L"BasicllyRendering" ,WinSize, {false} };
 	D3D::Device device{ window.GetHWND(),true };
 	Engine engine{ Snowing::Engine::ConstructToken{} };
 
@@ -172,7 +172,7 @@ TEST(D3D, StreamOut)
 	float buf[1000];
 	std::fill(buf, buf + 1000, 0.5f);
 
-	WindowImpl window{ L"StreamOut" ,WinSize };
+	WindowImpl window{ L"StreamOut" ,WinSize, {false} };
 	D3D::Device device{ window.GetHWND(),true,D3D::Device::FeatureLevel::Level_10_0 };
 	Engine engine{ Snowing::Engine::ConstructToken{} };
 

@@ -6,6 +6,16 @@ namespace Snowing::Math
 	struct[[nodiscard]] alignas(sizeof(T)) Vec3 final
 	{
 		T x, y, z;
+
+		template <typename U>
+		Vec3<U> Cast() const
+		{
+			return {
+				static_cast<U>(x),
+				static_cast<U>(y),
+				static_cast<U>(z)
+			};
+		}
 	};
 
 	using Vec3f = Vec3<float>;

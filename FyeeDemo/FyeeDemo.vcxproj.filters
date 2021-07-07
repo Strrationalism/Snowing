@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <FxCompile Include="..\TextRendering\FontShader.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x64\xaudio2_9redist.dll" />
+    <CopyFileToFolders Include="..\packages\Microsoft.XAudio2.Redist.1.2.4\build\native\release\bin\x86\xaudio2_9redist.dll" />
+  </ItemGroup>
+</Project>

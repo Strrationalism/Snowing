@@ -1,0 +1,9 @@
+
+Atomic {
+	Set $FyeeOut "$Out/Fyee"
+	CreateDirectory $FyeeOut
+	
+	ConvertSound $FyeeOut 155BPM {
+		Fyee/*.wav
+	}
+}

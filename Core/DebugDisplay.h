@@ -91,7 +91,7 @@ namespace Snowing::Scene::Debug
 				font_,
 				box_,
 				{ 1.0f,75.0f },
-				{ 0.15f,0.15f },
+				{ 0.2f,0.2f },
 				text_,
 				Graphics::FontSprite::AlignMode::Right
 			);

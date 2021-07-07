@@ -9,6 +9,7 @@
 #include "Menu.h"
 #include "TextMenuItem.h"
 #include "MenuKeyController.h"
+#include "MenuPositionController.h"
 
 namespace Snowing::Scene::Debug
 {
@@ -76,15 +77,30 @@ namespace Snowing::Scene::Debug
 		KEYWATCHER(Snowing::Input::KeyboardKey::Enter, Enter);
 		KEYWATCHER(Snowing::Input::KeyboardKey::Up, Up);
 		KEYWATCHER(Snowing::Input::KeyboardKey::Down, Down);
+		KEYWATCHER(Snowing::Input::MouseKey::Left, MouseLeft);
 #undef KEYWATCHER
 
 		Scene::UI::Menu<DebugMenuItem> menu_;
 		Scene::UI::MenuKeyController<DebugMenuItem> menuCtrl_{ &menu_ };
+		Scene::UI::MenuPositionController<
+			DebugMenuItem,
+			TInput,
+			Snowing::Input::MousePosition> menuMouseCtrl_{
+			&menu_,
+			screenCoord_,
+			&TInput::Get(),
+			Snowing::Input::MousePosition::CoordinateSystem,
+			Snowing::Input::MousePosition{}
+		};
+
+		bool killed_ = false;
+		const bool clearScreen_;
 
 	public:
 		DebugMenuInterface(
 			TTech *tech,
-			const TFont *font) :
+			const TFont *font,
+			bool clearScreen = false) :
 			fr_{
 				&TGraphics::Get().MainContext(),
 				tech,
@@ -92,23 +108,30 @@ namespace Snowing::Scene::Debug
 				font,
 				&vb_
 			},
-			font_{ *font }
-		{ }
+			font_{ *font },
+			clearScreen_{ clearScreen }
+		{ 
+			menuMouseCtrl_.RefreshSelect();
+		}
+
 		~DebugMenuInterface() = default;
+
+		void Kill()
+		{
+			killed_ = true;
+		}
 
 		bool Update() override
 		{
 			TEngine::Get().Draw([this] {
+				if(clearScreen_)
+					TGraphics::MainContext().ClearRenderTarget(
+						TGraphics::MainRenderTarget());
 				TGraphics::MainContext().SetRenderTarget(
 					&TGraphics::MainRenderTarget());
 				fr_.DrawToSpriteBuffer(text_);
 				fr_.FlushSpriteBuffer();
 			});
-
-			if (menu_.Count() && menu_.GetSelectedIndex() == std::nullopt)
-			{
-				menuCtrl_.Next();
-			}
 
 			menu_.Update();
 			menuCtrl_.Update();
@@ -124,13 +147,16 @@ namespace Snowing::Scene::Debug
 				menuCtrl_.Next();
 			}
 			Enter_.Update();
-			if (Enter_.JustRelease())
+			MouseLeft_.Update();
+			if (Enter_.JustRelease() || MouseLeft_.JustPress())
 			{
 				if (menu_.GetSelectedIndex().has_value())
 					menu_.GetSelectedObject().value()->OK();
 			}
 
-			return true;
+			menuMouseCtrl_.Update();
+
+			return !killed_;
 		}
 
 
@@ -140,8 +166,8 @@ namespace Snowing::Scene::Debug
 			auto menuBox = Math::Vec4f{
 				screenCoord_.LeftTop.x + 20.0f,
 				screenCoord_.LeftTop.y + 20.0f * (menu_.Count() + 1),
-				800.0f,
-				64.0f
+				2400.0f,
+				20.0f
 			};
 
 			constexpr Math::Vec2f space{ 1.0f, 75.0f };
