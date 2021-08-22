@@ -357,6 +357,13 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		NULL, NULL,
 		instance, NULL);
 
+	SendMessage(
+		hwnd,
+		WM_SETHOTKEY,
+		MAKEWORD(VK_RETURN, 0x04),
+		0
+	);
+
 	// 注册为触摸窗口
 	RegisterTouchWindow(hwnd, 0);
 
