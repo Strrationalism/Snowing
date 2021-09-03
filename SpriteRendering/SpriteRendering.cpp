@@ -8,7 +8,8 @@ int main()
 	auto engine = PlatformImpls::WindowsImpl::MakeEngine(
 		L"TextRendering",
 		{ 800,600 },
-		true);
+		true,
+		{ true });
 
 	// ¼ÓÔØ×ÅÉ«Æ÷
 	Graphics::Effect effect

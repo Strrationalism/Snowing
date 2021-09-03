@@ -11,6 +11,7 @@ namespace Snowing::Graphics
 	enum class Primitive
 	{
 		PointList,
+		LineList,
 		TriangleList,
 		TriangleStrip
 	};
@@ -74,6 +75,11 @@ namespace Snowing::Graphics
 			impl_.SetRenderTarget(&rt, 1);
 		}
 
+		void SetRenderTarget()
+		{
+			impl_.SetRenderTarget(nullptr, 0);
+		}
+
 		auto GetRenderTarget()
 		{
 			auto r = impl_.GetRenderTarget();
@@ -88,6 +94,11 @@ namespace Snowing::Graphics
 			SetRenderTarget(&rt);
 			func();
 			SetRenderTarget(rtorg);
+		}
+
+		void ClearState()
+		{
+			impl_.ClearState();
 		}
 
 		[[nodiscard]]

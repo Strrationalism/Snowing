@@ -2,6 +2,8 @@
 #include "WindowImpl.h"
 #include "PlatformImpls.h"
 #include <mutex>
+#include "COMHelper.h"
+#include <stack>
 
 using namespace Snowing::PlatformImpls::WindowsImpl;
 
@@ -45,7 +47,7 @@ void Snowing::PlatformImpls::Abort(const char * log)
 		log,
 		"Error",
 		MsgBoxType);
-	std::terminate();
+	std::quick_exit(-1);
 }
 
 void Snowing::PlatformImpls::Abort(const wchar_t * log)
@@ -55,15 +57,17 @@ void Snowing::PlatformImpls::Abort(const wchar_t * log)
 		log,
 		L"Error",
 		MsgBoxType);
-	std::terminate();
+	std::quick_exit(-1);
 }
 
 static void hwndDeleter(void* hwnd)
 {
+	UnregisterTouchWindow((HWND)hwnd);
 	wchar_t className[256];
 	GetClassName((HWND)hwnd, className, 256);
 	DestroyWindow((HWND)hwnd);
 	UnregisterClass(className, GetModuleHandle(nullptr));
+	CoUninitialize();
 }
 
 ///////// 这里有一堆用于处理窗口移动的屎
@@ -99,6 +103,9 @@ static void ProcesSysCommand(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 	};
 }
 
+static WindowStyle windowStyle;
+static float sScale = 1.0f;
+static std::stack<bool> focusFullScreenStack;
 static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 {
 	auto currentWindow = &WindowImpl::Get();
@@ -115,17 +122,27 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 
 	case WM_CLOSE:
 		if (currentWindow)
+		{
 			if (currentWindow->GetWMCloseHandler())
 				currentWindow->GetWMCloseHandler()();
-			else
+			else {
 				currentWindow->Kill();
-			
+				ShowWindow(currentWindow->Get().GetHWND().Get<HWND>(), SW_HIDE);
+			}
+		}
 		break;
 	case WM_SETFOCUS:
 		if (currentWindow)
 		{
 			currentWindow->FocusWindow(true);
 			currentWindow->GetInputImpl().FocusWindow(true);
+
+			if (!focusFullScreenStack.empty())
+			{
+				if(focusFullScreenStack.top())
+					currentWindow->SetWindowed(false);
+				focusFullScreenStack.pop();
+			}
 		}
 		break;
 	case WM_KILLFOCUS:
@@ -133,8 +150,90 @@ static LRESULT CALLBACK WndProc(HWND wnd, UINT msg, WPARAM w, LPARAM l)
 		{
 			currentWindow->FocusWindow(false);
 			currentWindow->GetInputImpl().FocusWindow(false);
+
+			// 这里可以修复一切可能因为Alt+Tab导致的全屏Bug
+			if (IsWindowVisible(wnd)) 
+			{
+				const bool isFullscreen = D3D::Device::Get().GetFullscreen();
+				focusFullScreenStack.push(isFullscreen);
+				if (isFullscreen)
+					currentWindow->SetWindowed(true);
+			}
 		}
 		break;
+
+	case WM_SIZE:
+		if (currentWindow) {
+			Snowing::Math::Vec2<size_t> size {
+				static_cast<size_t>(LOWORD(l)),
+				static_cast<size_t>(HIWORD(l))
+			};
+
+			if (currentWindow->GetWMSizeHandler())
+			{
+				size = currentWindow->GetWMSizeHandler()({
+					static_cast<size_t>(LOWORD(l)),
+					static_cast<size_t>(HIWORD(l))
+				});
+			}
+
+			//D3D::Device::Get().Resize(size.Cast<int>());
+
+		}
+		return DefWindowProc(wnd, msg, w, l);
+		break;
+
+	case WM_SIZING:
+	{
+		RECT orgRect;
+		GetWindowRect(wnd, &orgRect);
+
+		constexpr int minWidth = 320;
+		const int minHeight = static_cast<int>(320 * sScale);
+
+		int cx, cy;
+		LPRECT lpRect = (LPRECT)l;
+		if (w == WMSZ_LEFT || w == WMSZ_RIGHT)
+		{
+			cx = lpRect->right - lpRect->left;
+			if (cx < minWidth) {
+				cx = minWidth;
+				lpRect->right = lpRect->left + cx;
+			}
+			cy = (int)(cx * sScale);
+			lpRect->bottom = lpRect->top + cy;
+		}
+		else if (w == WMSZ_TOPLEFT || w == WMSZ_BOTTOMLEFT)
+		{
+			cy = lpRect->bottom - lpRect->top;
+			cx = (int)(cy / sScale);
+
+			if (cy < minHeight) {
+				cy = minHeight;
+				lpRect->bottom = lpRect->top + cy;
+			}
+
+			if (cx < minWidth) {
+				cx = minWidth;
+				lpRect->right = lpRect->left + cx;
+			}
+
+			lpRect->left = lpRect->right - cx;
+		}
+		else
+		{
+			cy = lpRect->bottom - lpRect->top;
+			if (cy < minHeight) {
+				cy = minHeight;
+				lpRect->bottom = lpRect->top + cy;
+			}
+			cx = (int)(cy / sScale);
+			lpRect->right = lpRect->left + cx;
+		}
+
+		return DefWindowProc(wnd, msg, w, l);
+	}
+	
 	default:{
 		MSG msgs
 		{
@@ -163,19 +262,57 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::FocusWindow(bool b)
 	windowFocused_ = b;
 }
 
-Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<int> size)
+#ifdef _DEBUG
+static size_t debuggingScreenId = 0;
+#endif
+
+Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title, Math::Vec2<size_t> size, WindowStyle windowStyle):
+	wndSize_{ size }
 {
+	::windowStyle = windowStyle;
+	COMHelper::AssertHResult("CoInitializeEx failed!",
+		CoInitializeEx(nullptr, COINIT::COINIT_MULTITHREADED));
+
+	Library{ "Imm32.dll" }
+		.GetCast<BOOL(__stdcall*)(IN DWORD)>(
+			"ImmDisableIME")(0);
+
 	auto instance = GetModuleHandle(NULL);//得到程序实例句柄
 
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
-		winpos.x,winpos.y,
-		winpos.x + size.x,winpos.y + size.y
+		static_cast<LONG>(winpos.x), static_cast<LONG>(winpos.y),
+		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
+
+#ifdef _DEBUG
+	std::vector<RECT> monitors;
+	EnumDisplayMonitors(nullptr, nullptr, 
+		[] (HMONITOR, HDC, LPRECT lprcMonitor, LPARAM dwData) -> BOOL{
+			static_assert(sizeof(dwData) == sizeof(void*));
+			const auto monitors = reinterpret_cast<std::vector<RECT>*>(dwData);
+			monitors->push_back(*lprcMonitor);
+			return TRUE;
+		}, reinterpret_cast<LPARAM>(&monitors));
+	const size_t debuggingMonitorIdSelected = std::clamp<size_t>(debuggingScreenId, 0u, monitors.size() - 1);
+	const auto screenRect = monitors.at(debuggingMonitorIdSelected);
+	const Snowing::Math::Vec2<LONG> screenSize = {
+		screenRect.right - screenRect.left,
+		screenRect.bottom - screenRect.top
+	};
+	const auto lSize = size.Cast<LONG>();
+	winRect = {
+		screenRect.left + screenSize.x / 2 - lSize.x / 2, screenRect.top + screenSize.y / 2 - lSize.y / 2,
+		screenRect.left + screenSize.x / 2 + lSize.x / 2, screenRect.top + screenSize.y / 2 + lSize.y / 2
+	};
+#endif // _DEBUG
+
 
 	if (!AdjustWindowRect(&winRect, dwStyle, false))
 		throw std::runtime_error{ "AdjustWindowRect error" };
+
+	sScale = (winRect.bottom - winRect.top) / static_cast<float>(winRect.right - winRect.left);
 
 	WNDCLASSEX wnd;
 	wnd.cbClsExtra = 0;
@@ -190,6 +327,20 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 	wnd.lpszClassName = title;
 	wnd.lpszMenuName = title;
 	wnd.style = CS_HREDRAW | CS_VREDRAW;
+	
+	if (windowStyle.icon.has_value())
+	{
+		const auto icon = static_cast<HICON>(LoadIcon(GetModuleHandle(nullptr), MAKEINTRESOURCE(*windowStyle.icon)));
+		icon_ = {
+			icon,
+			[](void* icon) {
+				DestroyIcon(static_cast<HICON>(icon));
+			}
+		};
+
+		wnd.hIcon = icon;
+		wnd.hIconSm = icon;
+	}
 
 	if (!RegisterClassEx(&wnd))
 	{
@@ -206,15 +357,26 @@ Snowing::PlatformImpls::WindowsImpl::WindowImpl::WindowImpl(const wchar_t* title
 		NULL, NULL,
 		instance, NULL);
 
-	// TestHandler
-	Handler hnd(hwnd, hwndDeleter);
-	Handler hnd2 = std::move(hnd);
-	hwnd_ = std::move(hnd2);
+	SendMessage(
+		hwnd,
+		WM_SETHOTKEY,
+		MAKEWORD(VK_RETURN, 0x04),
+		0
+	);
+
+	// 注册为触摸窗口
+	RegisterTouchWindow(hwnd, 0);
+
+	// 注册为Sizable窗口
+	if (windowStyle.sizable) {
+		SetWindowLong(hwnd, GWL_STYLE, GetWindowLong(hwnd, GWL_STYLE) | WS_SIZEBOX);
+	}
+
+	hwnd_ = Handler{ hwnd, hwndDeleter };
 }
 
-bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::processWindowMoving()
 {
-	// 处理窗口移动的屎的开始
 	if (movingMousePositionToLTCorner.has_value())
 	{
 		// 如果鼠标松开则退出窗口移动模式
@@ -238,7 +400,11 @@ bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
 				FALSE);
 		}
 	}
-	// 处理窗口移动的屎的结束
+}
+
+bool Snowing::PlatformImpls::WindowsImpl::WindowImpl::Update()
+{
+	processWindowMoving();
 
 	MSG msg = { 0 };
 
@@ -276,21 +442,30 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetWindowed(bool windowed)
 	}
 }
 
-void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<int> size)
+void Snowing::PlatformImpls::WindowsImpl::WindowImpl::Resize(Math::Vec2<size_t> size)
 {
+	wndSize_ = size;
 	const auto winpos = GetDesktopSize() / 2 - size / 2;
 	RECT winRect =
 	{
-		winpos.x,winpos.y,
-		winpos.x + size.x,winpos.y + size.y
+		static_cast<LONG>(winpos.x), static_cast<LONG>(winpos.y),
+		static_cast<LONG>(winpos.x + size.x), static_cast<LONG>(winpos.y + size.y)
 	};
 
-	if (!AdjustWindowRect(&winRect, dwStyle, false))
-		throw std::runtime_error{ "AdjustWindowRect error" };
+
+	if (D3D::Device::InstanceExists()) {
+		if (!D3D::Device::Get().GetFullscreen())
+			if (!AdjustWindowRect(&winRect, dwStyle, false))
+				throw std::runtime_error{ "AdjustWindowRect error" };
+	}
+	else {
+		if (!AdjustWindowRect(&winRect, dwStyle, false))
+			throw std::runtime_error{ "AdjustWindowRect error" };
+	}
 
 	MoveWindow(hwnd_.Get<HWND>(),winRect.left,winRect.top,winRect.right - winRect.left,winRect.bottom - winRect.top,true);
 
-	D3D::Device::Get().Resize(size);
+	D3D::Device::Get().Resize(size.Cast<int>());
 }
 
 
@@ -333,26 +508,41 @@ void Snowing::PlatformImpls::WindowsImpl::WindowImpl::SetTransparent()
 		HWND_TOPMOST,
 		rcClient.left, rcClient.top,
 		rcClient.right - rcClient.left, rcClient.bottom - rcClient.top,
-		SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
+		SWP_FRAMECHANGED | SWP_NOMOVE);
 }
 
-Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
+Snowing::Math::Vec2<size_t> Snowing::PlatformImpls::WindowsImpl::WindowImpl::GetSize() const
 {
-	RECT r;
-	GetClientRect(hwnd_.Get<HWND>(), &r);
-	return { r.right - r.left,r.bottom - r.top };
+	/*RECT r; //这里需要进一步讨论，在某些情况下GetClientRect返回四个0
+	if (!GetClientRect(hwnd_.Get<HWND>(), &r))
+		throw std::exception{ __FUNCDNAME__ "Faild to call GetClientRect." };
+	return { r.right - r.left,r.bottom - r.top };*/
+	return wndSize_;
 }
 
-Snowing::Math::Vec2<int> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
+Snowing::Math::Vec2<size_t> Snowing::PlatformImpls::WindowsImpl::GetDesktopSize()
 {
-	RECT desktopRect;
+	// 旧版获得窗口大小，受到DPI影响
+	/*RECT desktopRect;
 	const auto desktop = GetDesktopWindow();
 	if (!GetClientRect(desktop, &desktopRect))
 		throw std::runtime_error("Get desktop size failed.");
 	return {
 		desktopRect.right - desktopRect.left,
-		desktopRect.bottom - desktopRect.top };
+		desktopRect.bottom - desktopRect.top };*/
 
+	return {
+		static_cast<size_t>(GetSystemMetrics(SM_CXSCREEN)),
+		static_cast<size_t>(GetSystemMetrics(SM_CYSCREEN))
+	};
+
+}
+
+void Snowing::PlatformImpls::WindowsImpl::SetDebuggingScreen(size_t screenId)
+{
+#ifdef _DEBUG
+	debuggingScreenId = screenId;
+#endif
 }
 
 void Snowing::PlatformImpls::WindowsImpl::WindowImpl::ShowCursor(bool cursor)

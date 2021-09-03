@@ -46,6 +46,8 @@ namespace Yukimi
 		{
 		public:
 
+			virtual ~TextAnimation() = default;
+
 			// 动画状态
 			enum class AnimationState
 			{
@@ -166,6 +168,9 @@ namespace Yukimi
 			std::wstring_view text,
 			const TextWindowFontStyle& style,
 			float wait);
+
+		// 下一行
+		void NextLine();
 
 		// 停止淡出效果
 		void FastFadeIn();

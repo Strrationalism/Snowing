@@ -19,9 +19,12 @@ int __cdecl main()
 	Snowing::PlatformImpls::WindowsImpl::D3D::Device grap{ wndImpl.GetHWND() };
 	Snowing::Engine engine{ Snowing::Engine::ConstructToken{} };
 
+	std::cout << "Max Touch Input Count:" << Snowing::Input::Input::GetMaxTouchInputCount() << std::endl;
+
 	assert(&engine == &Snowing::Engine::Get());
 
 	Snowing::Input::TriggerWatcher Wheel{ &Input::Get() ,MouseWheel{} };
+	Snowing::Input::TriggerWatcher HWheel{ &Input::Get() ,MouseHWheel{} };
 
 #define KEYWATCHER(KeyValue,KeyName) \
 	Snowing::Input::KeyWatcher<Input,decltype(KeyValue)> KeyName{ &Input::Get(),KeyValue }
@@ -37,6 +40,7 @@ int __cdecl main()
 	KEYWATCHER(Snowing::Input::MouseKey::Middle, MouseMiddle);
 	KEYWATCHER(Snowing::Input::MouseKey::SideKeyA, SideKeyA);
 	KEYWATCHER(Snowing::Input::MouseKey::SideKeyB, SideKeyB);
+	KEYWATCHER(Snowing::Input::TouchScreen::AnyPoint{}, Touch);
 #undef KEYWATCHER
 
 	Snowing::Input::KeyKeepTranslator<decltype(X)> XKeeper{ &X,1.0f,0.2f };
@@ -75,6 +79,10 @@ int __cdecl main()
 		Wheel.Update();
 		if (Wheel.IsNew())
 			cout << "Mouse Wheel:" << Wheel.Value() << endl;
+
+		HWheel.Update();
+		if (HWheel.IsNew())
+			cout << "Mouse H Wheel:" << HWheel.Value() << endl;
 		
 
 #define WATCHKEY(Key) {\
@@ -94,12 +102,18 @@ int __cdecl main()
 		WATCHKEY(MouseMiddle);
 		WATCHKEY(SideKeyA);
 		WATCHKEY(SideKeyB);
+		WATCHKEY(Touch);
 #undef WATCHKEY
 		WinFocused.Update();
 		if (WinFocused.JustPress())
 			cout << "Window Focused!" << endl;
 		else if (WinFocused.JustRelease())
 			cout << "Window Unfocused!" << endl;
+
+		const auto touchPosition =
+			Snowing::Input::Input::Get().Position(Snowing::Input::TouchScreen::AnyPoint{});
+		if (touchPosition.has_value())
+			std::cout << "Touch Position:" << touchPosition->x << ' ' << touchPosition->y << std::endl;
 	});
 	return 0;
 }

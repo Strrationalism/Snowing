@@ -160,5 +160,6 @@
     <None Include="PostEffect.hlsli">
       <Filter>HLSL头文件</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

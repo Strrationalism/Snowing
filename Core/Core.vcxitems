@@ -14,7 +14,6 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="$(MSBuildThisFileDirectory)AES.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlobWriter.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BlobReader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BKDRHash.h" />
@@ -32,9 +31,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Metronome.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)NoCopyMove.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)AsyncLauncher.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)PixelFormat.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PostEffect.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)PropParser.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Reinit.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Utils.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RenderTargetCleaner.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TextMenuItem.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)VibratePlayer.h" />

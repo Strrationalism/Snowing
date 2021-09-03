@@ -85,7 +85,8 @@ void Yukimi::TextWindow::FadeClear()
 
 void Yukimi::TextWindow::AppendWaitTime(float t)
 {
-	assert(currentTimeLineEnd_.has_value());
+	if (!currentTimeLineEnd_.has_value())
+		currentTimeLineEnd_.emplace(0.0f);
 	*currentTimeLineEnd_ += t;
 }
 
@@ -94,6 +95,11 @@ void Yukimi::TextWindow::AppendText(std::wstring_view text, const TextWindowFont
 {
 	for (auto p : text)
 		appendCharacter(p, style, wait);
+}
+
+void Yukimi::TextWindow::NextLine()
+{
+	typer_.NextLine();
 }
 
 void Yukimi::TextWindow::FastFadeIn()
@@ -121,6 +127,8 @@ void Yukimi::TextWindow::SetVisible(bool vis)
 
 bool Yukimi::TextWindow::Update()
 {
+	typer_.SetBox(userAdapter_->GetTextWindowBox());
+
 	float deltaTime = Snowing::Engine::Get().DeltaTime();
 
 	if(currentTimeLineEnd_.has_value())
@@ -132,7 +140,9 @@ bool Yukimi::TextWindow::Update()
 		p.SinceFadeInTime += deltaTime;
 		
 		p.Animation->Update(p);
-		p.Renderer->DrawToSpriteBuffer(p.Sprite);
+
+		if(p.Sprite.Sprite.Color.w >= 0.000001f)
+			p.Renderer->DrawToSpriteBuffer(p.Sprite);
 	}
 
 	userAdapter_->FlushDrawCall();
@@ -186,7 +196,7 @@ void Yukimi::TextWindow::BasicAnimation::Update(Ch& ch)
 		FastFadeIn(ch);
 	}
 	else if (state_ == State::Displaying)
-		ch.Sprite.Sprite.Color.w = 1;
+		ch.Sprite.Sprite.Color.w = vis_ ? 1.0f : 0.0f;
 	else
 		ch.Sprite.Sprite.Color.w = 0;
 }

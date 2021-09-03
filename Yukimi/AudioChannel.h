@@ -24,16 +24,20 @@ namespace Yukimi
 		using AudioLoader = Snowing::Blob(*)(Snowing::AssetName);
 
 		// 异步加载并播放一个声音
-		AudioChannel(AudioLoader loader,std::string&& name,float fadeIn = 0,uint32_t begin = 0,float pan = 0);
+		AudioChannel(AudioLoader loader,std::string&& name,float fadeIn = 0,uint32_t begin = 0,float pan = 0,float volume = 1.0f);
 
 		// 从已有Blob创建声音
-		AudioChannel(Snowing::Blob&& soundBlob, float fadeIn = 0.0f, uint32_t begin = 0, float pan = 0);
+		AudioChannel(Snowing::Blob&& soundBlob, float fadeIn = 0.0f, uint32_t begin = 0, float pan = 0, float volume = 1.0f);
 
 		// 将自己的Blob转换为借用，并转移出Blob的所有权
 		Snowing::Blob MoveOutBlob();
 
 		// 停止播放声音
 		void Stop(float fadeOut = 0);
+
+		void SetPan(float pan);
+
+		void SetVolume(float volume);
 
 		// 获取播放位置
 		uint32_t GetPosition() const;
@@ -55,5 +59,8 @@ namespace Yukimi
 
 		// 获取节拍器
 		std::optional<const Snowing::Scene::Metronome<>*> GetMetronome() const;
+
+		// 设置播放位置
+		void SetPosition(uint32_t position);
 	};
 }

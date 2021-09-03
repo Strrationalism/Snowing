@@ -238,3 +238,10 @@ void Snowing::PlatformImpls::WindowsImpl::D3D::D3DEffectReflectionObject::SetAsT
 		t->SetResource(tex->GetImpl().ShaderResource().Cast<IUnknown*, ID3D11ShaderResourceView*>()));
 	t->Release();
 }
+
+void D3DEffectReflectionObject::SetAsTexture2D(nullptr_t)
+{
+	auto t = ref_.Cast<IUnknown*, ID3DX11EffectVariable*>()->AsShaderResource();
+	t->SetResource(nullptr);
+	t->Release();
+}

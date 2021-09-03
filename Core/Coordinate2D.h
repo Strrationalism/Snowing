@@ -49,4 +49,14 @@ namespace Snowing::Math
 		const auto t = (pos - srcc.Center) / srcc.Space;
 		return t * dstc.Space + dstc.Center;
 	}
+
+	constexpr bool operator ==(const Coordinate2DRect& a, const Coordinate2DRect& b)
+	{
+		return a.LeftTop == b.LeftTop && a.RightBottom == b.RightBottom;
+	}
+
+	constexpr bool operator ==(const Coordinate2DCenter& a, const Coordinate2DCenter& b)
+	{
+		return a.Center == b.Center && a.Space == b.Space;
+	}
 }

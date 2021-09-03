@@ -4,6 +4,7 @@
 #include "Blob.h"
 #include "Vec2.h"
 #include "Vec4.h"
+#include "Texture2D.h"
 
 namespace Snowing::Graphics
 {
@@ -13,6 +14,8 @@ namespace Snowing::Graphics
 	private:
 		TImpl impl_;
 	public:
+		using ImplType = TImpl;
+
 		EffectReflectionObjectInterface(TImpl&& impl) :
 			impl_{ std::move(impl) }
 		{}
@@ -41,12 +44,81 @@ namespace Snowing::Graphics
 			impl_.SetAsTexture2D(t);
 		}
 
+		void SetAsTexture2D(nullptr_t)
+		{
+			impl_.SetAsTexture2D(nullptr);
+		}
+
 		template <typename TBuf>
 		void SetAsConstantBuffer(const TBuf* b)
 		{
 			assert(b);
 			impl_.SetAsConstantBuffer(b);
 		}
+	};
+
+	template <typename TImpl, typename TParameter>
+	class [[nodiscard]] EffectReflectionInterface final
+	{
+		EffectReflectionInterface() = delete;
+	};
+
+	template <typename TImpl>
+	class [[nodiscard]] EffectReflectionInterface<TImpl,float> final
+	{
+	private:
+		using ReflectionObject = EffectReflectionObjectInterface<TImpl>;
+		ReflectionObject ref_;
+	public:
+		EffectReflectionInterface(ReflectionObject&& ref) :ref_{ std::move(ref) } {}
+		void Set(float v) { ref_.SetAsFloat(v); }
+	};
+
+	template <typename TImpl>
+	class [[nodiscard]] EffectReflectionInterface<TImpl, Math::Vec2f> final
+	{
+	private:
+		using ReflectionObject = EffectReflectionObjectInterface<TImpl>;
+		ReflectionObject ref_;
+	public:
+		EffectReflectionInterface(ReflectionObject&& ref) :ref_{ std::move(ref) } {}
+		void Set(Math::Vec2f v) { ref_.SetAsVec2(v); }
+	};
+
+	template <typename TImpl>
+	class [[nodiscard]] EffectReflectionInterface<TImpl, Math::Vec4f> final
+	{
+	private:
+		using ReflectionObject = EffectReflectionObjectInterface<TImpl>;
+		ReflectionObject ref_;
+	public:
+		EffectReflectionInterface(ReflectionObject&& ref) :ref_{ std::move(ref) } {}
+		void Set(Math::Vec4f v) { ref_.SetAsVec4(v); }
+	};
+
+	template <typename TImpl, typename TParameter>
+	class [[nodiscard]] EffectReflectionInterface<TImpl, Texture2DInterface<TParameter>*> final
+	{
+	private:
+		using ReflectionObject = EffectReflectionObjectInterface<TImpl>;
+		using Tex2D = Texture2DInterface<TParameter>;
+		ReflectionObject ref_;
+	public:
+		EffectReflectionInterface(ReflectionObject&& ref) :ref_{ std::move(ref) } {}
+		void Set(const Tex2D* v) { ref_.SetAsTexture2D(v); }
+		void Set(nullptr_t) { ref_.SetAsTexture2D(nullptr); }
+	};
+
+	template <typename TImpl, typename TConstantBuffer>
+	class [[nodiscard]] EffectReflectionInterface<TImpl, TConstantBuffer*> final
+	{
+	private:
+		using ReflectionObject = EffectReflectionObjectInterface<TImpl>;
+		ReflectionObject ref_;
+	public:
+		EffectReflectionInterface(ReflectionObject&& ref) :ref_{ std::move(ref) } {}
+		void Set(const TConstantBuffer* v) { ref_.SetAsConstantBuffer(v); }
+		void Set(nullptr_t) { ref_.SetAsConstantBuffer(nullptr); }
 	};
 
 	template <typename TImpl>
@@ -185,6 +257,15 @@ namespace Snowing::Graphics
 			auto p = impl_.Reflection(objectName);
 			Platforms::AssertInterface<EffectReflectionObjectInterface>(p);
 			return p;
+		}
+
+		template <typename TReflectionObjectType>
+		[[nodiscard]]
+		auto Reflection(const char* objectName)
+		{
+			auto p = Reflection(objectName);
+			return EffectReflectionInterface<decltype(p)::ImplType, TReflectionObjectType>(
+				std::move(p));
 		}
 
 		[[nodiscard]]

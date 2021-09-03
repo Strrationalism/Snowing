@@ -1,0 +1,37 @@
+Set $Out "../build/data/Live2D"
+Set $Live2D "../TestWindowsLive2D/CubismNativeSamples/Samples/Res"
+
+Import {
+	../Bake.Snowing/bin/Release/net5.0-windows/publish/Bake.Snowing.dll
+}
+
+
+CreateDirectory {
+    $Out
+}
+Parallel {
+    Copy $Out $Live2D/*
+}
+
+CreateDirectory {
+    $Out/Haru/Haru.2048
+    $Out/Hiyori/Hiyori.2048
+    $Out/Mark/Mark.2048
+}
+
+Parallel {
+	ConvertTexture $Out/Haru/Haru.2048 DDS DXT5 {
+	    $Live2D/Haru/Haru.2048/texture_00.png
+	    $Live2D/Haru/Haru.2048/texture_01.png
+	}
+	
+	ConvertTexture $Out/Hiyori/Hiyori.2048 DDS DXT5 {
+		$Live2D/Hiyori/Hiyori.2048/texture_01.png
+		$Live2D/Hiyori/Hiyori.2048/texture_00.png
+	}
+	
+	ConvertTexture $Out/Mark/Mark.2048 DDS DXT5 {
+		$Live2D/Mark/Mark.2048/texture_00.png
+	}
+
+}

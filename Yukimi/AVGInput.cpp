@@ -20,6 +20,7 @@ bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(AVGKeys k) const
 		break;
 	case AVGKeys::Click:
 		if (Input::KeyPressed(MouseKey::Left)) return true;
+		if (Input::KeyPressed(TouchScreen::AnyPoint{})) return true;
 		break;
 	case AVGKeys::HideTextWindow:
 		if (Input::KeyPressed(MouseKey::Middle)) return true;
@@ -46,11 +47,9 @@ bool Yukimi::AVGInput::AVGInputKeyboardMouse::KeyPressed(Snowing::Input::Classic
 	{
 	case Snowing::Input::ClassicGamepadArrow::Up:
 		if (Input::KeyPressed(KeyboardKey::Up)) return true;
-		if (Input::Trigger(MouseWheel{}) < 0) return true;
 		break;
 	case Snowing::Input::ClassicGamepadArrow::Down:
 		if (Input::KeyPressed(KeyboardKey::Down)) return true;
-		if (Input::Trigger(MouseWheel{}) > 0) return true;
 		break;
 	case Snowing::Input::ClassicGamepadArrow::Left:
 		if (Input::KeyPressed(KeyboardKey::Left)) return true;
@@ -104,7 +103,12 @@ void Yukimi::AVGInput::Vibration(Snowing::Input::VibrationStop s)
 		p->Vibration(s);
 }
 
-std::optional<Snowing::Math::Vec2f> Yukimi::AVGInput::Position(Snowing::Input::MousePosition m)
+std::optional<Snowing::Math::Vec2f> Yukimi::AVGInput::Position(Snowing::Input::MousePosition m) const
 {
-	return Snowing::Input::Input::Position(m);
+	static_assert(Snowing::Input::TouchScreen::CoordinateSystem == Snowing::Input::MousePosition::CoordinateSystem);
+	const auto touch = Snowing::Input::Input::Position(Snowing::Input::TouchScreen::AnyPoint{});
+	if (touch.has_value())
+		return touch;
+	else
+		return Snowing::Input::Input::Position(m);
 }

@@ -1,4 +1,4 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "XASoundPlayer.h"
 #include "XADevice.h"
 #include <xaudio2.h>
@@ -215,12 +215,12 @@ float Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPlayer::GetRealtimeVo
 			};
 			if (dbNow != sample) 
 			{
-				dbNow -= pow2(dbNow - sample) / format.nSamplesPerSec;
+				dbNow -= static_cast<int32_t>(pow2(dbNow - sample) / format.nSamplesPerSec);
 			}
 		}
 		const auto maxValue = 1 << (format.wBitsPerSample - 1);
 
-		return 1.0 * dbNow / (maxValue - 1);
+		return 1.0f * dbNow / (maxValue - 1);
 	}
 	else
 		return 0;
@@ -231,3 +231,7 @@ Snowing::Audio::Metadata Snowing::PlatformImpls::WindowsImpl::XAudio2::XASoundPl
 	return metadata_;
 }
 
+const Snowing::Audio::Metadata& Snowing::Audio::GetSoundMetadata(const Snowing::Blob& soundBlob)
+{
+	return soundBlob.Get<SoundHead*>(0)->metadata;
+}

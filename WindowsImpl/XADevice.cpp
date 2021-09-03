@@ -8,7 +8,7 @@ using namespace Snowing::PlatformImpls::WindowsImpl;
 Snowing::PlatformImpls::WindowsImpl::XAudio2::XADevice::XADevice() noexcept
 {
 	IXAudio2* xa;
-	COMHelper::AssertHResult("Can not create xaudio engine.",
+	COMHelper::AssertHResult("Can not create XAudio 2 engine.",
 		XAudio2Create(&xa));
 	xaEngine_ = { static_cast<IUnknown*>(xa),COMHelper::COMIUnknownDeleter };
 

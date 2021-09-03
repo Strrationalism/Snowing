@@ -12,6 +12,12 @@ namespace Live2D
 	public:
 		Expression(Model* model, size_t expressionID);
 
-		void Apply() const;
+		void Apply(int priority = 0) const;
+
+		void SetFadeInTime(float t);
+		void SetFadeOutTime(float t);
+
+		float GetWeight() const;
+		void SetWeight(float w);
 	};
 }

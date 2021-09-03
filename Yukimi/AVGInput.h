@@ -49,7 +49,7 @@ namespace Yukimi
 		bool KeyPressed(Snowing::Input::ClassicGamepadArrow) const;
 		void Vibration(Snowing::Input::VibrationLeftRight);
 		void Vibration(Snowing::Input::VibrationStop);
-		std::optional<Snowing::Math::Vec2f> Position(Snowing::Input::MousePosition);
+		std::optional<Snowing::Math::Vec2f> Position(Snowing::Input::MousePosition) const;
 
 		template <typename TDevice,typename ... TArgs>
 		void Emplace(TArgs&& ...args)

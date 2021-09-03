@@ -70,11 +70,21 @@ namespace Snowing
 		
 
 	public:
-		CSVParser(const Snowing::Blob *blob) :
+		CSVParser(const Snowing::Blob *blob):
 			fullText_{ blob->Get<CharType*>(),blob->Size() / sizeof(CharType) }
 		{
 			assert(blob);
 
+			if (fullText_.front() == 65279u)
+				fullText_ = fullText_.substr(1, fullText_.length() - 1);
+
+			if (!setCurLine(0))
+				throw std::invalid_argument{ "This is not a csv file!" };
+		}
+
+		CSVParser(std::basic_string_view<CharType> csv):
+			fullText_{ csv }
+		{
 			if (fullText_.front() == 65279u)
 				fullText_ = fullText_.substr(1, fullText_.length() - 1);
 

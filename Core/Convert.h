@@ -3,6 +3,7 @@
 #include <string_view>
 #include <string>
 #include <optional>
+#include "BKDRHash.h"
 
 namespace Snowing
 {

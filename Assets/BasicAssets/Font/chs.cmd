@@ -1,3 +1,3 @@
 @md chs
-@SDFFont -srcfont "黑体" -dst chs\font -chars chs.txt
+@SDFFont -srcfont "思源等宽" -dst chs\font -chars chs.txt
 @pause
