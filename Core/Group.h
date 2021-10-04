@@ -39,16 +39,25 @@ namespace Snowing::Scene
 		{
 			PrepareNewObjects();
 
+			const auto eraseBegin = std::remove_if(
+				objs_.begin(),
+				objs_.end(),
+				[](const auto& p) { return !p.living; });
+
+			objs_.erase(
+				eraseBegin,
+				objs_.end());
+
 			for (auto& p : objs_)
 				p.living = p.object->Update();
 
-			const auto eraseBegin = std::remove_if(
+			const auto eraseBegin2 = std::remove_if(
 				objs_.begin(),
 				objs_.end(),
 				[](const auto & p) { return !p.living; });
 
 			objs_.erase(
-				eraseBegin,
+				eraseBegin2,
 				objs_.end());
 
 			return !objs_.empty() || !newObjs_.empty();
