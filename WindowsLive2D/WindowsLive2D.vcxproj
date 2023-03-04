@@ -23,7 +23,7 @@
     <ProjectGuid>{9F7B0BD8-50AE-4082-AA73-5652F12259B0}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WindowsLive2D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
